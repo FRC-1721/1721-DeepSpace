@@ -1,6 +1,7 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.Victor;
 
 public class RobotMap {
 
@@ -9,8 +10,11 @@ public class RobotMap {
   public static int driverStickPort = 0; //The usb address of the driver
   
   //CAN Ports
-  public static int starboardMotorCAN = 0; //Define Starboard Motor (Through RIO)
-  public static int portMotorCAN = 1; //Define Port Motor (Through RIO) 
+  public static int starboardMotorCAN = 1; //Define Starboard Motor (Through RIO)
+  public static int portMotorCAN = 0; //Define Port Motor (Through RIO) 
+  public static int starboardSlave = 0;
+  public static int portSlave = 1;
+  public static int cargoIntake = 2;
 
   //Types
   public static WPI_TalonSRX starboardMotor; 
@@ -19,4 +23,7 @@ public class RobotMap {
    *  left and right beacuse of the ambigious nature of robot construction, where a face or 
    * front is not always easily noted upon. 
    */
+  public static Victor starboardSlave;
+  public static Victor portSlave;
+  public static Victor cargoIntake;
 }
