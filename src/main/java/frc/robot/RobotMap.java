@@ -3,6 +3,7 @@ package frc.robot;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 
 public class RobotMap {
 
@@ -24,7 +25,7 @@ public class RobotMap {
    *  left and right beacuse of the ambigious nature of robot construction, where a face or 
    * front is not always easily noted upon. 
    */
-
+  
   //public static Victor starboardSlave;
   //public static Victor portSlave;
   //public static Victor cargoIntake;
