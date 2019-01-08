@@ -25,7 +25,8 @@ public class RobotMap {
    * front is not always easily noted upon. 
    */
 
-  //public static Victor starboardSlave;
-  //public static Victor portSlave;
-  //public static Victor cargoIntake;
+   //PID tuning values
+   public static float kP;
+   public static float kI;
+   public static float kD;
 }
