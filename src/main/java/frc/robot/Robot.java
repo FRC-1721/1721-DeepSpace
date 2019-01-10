@@ -120,10 +120,14 @@ public class Robot extends TimedRobot {
   public void teleopPeriodic() {
     Scheduler.getInstance().run();
    
-  if(button.getRawButton){
-    starboardMotor.set(ControlMode.Position, 1500);
+  if(RobotMap.driverStick.getRawButton(1)){
+    //starboardMotor.set(ControlMode.Position, 1500);
     portMotor.set(ControlMode.Position, 1500);
-  }  
+  }
+  else
+  {
+    DriveTrain.flyByWire(starboardMotor, portMotor, RobotMap.driverStick);
+  }
   
 	// Establish link to limelight - Josh, make this its own class when you get to your computer
 	NetworkTable table = NetworkTableInstance.getDefault().getTable("limelight");
@@ -142,7 +146,6 @@ public class Robot extends TimedRobot {
   SmartDashboard.putNumber("LimelightArea", area);
   
   //Drive - fix this to only work when PID is not running
-  //DriveTrain.flyByWire(starboardMotor, portMotor, RobotMap.driverStick);
   }
 
   /**
