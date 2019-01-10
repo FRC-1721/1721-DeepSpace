@@ -1,5 +1,6 @@
 package frc.robot;
 
+import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 
 import edu.wpi.first.networktables.NetworkTable;
@@ -118,7 +119,12 @@ public class Robot extends TimedRobot {
   @Override
   public void teleopPeriodic() {
     Scheduler.getInstance().run();
-	 
+   
+  if(button.getRawButton){
+    starboardMotor.set(ControlMode.Position, 1500);
+    portMotor.set(ControlMode.Position, 1500);
+  }  
+  
 	// Establish link to limelight - Josh, make this its own class when you get to your computer
 	NetworkTable table = NetworkTableInstance.getDefault().getTable("limelight");
 	NetworkTableEntry tx = table.getEntry("tx");
