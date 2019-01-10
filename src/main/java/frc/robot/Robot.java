@@ -87,18 +87,29 @@ public class Robot extends TimedRobot {
 		starboardMotor.configPeakOutputForward(1, Constants.kTimeoutMs);
     starboardMotor.configPeakOutputReverse(-1, Constants.kTimeoutMs);
 
+    portMotor.configNominalOutputForward(0, Constants.kTimeoutMs);
+		portMotor.configNominalOutputReverse(0, Constants.kTimeoutMs);
+		portMotor.configPeakOutputForward(1, Constants.kTimeoutMs);
+    portMotor.configPeakOutputReverse(-1, Constants.kTimeoutMs);
+
     /**
 		 * Config the allowable closed-loop error, Closed-Loop output will be
 		 * neutral within this range. See Table here for units to use: 
          * https://github.com/CrossTheRoadElec/Phoenix-Documentation#what-are-the-units-of-my-sensor
 		 */
-		starboardMotor.configAllowableClosedloopError(0, Constants.kPIDLoopIdx, Constants.kTimeoutMs);
+    starboardMotor.configAllowableClosedloopError(0, Constants.kPIDLoopIdx, Constants.kTimeoutMs);
+    portMotor.configAllowableClosedloopError(0, Constants.kPIDLoopIdx, Constants.kTimeoutMs);
 
 		/* Config closed loop gains for Primary closed loop (Current) */
 		starboardMotor.config_kP(Constants.kPIDLoopIdx, Constants.kGains.kP, Constants.kTimeoutMs);
 		starboardMotor.config_kI(Constants.kPIDLoopIdx, Constants.kGains.kI, Constants.kTimeoutMs);
     starboardMotor.config_kD(Constants.kPIDLoopIdx, Constants.kGains.kD, Constants.kTimeoutMs);
     starboardMotor.config_kF(Constants.kPIDLoopIdx, Constants.kGains.kF, Constants.kTimeoutMs);
+
+    portMotor.config_kP(Constants.kPIDLoopIdx, Constants.kGains.kP, Constants.kTimeoutMs);
+		portMotor.config_kI(Constants.kPIDLoopIdx, Constants.kGains.kI, Constants.kTimeoutMs);
+    portMotor.config_kD(Constants.kPIDLoopIdx, Constants.kGains.kD, Constants.kTimeoutMs);
+    portMotor.config_kF(Constants.kPIDLoopIdx, Constants.kGains.kF, Constants.kTimeoutMs);
   }
 
   /**

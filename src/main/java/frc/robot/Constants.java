@@ -32,4 +32,6 @@ public class Constants {
 	/* We allow either a 0 or 1 when selecting a PID Index, where 0 is primary and 1 is auxiliary */
 	public final static int PID_PRIMARY = 0;
 	public final static int PID_TURN = 1;
+
+	public static final float angularP = 0.1f;
 }
