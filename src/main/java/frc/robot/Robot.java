@@ -5,11 +5,13 @@ import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
+import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.robot.subsystems.DriveTrain;
 
 public class Robot extends TimedRobot {
   public static OI m_oi;
@@ -23,6 +25,7 @@ public class Robot extends TimedRobot {
   @Override
   public void robotInit() {
     m_oi = new OI();
+    RobotMap.driverStick = new Joystick(0);
   }
 
   @Override
@@ -119,7 +122,10 @@ public class Robot extends TimedRobot {
 	//post to smart dashboard periodically
 	SmartDashboard.putNumber("LimelightX", x);
 	SmartDashboard.putNumber("LimelightY", y);
-	SmartDashboard.putNumber("LimelightArea", area);
+  SmartDashboard.putNumber("LimelightArea", area);
+  
+  //Drive - fix this to only work when PID is not running
+  //DriveTrain.flyByWire(starboardMotor, portMotor, RobotMap.driverStick);
   }
 
   /**

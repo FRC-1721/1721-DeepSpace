@@ -1,6 +1,6 @@
 package frc.robot;
 
-import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
+import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 
 import edu.wpi.first.wpilibj.Joystick;
 
@@ -18,8 +18,8 @@ public class RobotMap {
   public static int cargoIntake = 2;
 
   //Types
-  public static WPI_TalonSRX starboardMotor; 
-  public static WPI_TalonSRX portMotor; 
+  public static TalonSRX starboardMotor; 
+  public static TalonSRX portMotor; 
   /*  Joe recomends that starboard and port be used to differentiate robot sides rather than 
    *  left and right beacuse of the ambigious nature of robot construction, where a face or 
    * front is not always easily noted upon. 
