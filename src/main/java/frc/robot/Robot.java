@@ -1,5 +1,7 @@
 package frc.robot;
 
+import com.ctre.phoenix.motorcontrol.can.TalonSRX;
+
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
@@ -15,15 +17,15 @@ public class Robot extends TimedRobot {
   Command m_autonomousCommand;
   SendableChooser<Command> m_chooser = new SendableChooser<>();
 
+  TalonSRX starboardMotor = new TalonSRX(RobotMap.starboardMotorCAN); //Create the talon SRX's
+  TalonSRX portMotor = new TalonSRX(RobotMap.portMotorCAN);
+
   @Override
   public void robotInit() {
     m_oi = new OI();
     m_chooser.setDefaultOption("Default Auto", new ExampleCommand());
     // chooser.addOption("My Auto", new MyAutoCommand());
     SmartDashboard.putData("Auto mode", m_chooser);
-
-    TalonSRX starboardMotor = new TalonSRX(RobotMap.starboardMotorCAN);
-    TalonSRX portMotor = new TalonSRX(RobotMap.portMotorCAN);
   }
 
   @Override
@@ -71,13 +73,32 @@ public class Robot extends TimedRobot {
 
   @Override
   public void teleopInit() {
-    // This makes sure that the autonomous stops running when
-    // teleop starts running. If you want the autonomous to
-    // continue until interrupted by another command, remove
-    // this line or comment it out.
     if (m_autonomousCommand != null) {
       m_autonomousCommand.cancel();
     }
+    //Inturrupt for Auto
+
+    starboardMotor.configFactoryDefault(); //Set both motor controlers to default
+    portMotor.configFactoryDefault();
+
+    /* Config the peak and nominal outputs ([-1, 1] represents [-100, 100]%) */
+		starboardMotor.configNominalOutputForward(0, Constants.kTimeoutMs);
+		starboardMotor.configNominalOutputReverse(0, Constants.kTimeoutMs);
+		starboardMotor.configPeakOutputForward(1, Constants.kTimeoutMs);
+    starboardMotor.configPeakOutputReverse(-1, Constants.kTimeoutMs);
+
+    /**
+		 * Config the allowable closed-loop error, Closed-Loop output will be
+		 * neutral within this range. See Table here for units to use: 
+         * https://github.com/CrossTheRoadElec/Phoenix-Documentation#what-are-the-units-of-my-sensor
+		 */
+		starboardMotor.configAllowableClosedloopError(0, Constants.kPIDLoopIdx, Constants.kTimeoutMs);
+
+		/* Config closed loop gains for Primary closed loop (Current) */
+		starboardMotor.config_kP(Constants.kPIDLoopIdx, Constants.kGains.kP, Constants.kTimeoutMs);
+		starboardMotor.config_kI(Constants.kPIDLoopIdx, Constants.kGains.kI, Constants.kTimeoutMs);
+    starboardMotor.config_kD(Constants.kPIDLoopIdx, Constants.kGains.kD, Constants.kTimeoutMs);
+    starboardMotor.config_kF(Constants.kPIDLoopIdx, Constants.kGains.kF, Constants.kTimeoutMs);
   }
 
   /**
