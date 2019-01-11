@@ -143,12 +143,16 @@ public class Robot extends TimedRobot {
   double area = ta.getDouble(0.0);
 
   float xFloat = (float)x;
+  float areaFloat = (float)area;
   
    // Angular correction with limelight when A is held
    if(RobotMap.operatorController.getRawButton(1)){
+
+    float distanceTarget = Constants.accelerationP * (Constants.optimalArea - areaFloat);
     float steeringAdjust = Constants.angularP * xFloat;
-    starboardMotor.set(ControlMode.PercentOutput, steeringAdjust);
-    portMotor.set(ControlMode.PercentOutput, steeringAdjust);
+    starboardMotor.set(ControlMode.PercentOutput, steeringAdjust + 
+    distanceTarget);
+    portMotor.set(ControlMode.PercentOutput, steeringAdjust - distanceTarget);
   }else{
     DriveTrain.flyByWire(starboardMotor, portMotor, RobotMap.driverStick);
   }
