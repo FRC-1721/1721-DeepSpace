@@ -19,13 +19,14 @@ public class Robot extends TimedRobot {
 
   Command m_autonomousCommand; //Personalize me!
   SendableChooser<Command> m_chooser = new SendableChooser<>();
-
+  //Init drive motors
   TalonSRX starboardMotor = new TalonSRX(RobotMap.starboardMotorCAN); //Create the talon SRX's
   TalonSRX portMotor = new TalonSRX(RobotMap.portMotorCAN);
 
   @Override
   public void robotInit() {
     m_oi = new OI();
+    // Init joystick and controller
     RobotMap.driverStick = new Joystick(0);
     RobotMap.operatorController = new Joystick(1);
   }
@@ -148,13 +149,12 @@ public class Robot extends TimedRobot {
    // Angular correction with limelight when A is held
    if(RobotMap.operatorController.getRawButton(1)){
 
-    float distanceTarget = Constants.accelerationP * (Constants.optimalArea - areaFloat);
-    float steeringAdjust = Constants.angularP * xFloat;
-    starboardMotor.set(ControlMode.PercentOutput, steeringAdjust + 
-    distanceTarget);
-    portMotor.set(ControlMode.PercentOutput, steeringAdjust - distanceTarget);
+    float distanceTarget = Constants.accelerationP * (Constants.optimalArea - areaFloat); //Math to create a target value for distance
+    float steeringAdjust = Constants.angularP * xFloat; // Math to create a target side-to-side adjustment
+    starboardMotor.set(ControlMode.PercentOutput, steeringAdjust + distanceTarget); // Set port motor
+    portMotor.set(ControlMode.PercentOutput, steeringAdjust - distanceTarget); // Set starboard motor
   }else{
-    DriveTrain.flyByWire(starboardMotor, portMotor, RobotMap.driverStick);
+    DriveTrain.flyByWire(starboardMotor, portMotor, RobotMap.driverStick); // Drive using joystick
   }
 
 	//post to smart dashboard periodically

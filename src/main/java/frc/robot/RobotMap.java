@@ -13,13 +13,13 @@ public class RobotMap {
   //CAN Ports
   public static int starboardMotorCAN = 1; //Define Starboard Motor (Through RIO)
   public static int portMotorCAN = 0; //Define Port Motor (Through RIO) 
-  public static int starboardSlave = 0;
-  public static int portSlave = 1;
-  public static int cargoIntake = 2;
+  public static int starboardSlave = 0; // Starboard victor port
+  public static int portSlave = 1; // Port victor port
+  public static int cargoIntake = 2; // Intake victor port
 
   //Types
-  public static TalonSRX starboardMotor; 
-  public static TalonSRX portMotor; 
+  public static TalonSRX starboardMotor; // Starboard motor
+  public static TalonSRX portMotor; // Port motor
   /*  Joe recomends that starboard and port be used to differentiate robot sides rather than 
    *  left and right beacuse of the ambigious nature of robot construction, where a face or 
    * front is not always easily noted upon. 
