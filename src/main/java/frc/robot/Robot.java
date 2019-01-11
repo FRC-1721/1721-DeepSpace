@@ -27,6 +27,7 @@ public class Robot extends TimedRobot {
   public void robotInit() {
     m_oi = new OI();
     RobotMap.driverStick = new Joystick(0);
+    RobotMap.operatorController = new Joystick(1);
   }
 
   @Override
@@ -119,26 +120,38 @@ public class Robot extends TimedRobot {
   @Override
   public void teleopPeriodic() {
     Scheduler.getInstance().run();
-   
-  if(RobotMap.driverStick.getRawButton(1)){
-    //starboardMotor.set(ControlMode.Position, 1500);
+  // Commenting out control for vison testing
+  /*if(RobotMap.driverStick.getRawButton(1)){
+    starboardMotor.set(ControlMode.Position, -1500);
     portMotor.set(ControlMode.Position, 1500);
   }
   else
   {
     DriveTrain.flyByWire(starboardMotor, portMotor, RobotMap.driverStick);
-  }
+  }*/
+  
   
 	// Establish link to limelight - Josh, make this its own class when you get to your computer
-	NetworkTable table = NetworkTableInstance.getDefault().getTable("limelight");
+  NetworkTable table = NetworkTableInstance.getDefault().getTable("limelight");
 	NetworkTableEntry tx = table.getEntry("tx");
 	NetworkTableEntry ty = table.getEntry("ty");
-	NetworkTableEntry ta = table.getEntry("ta");
+  NetworkTableEntry ta = table.getEntry("ta");
 
 	//read values periodically
 	double x = tx.getDouble(0.0);
 	double y = ty.getDouble(0.0);
-	double area = ta.getDouble(0.0);
+  double area = ta.getDouble(0.0);
+
+  float xFloat = (float)x;
+  
+   // Angular correction with limelight when A is held
+   if(RobotMap.operatorController.getRawButton(1)){
+    float steeringAdjust = Constants.angularP * xFloat;
+    starboardMotor.set(ControlMode.PercentOutput, steeringAdjust);
+    portMotor.set(ControlMode.PercentOutput, steeringAdjust);
+  }else{
+    DriveTrain.flyByWire(starboardMotor, portMotor, RobotMap.driverStick);
+  }
 
 	//post to smart dashboard periodically
 	SmartDashboard.putNumber("LimelightX", x);

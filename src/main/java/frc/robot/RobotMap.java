@@ -7,7 +7,7 @@ import edu.wpi.first.wpilibj.Joystick;
 public class RobotMap {
 
   //Driver Sticks/Control information
-  public static Joystick driverStick;
+  public static Joystick driverStick, operatorController;
   public static int driverStickPort = 0; //The usb address of the driver
   
   //CAN Ports

@@ -33,5 +33,5 @@ public class Constants {
 	public final static int PID_PRIMARY = 0;
 	public final static int PID_TURN = 1;
 
-	public static final float angularP = 0.1f;
+	public static final float angularP = 0.05f;
 }
