@@ -18,8 +18,8 @@ public class DriveTrain extends Subsystem {
     double thro = DriverJoystick.getRawAxis(1); //Populate the double thro with the raw axis 1
     double yaw = DriverJoystick.getRawAxis(2); //Populate the double yaw with the raw axis 2
 
-    starboard.set(ControlMode.PercentOutput, thro + yaw); //Subtract the steerage for arcade drive
-    port.set(ControlMode.PercentOutput, (thro - yaw) * -1); //Subtract the steerage for arcade drive, reverse
+    starboard.set(ControlMode.PercentOutput, (-1 * thro) + yaw); //Subtract the steerage for arcade drive
+    port.set(ControlMode.PercentOutput, thro + yaw); //Subtract the steerage for arcade drive, reverse
 
     
   }
