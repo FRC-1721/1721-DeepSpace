@@ -27,6 +27,6 @@ public class RobotMap {
 
    //PID tuning values
    public static float kP;
-   public static float kI;
+   public static float kI; // Test
    public static float kD;
 }
