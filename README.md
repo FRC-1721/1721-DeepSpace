@@ -1,5 +1,20 @@
 # 1721-DeepSpace
 
+Software Goals
+
+
+Week One: Have test bot vision capable of maintaining a constant distance from a target
+
+Week Two: Have drive train moving if it's complete, work on any subsystems, create base for PID for lift
+
+Week Three: Continue working on subsystems, begin rough vision base, motion profiling
+
+Week Four: Continue working on subsystems as they finish, continue vision/profiling/lift tuning
+
+Week Five: Finalize all vision and PID functionality
+
+Week Six: Finish tuning
+
 
 
 Have you ever met a girl that you tried to date, 
