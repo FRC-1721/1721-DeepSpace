@@ -121,15 +121,6 @@ public class Robot extends TimedRobot {
   @Override
   public void teleopPeriodic() {
     Scheduler.getInstance().run();
-  // Commenting out control for vison testing
-  /*if(RobotMap.driverStick.getRawButton(1)){
-    starboardMotor.set(ControlMode.Position, -1500);
-    portMotor.set(ControlMode.Position, 1500);
-  }
-  else
-  {
-    DriveTrain.flyByWire(starboardMotor, portMotor, RobotMap.driverStick);
-  }*/
   
   
 	// Establish link to limelight - Josh, make this its own class when you get to your computer
@@ -137,17 +128,21 @@ public class Robot extends TimedRobot {
 	NetworkTableEntry tx = table.getEntry("tx");
 	NetworkTableEntry ty = table.getEntry("ty");
   NetworkTableEntry ta = table.getEntry("ta");
+  NetworkTableEntry ts = table.getEntry("ts");
+  NetworkTableEntry tv = table.getEntry("tv");
 
 	//read values periodically
 	double x = tx.getDouble(0.0);
 	double y = ty.getDouble(0.0);
   double area = ta.getDouble(0.0);
+  double skew = ts.getDouble(0.0);
+  double hasTarget = tv.getDouble(0.0);
 
   float xFloat = (float)x;
   float areaFloat = (float)area;
   
    // Angular correction with limelight when A is held
-   if(RobotMap.operatorController.getRawButton(1)){
+   if(RobotMap.operatorController.getRawButton(1) && hasTarget == 1.0){
 
     float distanceTarget = Constants.accelerationP * (Constants.optimalArea - areaFloat); //Math to create a target value for distance
     float steeringAdjust = Constants.angularP * xFloat; // Math to create a target side-to-side adjustment
@@ -160,6 +155,7 @@ public class Robot extends TimedRobot {
 	SmartDashboard.putNumber("LimelightX", x);
 	SmartDashboard.putNumber("LimelightY", y);
   SmartDashboard.putNumber("LimelightArea", area);
+  SmartDashboard.putNumber("Limelight skew", skew);
   
   //Drive - fix this to only work when PID is not running
   }
