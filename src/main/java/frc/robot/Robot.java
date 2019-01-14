@@ -6,6 +6,7 @@ import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
+import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Command;
@@ -22,6 +23,7 @@ public class Robot extends TimedRobot {
   //Init drive motors
   TalonSRX starboardMotor = new TalonSRX(RobotMap.starboardMotorCAN); //Create the talon SRX's
   TalonSRX portMotor = new TalonSRX(RobotMap.portMotorCAN);
+  Compressor cp = new Compressor(0);
 
   @Override
   public void robotInit() {
@@ -131,6 +133,11 @@ public class Robot extends TimedRobot {
     DriveTrain.flyByWire(starboardMotor, portMotor, RobotMap.driverStick);
   }*/
   
+  if(RobotMap.operatorController.getRawButton(2)){
+    cp.setClosedLoopControl(true);
+  }else{
+    cp.setClosedLoopControl(false);
+  }
   
 	// Establish link to limelight - Josh, make this its own class when you get to your computer
   NetworkTable table = NetworkTableInstance.getDefault().getTable("limelight");
