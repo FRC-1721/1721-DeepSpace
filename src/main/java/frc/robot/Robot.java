@@ -156,6 +156,7 @@ public class Robot extends TimedRobot {
 	SmartDashboard.putNumber("LimelightY", y);
   SmartDashboard.putNumber("LimelightArea", area);
   SmartDashboard.putNumber("Limelight skew", skew);
+  SmartDashboard.putNumber("Does the limelight have a target?", hasTarget);
   
   //Drive - fix this to only work when PID is not running
   }
