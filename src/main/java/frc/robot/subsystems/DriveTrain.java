@@ -14,13 +14,17 @@ public class DriveTrain extends Subsystem {
   public void initDefaultCommand() {
     // setDefaultCommand(new MySpecialCommand());
   }
+
   public static void flyByWire(TalonSRX starboard, TalonSRX port, Joystick DriverJoystick){
     double thro = DriverJoystick.getRawAxis(1); //Populate the double thro with the raw axis 1
     double yaw = DriverJoystick.getRawAxis(2); //Populate the double yaw with the raw axis 2
 
     starboard.set(ControlMode.PercentOutput, (-1 * thro) + yaw); //Subtract the steerage for arcade drive
     port.set(ControlMode.PercentOutput, thro + yaw); //Subtract the steerage for arcade drive, reverse
-
-    
+  }
+  
+  public static void flyWithWires(TalonSRX starboard, TalonSRX port, float heading, float throttle){
+    starboard.set(ControlMode.PercentOutput, heading + throttle); //Set the starboard drivetrain motor to the heading (steering angle) added to the base speed
+    port.set(ControlMode.PercentOutput, heading - throttle); //Does the same but on the other side
   }
 }

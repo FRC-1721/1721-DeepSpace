@@ -151,8 +151,10 @@ public class Robot extends TimedRobot {
 
     float distanceTarget = Constants.accelerationP * (Constants.optimalArea - areaFloat); //Math to create a target value for distance
     float steeringAdjust = Constants.angularP * xFloat; // Math to create a target side-to-side adjustment
-    starboardMotor.set(ControlMode.PercentOutput, steeringAdjust + distanceTarget); // Set port motor
-    portMotor.set(ControlMode.PercentOutput, steeringAdjust - distanceTarget); // Set starboard motor
+    //starboardMotor.set(ControlMode.PercentOutput, steeringAdjust + distanceTarget); // Set port motor
+    //portMotor.set(ControlMode.PercentOutput, steeringAdjust - distanceTarget); // Set starboard motor
+
+    DriveTrain.flyWithWires(starboardMotor, portMotor, steeringAdjust, distanceTarget);
   }else{
     DriveTrain.flyByWire(starboardMotor, portMotor, RobotMap.driverStick); // Drive using joystick
   }
