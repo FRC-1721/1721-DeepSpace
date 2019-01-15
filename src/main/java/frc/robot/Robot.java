@@ -14,6 +14,7 @@ import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+
 import frc.robot.subsystems.DriveTrain;
 
 public class Robot extends TimedRobot {
@@ -134,7 +135,6 @@ public class Robot extends TimedRobot {
   }
 
   //Open/close the intake
-
   if(RobotMap.operatorController.getRawButton(3)){
     iris.set(DoubleSolenoid.Value.kForward);
   }
@@ -156,8 +156,7 @@ public class Robot extends TimedRobot {
   float areaFloat = (float)area;
   
    // Angular correction with limelight when A is held
-   if(RobotMap.operatorController.getRawButton(1)){
-
+  if(RobotMap.operatorController.getRawButton(1)){
     float distanceTarget = Constants.accelerationP * (Constants.optimalArea - areaFloat); //Math to create a target value for distance
     float steeringAdjust = Constants.angularP * xFloat; // Math to create a target side-to-side adjustment
     starboardMotor.set(ControlMode.PercentOutput, steeringAdjust + distanceTarget); // Set port motor
