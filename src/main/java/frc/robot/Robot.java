@@ -7,6 +7,7 @@ import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.Compressor;
+import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Command;
@@ -24,6 +25,7 @@ public class Robot extends TimedRobot {
   TalonSRX starboardMotor = new TalonSRX(RobotMap.starboardMotorCAN); //Create the talon SRX's
   TalonSRX portMotor = new TalonSRX(RobotMap.portMotorCAN);
   Compressor cp = new Compressor(0);
+  DoubleSolenoid iris = new DoubleSolenoid(0, 1);
 
   @Override
   public void robotInit() {
@@ -123,23 +125,23 @@ public class Robot extends TimedRobot {
   @Override
   public void teleopPeriodic() {
     Scheduler.getInstance().run();
-  // Commenting out control for vison testing
-  /*if(RobotMap.driverStick.getRawButton(1)){
-    starboardMotor.set(ControlMode.Position, -1500);
-    portMotor.set(ControlMode.Position, 1500);
-  }
-  else
-  {
-    DriveTrain.flyByWire(starboardMotor, portMotor, RobotMap.driverStick);
-  }*/
   
+  //Compress when B is held
   if(RobotMap.operatorController.getRawButton(2)){
     cp.setClosedLoopControl(true);
   }else{
     cp.setClosedLoopControl(false);
   }
-  
-	// Establish link to limelight - Josh, make this its own class when you get to your computer
+
+  //Open/close the intake
+
+  if(RobotMap.operatorController.getRawButton(3)){
+    iris.set(DoubleSolenoid.Value.kForward);
+  }
+  if(RobotMap.operatorController.getRawButton(4)){
+    iris.set(DoubleSolenoid.Value.kReverse);
+  }
+	// Establish link to limelight
   NetworkTable table = NetworkTableInstance.getDefault().getTable("limelight");
 	NetworkTableEntry tx = table.getEntry("tx");
 	NetworkTableEntry ty = table.getEntry("ty");
