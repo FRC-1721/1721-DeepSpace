@@ -18,6 +18,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.subsystems.DriveTrain;
 
 public class Robot extends TimedRobot {
+
   public static OI m_oi;
 
   Command m_autonomousCommand; //Personalize me!
@@ -69,49 +70,49 @@ public class Robot extends TimedRobot {
 
   @Override
   public void teleopInit() {
-    if (m_autonomousCommand != null) {
-      m_autonomousCommand.cancel();
-    }
-    //Inturrupt for Auto
+  if (m_autonomousCommand != null) {
+    m_autonomousCommand.cancel();
+  }
+  //Inturrupt for Auto
 
-    starboardMotor.configFactoryDefault(); //Set both motor controlers to default
-    portMotor.configFactoryDefault();
+  starboardMotor.configFactoryDefault(); //Set both motor controlers to default
+  portMotor.configFactoryDefault();
 
-    /* Config the peak and nominal outputs ([-1, 1] represents [-100, 100]%) */
-		starboardMotor.configNominalOutputForward(0, Constants.kTimeoutMs);
-		starboardMotor.configNominalOutputReverse(0, Constants.kTimeoutMs);
-		starboardMotor.configPeakOutputForward(1, Constants.kTimeoutMs);
-    starboardMotor.configPeakOutputReverse(-1, Constants.kTimeoutMs);
+  /* Config the peak and nominal outputs ([-1, 1] represents [-100, 100]%) */
+	starboardMotor.configNominalOutputForward(0, Constants.kTimeoutMs);
+	starboardMotor.configNominalOutputReverse(0, Constants.kTimeoutMs);
+	starboardMotor.configPeakOutputForward(1, Constants.kTimeoutMs);
+  starboardMotor.configPeakOutputReverse(-1, Constants.kTimeoutMs);
 
-    portMotor.configNominalOutputForward(0, Constants.kTimeoutMs);
-		portMotor.configNominalOutputReverse(0, Constants.kTimeoutMs);
-		portMotor.configPeakOutputForward(1, Constants.kTimeoutMs);
-    portMotor.configPeakOutputReverse(-1, Constants.kTimeoutMs);
+  portMotor.configNominalOutputForward(0, Constants.kTimeoutMs);
+	portMotor.configNominalOutputReverse(0, Constants.kTimeoutMs);
+	portMotor.configPeakOutputForward(1, Constants.kTimeoutMs);
+  portMotor.configPeakOutputReverse(-1, Constants.kTimeoutMs);
 
-    /**
-		 * Config the allowable closed-loop error, Closed-Loop output will be
-		 * neutral within this range. See Table here for units to use: 
-         * https://github.com/CrossTheRoadElec/Phoenix-Documentation#what-are-the-units-of-my-sensor
-		 */
-    starboardMotor.configAllowableClosedloopError(0, Constants.kPIDLoopIdx, Constants.kTimeoutMs);
-    portMotor.configAllowableClosedloopError(0, Constants.kPIDLoopIdx, Constants.kTimeoutMs);
+  /**
+	 * Config the allowable closed-loop error, Closed-Loop output will be
+	 * neutral within this range. See Table here for units to use: 
+   * https://github.com/CrossTheRoadElec/Phoenix-Documentation#what-are-the-units-of-my-sensor
+	 */
+  starboardMotor.configAllowableClosedloopError(0, Constants.kPIDLoopIdx, Constants.kTimeoutMs);
+  portMotor.configAllowableClosedloopError(0, Constants.kPIDLoopIdx, Constants.kTimeoutMs);
 
-		/* Config closed loop gains for Primary closed loop (Current) */
-		starboardMotor.config_kP(Constants.kPIDLoopIdx, Constants.kGains.kP, Constants.kTimeoutMs);
-		starboardMotor.config_kI(Constants.kPIDLoopIdx, Constants.kGains.kI, Constants.kTimeoutMs);
-    starboardMotor.config_kD(Constants.kPIDLoopIdx, Constants.kGains.kD, Constants.kTimeoutMs);
-    starboardMotor.config_kF(Constants.kPIDLoopIdx, Constants.kGains.kF, Constants.kTimeoutMs);
+	/* Config closed loop gains for Primary closed loop (Current) */
+	starboardMotor.config_kP(Constants.kPIDLoopIdx, Constants.kGains.kP, Constants.kTimeoutMs);
+	starboardMotor.config_kI(Constants.kPIDLoopIdx, Constants.kGains.kI, Constants.kTimeoutMs);
+  starboardMotor.config_kD(Constants.kPIDLoopIdx, Constants.kGains.kD, Constants.kTimeoutMs);
+  starboardMotor.config_kF(Constants.kPIDLoopIdx, Constants.kGains.kF, Constants.kTimeoutMs);
 
-    portMotor.config_kP(Constants.kPIDLoopIdx, Constants.kGains.kP, Constants.kTimeoutMs);
-		portMotor.config_kI(Constants.kPIDLoopIdx, Constants.kGains.kI, Constants.kTimeoutMs);
-    portMotor.config_kD(Constants.kPIDLoopIdx, Constants.kGains.kD, Constants.kTimeoutMs);
-    portMotor.config_kF(Constants.kPIDLoopIdx, Constants.kGains.kF, Constants.kTimeoutMs);
+  portMotor.config_kP(Constants.kPIDLoopIdx, Constants.kGains.kP, Constants.kTimeoutMs);
+	portMotor.config_kI(Constants.kPIDLoopIdx, Constants.kGains.kI, Constants.kTimeoutMs);
+  portMotor.config_kD(Constants.kPIDLoopIdx, Constants.kGains.kD, Constants.kTimeoutMs);
+  portMotor.config_kF(Constants.kPIDLoopIdx, Constants.kGains.kF, Constants.kTimeoutMs);
   }
 
   @Override
   public void teleopPeriodic() {
     Scheduler.getInstance().run();
-  
+    
   //Compress when B is held
   if(RobotMap.operatorController.getRawButton(2)){
     cp.setClosedLoopControl(true);
@@ -126,21 +127,21 @@ public class Robot extends TimedRobot {
   if(RobotMap.operatorController.getRawButton(4)){
     iris.set(DoubleSolenoid.Value.kReverse);
   }
-	// Establish link to limelight
+  // Establish link to limelight
   NetworkTable table = NetworkTableInstance.getDefault().getTable("limelight");
-	NetworkTableEntry tx = table.getEntry("tx");
-	NetworkTableEntry ty = table.getEntry("ty");
+  NetworkTableEntry tx = table.getEntry("tx");
+  NetworkTableEntry ty = table.getEntry("ty");
   NetworkTableEntry ta = table.getEntry("ta");
 
-	//read values periodically
-	double x = tx.getDouble(0.0);
-	double y = ty.getDouble(0.0);
-  double area = ta.getDouble(0.0);
+    //read values periodically
+  double x = tx.getDouble(0.0); // Horizontal error
+  double y = ty.getDouble(0.0); // Vertical error
+  double area = ta.getDouble(0.0); // % area of vision target
 
   float xFloat = (float)x;
   float areaFloat = (float)area;
   
-   // Angular correction with limelight when A is held
+  // Angular correction with limelight when A is held
   if(RobotMap.operatorController.getRawButton(1)){
     float distanceTarget = Constants.accelerationP * (Constants.optimalArea - areaFloat); //Math to create a target value for distance
     float steeringAdjust = Constants.angularP * xFloat; // Math to create a target side-to-side adjustment
