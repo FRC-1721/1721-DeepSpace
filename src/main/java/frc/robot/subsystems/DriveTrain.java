@@ -14,6 +14,7 @@ public class DriveTrain extends Subsystem {
   public void initDefaultCommand() {
     // setDefaultCommand(new MySpecialCommand());
   }
+  /** Drive using two talons and a joystick **/
   public static void flyByWire(TalonSRX starboard, TalonSRX port, Joystick DriverJoystick){
     double thro = DriverJoystick.getRawAxis(1); //Populate the double thro with the raw axis 1
     double yaw = DriverJoystick.getRawAxis(2); //Populate the double yaw with the raw axis 2
