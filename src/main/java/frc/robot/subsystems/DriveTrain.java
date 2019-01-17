@@ -21,7 +21,11 @@ public class DriveTrain extends Subsystem {
 
     starboard.set(ControlMode.PercentOutput, (-1 * thro) + yaw); //Subtract the steerage for arcade drive
     port.set(ControlMode.PercentOutput, thro + yaw); //Subtract the steerage for arcade drive, reverse
+  }
 
-    
+  /** Drive using two TalonSRX and adjustment values for horizontal and distance correction */
+  public static void flyWithWires(TalonSRX starboard, TalonSRX port, float heading, float throttle){
+    starboard.set(ControlMode.PercentOutput, heading + throttle); //Set the starboard drivetrain motor to the heading (steering angle) added to the base speed
+    port.set(ControlMode.PercentOutput, heading - throttle); //Does the same but on the other side
   }
 }

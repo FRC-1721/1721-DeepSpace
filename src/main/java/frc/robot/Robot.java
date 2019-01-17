@@ -1,7 +1,7 @@
 package frc.robot;
 
-import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
+import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
@@ -9,32 +9,53 @@ import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-
 import frc.robot.subsystems.DriveTrain;
+import frc.robot.subsystems.Pneumatics;
 
 public class Robot extends TimedRobot {
 
   public static OI m_oi;
 
-  Command m_autonomousCommand; //Personalize me!
+
+  Command m_autonomousCommand; // Personalize me!
   SendableChooser<Command> m_chooser = new SendableChooser<>();
-  //Init drive motors
-  TalonSRX starboardMotor = new TalonSRX(RobotMap.starboardMotorCAN); //Create the talon SRX's
-  TalonSRX portMotor = new TalonSRX(RobotMap.portMotorCAN);
-  Compressor cp = new Compressor(0);
-  DoubleSolenoid iris = new DoubleSolenoid(0, 1);
 
   @Override
   public void robotInit() {
     m_oi = new OI();
-    // Init joystick and controller
-    RobotMap.driverStick = new Joystick(0);
-    RobotMap.operatorController = new Joystick(1);
+    // Define joysticks
+    RobotMap.driverStick = new Joystick(RobotMap.driverStickPort); // Drive joystick
+    RobotMap.operatorController = new Joystick(RobotMap.controllerPort); // Operator controller
+    // Define master drive (SRX) Talons
+    RobotMap.starboardMaster = new TalonSRX(RobotMap.starboardMasterAddress); // Port master
+    RobotMap.portMaster = new TalonSRX(RobotMap.portMasterAddress); // Starboard master
+    // Define slave drive (SPX) Victors
+    RobotMap.starboardSlave = new VictorSPX(RobotMap.starboardSlaveAddress); // Starboard slave 1
+    RobotMap.portSlave = new VictorSPX(RobotMap.portSlaveAddress); // Port slave 1
+    RobotMap.starboardSlaveMini = new VictorSPX(RobotMap.starboardSlaveMiniAddress); // Starboard slave 2 (mini)
+    RobotMap.portSlaveMini = new VictorSPX(RobotMap.portSlaveMiniAddress); // Port slave 2 (mini)
+    // Define pneumatics objects
+    RobotMap.cp = new Compressor(RobotMap.compressorPort); // Compressor
+    RobotMap.irisPiston = new DoubleSolenoid(RobotMap.irisForwardPort, RobotMap.irisReversePort); // Iris piston
+    RobotMap.gearShifter = new Solenoid(RobotMap.gearShiftPort); // Gear shifter piston
+    // Define subsystem motor controllers
+    RobotMap.liftTalon = new TalonSRX (RobotMap.liftTalonAddress); // Lift master TalonSRX
+    RobotMap.liftVictorPort = new VictorSPX(RobotMap.liftVictorPortAddress); // Lift port slave VictorSPX
+    RobotMap.liftVictorStarboard = new VictorSPX(RobotMap.liftVictorStarboardAddress); // Lift starboard slave VictorSPX
+    // Set drive slaves to follow master drive Talons
+    RobotMap.starboardSlave.follow(RobotMap.starboardMaster);
+    RobotMap.starboardSlaveMini.follow(RobotMap.starboardMaster);
+    RobotMap.portSlave.follow(RobotMap.portMaster);
+    RobotMap.portSlaveMini.follow(RobotMap.portMaster);
+    // Set lift slaves to follow master lift Talon
+    RobotMap.liftVictorPort.follow(RobotMap.liftTalon);
+    RobotMap.liftVictorStarboard.follow(RobotMap.liftTalon);
   }
 
   @Override
@@ -75,65 +96,57 @@ public class Robot extends TimedRobot {
   }
   //Inturrupt for Auto
 
-  starboardMotor.configFactoryDefault(); //Set both motor controlers to default
-  portMotor.configFactoryDefault();
+  RobotMap.starboardMaster.configFactoryDefault(); //Set both motor controlers to default
+  RobotMap.portMaster.configFactoryDefault();
 
   /* Config the peak and nominal outputs ([-1, 1] represents [-100, 100]%) */
-	starboardMotor.configNominalOutputForward(0, Constants.kTimeoutMs);
-	starboardMotor.configNominalOutputReverse(0, Constants.kTimeoutMs);
-	starboardMotor.configPeakOutputForward(1, Constants.kTimeoutMs);
-  starboardMotor.configPeakOutputReverse(-1, Constants.kTimeoutMs);
+	RobotMap.starboardMaster.configNominalOutputForward(0, Constants.kTimeoutMs);
+	RobotMap.starboardMaster.configNominalOutputReverse(0, Constants.kTimeoutMs);
+	RobotMap.starboardMaster.configPeakOutputForward(1, Constants.kTimeoutMs);
+  RobotMap.starboardMaster.configPeakOutputReverse(-1, Constants.kTimeoutMs);
 
-  portMotor.configNominalOutputForward(0, Constants.kTimeoutMs);
-	portMotor.configNominalOutputReverse(0, Constants.kTimeoutMs);
-	portMotor.configPeakOutputForward(1, Constants.kTimeoutMs);
-  portMotor.configPeakOutputReverse(-1, Constants.kTimeoutMs);
+  RobotMap.portMaster.configNominalOutputForward(0, Constants.kTimeoutMs);
+	RobotMap.portMaster.configNominalOutputReverse(0, Constants.kTimeoutMs);
+	RobotMap.portMaster.configPeakOutputForward(1, Constants.kTimeoutMs);
+  RobotMap.portMaster.configPeakOutputReverse(-1, Constants.kTimeoutMs);
 
   /**
 	 * Config the allowable closed-loop error, Closed-Loop output will be
 	 * neutral within this range. See Table here for units to use: 
    * https://github.com/CrossTheRoadElec/Phoenix-Documentation#what-are-the-units-of-my-sensor
 	 */
-  starboardMotor.configAllowableClosedloopError(0, Constants.kPIDLoopIdx, Constants.kTimeoutMs);
-  portMotor.configAllowableClosedloopError(0, Constants.kPIDLoopIdx, Constants.kTimeoutMs);
+  RobotMap.starboardMaster.configAllowableClosedloopError(0, Constants.kPIDLoopIdx, Constants.kTimeoutMs);
+  RobotMap.portMaster.configAllowableClosedloopError(0, Constants.kPIDLoopIdx, Constants.kTimeoutMs);
 
 	/* Config closed loop gains for Primary closed loop (Current) */
-	starboardMotor.config_kP(Constants.kPIDLoopIdx, Constants.kGains.kP, Constants.kTimeoutMs);
-	starboardMotor.config_kI(Constants.kPIDLoopIdx, Constants.kGains.kI, Constants.kTimeoutMs);
-  starboardMotor.config_kD(Constants.kPIDLoopIdx, Constants.kGains.kD, Constants.kTimeoutMs);
-  starboardMotor.config_kF(Constants.kPIDLoopIdx, Constants.kGains.kF, Constants.kTimeoutMs);
+	RobotMap.starboardMaster.config_kP(Constants.kPIDLoopIdx, Constants.kGains.kP, Constants.kTimeoutMs);
+	RobotMap.starboardMaster.config_kI(Constants.kPIDLoopIdx, Constants.kGains.kI, Constants.kTimeoutMs);
+  RobotMap.starboardMaster.config_kD(Constants.kPIDLoopIdx, Constants.kGains.kD, Constants.kTimeoutMs);
+  RobotMap.starboardMaster.config_kF(Constants.kPIDLoopIdx, Constants.kGains.kF, Constants.kTimeoutMs);
 
-  portMotor.config_kP(Constants.kPIDLoopIdx, Constants.kGains.kP, Constants.kTimeoutMs);
-	portMotor.config_kI(Constants.kPIDLoopIdx, Constants.kGains.kI, Constants.kTimeoutMs);
-  portMotor.config_kD(Constants.kPIDLoopIdx, Constants.kGains.kD, Constants.kTimeoutMs);
-  portMotor.config_kF(Constants.kPIDLoopIdx, Constants.kGains.kF, Constants.kTimeoutMs);
+  RobotMap.portMaster.config_kP(Constants.kPIDLoopIdx, Constants.kGains.kP, Constants.kTimeoutMs);
+	RobotMap.portMaster.config_kI(Constants.kPIDLoopIdx, Constants.kGains.kI, Constants.kTimeoutMs);
+  RobotMap.portMaster.config_kD(Constants.kPIDLoopIdx, Constants.kGains.kD, Constants.kTimeoutMs);
+  RobotMap.portMaster.config_kF(Constants.kPIDLoopIdx, Constants.kGains.kF, Constants.kTimeoutMs);
   }
 
   @Override
   public void teleopPeriodic() {
     Scheduler.getInstance().run();
     
-  //Compress when B is held
-  if(RobotMap.operatorController.getRawButton(2)){
-    cp.setClosedLoopControl(true);
-  }else{
-    cp.setClosedLoopControl(false);
-  }
+  // Compress when B is held
+  Pneumatics.compress(RobotMap.operatorController, RobotMap.cp, RobotMap.compressorButton);
 
-  //Open/close the intake
-  if(RobotMap.operatorController.getRawButton(3)){
-    iris.set(DoubleSolenoid.Value.kForward);
-  }
-  if(RobotMap.operatorController.getRawButton(4)){
-    iris.set(DoubleSolenoid.Value.kReverse);
-  }
+  // Open/close the intake
+  Pneumatics.controlIris(RobotMap.operatorController, RobotMap.irisInButton, RobotMap.irisOutButton, RobotMap.irisPiston);
+
   // Establish link to limelight
   NetworkTable table = NetworkTableInstance.getDefault().getTable("limelight");
   NetworkTableEntry tx = table.getEntry("tx");
   NetworkTableEntry ty = table.getEntry("ty");
   NetworkTableEntry ta = table.getEntry("ta");
 
-    //read values periodically
+  // Read values periodically
   double x = tx.getDouble(0.0); // Horizontal error
   double y = ty.getDouble(0.0); // Vertical error
   double area = ta.getDouble(0.0); // % area of vision target
@@ -142,21 +155,18 @@ public class Robot extends TimedRobot {
   float areaFloat = (float)area;
   
   // Angular correction with limelight when A is held
-  if(RobotMap.operatorController.getRawButton(1)){
+  if(RobotMap.operatorController.getRawButton(RobotMap.trackingButton)){
     float distanceTarget = Constants.accelerationP * (Constants.optimalArea - areaFloat); //Math to create a target value for distance
     float steeringAdjust = Constants.angularP * xFloat; // Math to create a target side-to-side adjustment
-    starboardMotor.set(ControlMode.PercentOutput, steeringAdjust + distanceTarget); // Set port motor
-    portMotor.set(ControlMode.PercentOutput, steeringAdjust - distanceTarget); // Set starboard motor
+    DriveTrain.flyWithWires(RobotMap.starboardMaster, RobotMap.portMaster, steeringAdjust, distanceTarget);
   }else{
-    DriveTrain.flyByWire(starboardMotor, portMotor, RobotMap.driverStick); // Drive using joystick
+    DriveTrain.flyByWire(RobotMap.starboardMaster, RobotMap.portMaster, RobotMap.driverStick); // Drive using joystick
   }
 
-	//post to smart dashboard periodically
+	// Post to smart dashboard periodically
 	SmartDashboard.putNumber("LimelightX", x);
 	SmartDashboard.putNumber("LimelightY", y);
   SmartDashboard.putNumber("LimelightArea", area);
-  
-  //Drive - fix this to only work when PID is not running
   }
 
   @Override
