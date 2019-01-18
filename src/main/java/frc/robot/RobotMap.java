@@ -42,17 +42,13 @@ public class RobotMap {
   public static TalonSRX portMaster; // Port master TalonSRX
   public static VictorSPX portSlave; // Port slave VictorSPX
   public static VictorSPX portSlaveMini; // Port slave VictorSPX (miniCIM)
-  /*  Joe recomends that starboard and port be used to differentiate robot sides rather than 
-   *  left and right beacuse of the ambigious nature of robot construction, where a face or 
-   * front is not always easily noted upon. 
-   */
 
   // Subsystem motor controllers
-  public static TalonSRX liftTalon;
-  public static VictorSPX liftVictorPort;
-  public static VictorSPX liftVictorStarboard;
-  public static VictorSPX cargoIntakeWheels;
-  public static VictorSPX intakeFolder;
+  public static TalonSRX liftTalon; // Master TalonSRX for lift
+  public static VictorSPX liftVictorPort; // One slave VictorSPX for lift
+  public static VictorSPX liftVictorStarboard; // The other slave VictorSPX for lift
+  public static VictorSPX cargoIntakeWheels; // VictorSPX for running the cargo intake wheels
+  public static VictorSPX intakeFolder; // VictorSPX for folding the cargo intake back into the frame
 
   // PID tuning values
   public static float kP;
@@ -60,14 +56,13 @@ public class RobotMap {
   public static float kD;
 
   // PCM Ports
-  public static int compressorPort = 0;
-  public static int irisForwardPort = 0;
-  public static int irisReversePort = 1;
-  public static int gearShiftPort = 2;
+  public static int compressorPort = 0; // PCM port for the compressor - should always be zero, why would we have more than one?
+  public static int irisForwardPort = 0; // PCM port to open the iris
+  public static int irisReversePort = 1; // PCM port to close the iris
+  public static int gearShiftPort = 2; // PCM port to shift gears
 
   // Button/axis numbers
-  public static int trackingButton = 1; // A
-  public static int compressorButton = 2; // B
-  public static int irisOutButton = 3; // X
-  public static int irisInButton = 4; // Y
+  public static int trackingButton = 1; // A to vision track
+  public static int compressorButton = 2; // B to compress
+  public static int irisButton = 3; // X to open/close the iris
 }

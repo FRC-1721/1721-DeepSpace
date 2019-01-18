@@ -15,6 +15,7 @@ import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+
 import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.Pneumatics;
 
@@ -138,26 +139,28 @@ public class Robot extends TimedRobot {
   Pneumatics.compress(RobotMap.operatorController, RobotMap.cp, RobotMap.compressorButton);
 
   // Open/close the intake
-  Pneumatics.controlIris(RobotMap.operatorController, RobotMap.irisInButton, RobotMap.irisOutButton, RobotMap.irisPiston);
+  Pneumatics.controlIris(RobotMap.operatorController, RobotMap.irisButton, RobotMap.irisPiston);
 
   // Establish link to limelight
   NetworkTable table = NetworkTableInstance.getDefault().getTable("limelight");
   NetworkTableEntry tx = table.getEntry("tx");
   NetworkTableEntry ty = table.getEntry("ty");
   NetworkTableEntry ta = table.getEntry("ta");
+  NetworkTableEntry tv = table.getEntry("tv");
 
   // Read values periodically
   double x = tx.getDouble(0.0); // Horizontal error
   double y = ty.getDouble(0.0); // Vertical error
   double area = ta.getDouble(0.0); // % area of vision target
+  double hasTarget = tv.getDouble(0.0); // Whether or not the limelight has a target - 0 for no, 1 for yes
 
   float xFloat = (float)x;
   float areaFloat = (float)area;
   
   // Angular correction with limelight when A is held
-  if(RobotMap.operatorController.getRawButton(RobotMap.trackingButton)){
-    float distanceTarget = Constants.accelerationP * (Constants.optimalArea - areaFloat); //Math to create a target value for distance
-    float steeringAdjust = Constants.angularP * xFloat; // Math to create a target side-to-side adjustment
+  if(RobotMap.operatorController.getRawButton(RobotMap.trackingButton) && hasTarget == 1.0){
+    float distanceTarget = Constants.accelerationP * (Constants.optimalArea - areaFloat); // Create a target value for distance
+    float steeringAdjust = Constants.angularP * xFloat; // Create a target side-to-side adjustment
     DriveTrain.flyWithWires(RobotMap.starboardMaster, RobotMap.portMaster, steeringAdjust, distanceTarget);
   }else{
     DriveTrain.flyByWire(RobotMap.starboardMaster, RobotMap.portMaster, RobotMap.driverStick); // Drive using joystick

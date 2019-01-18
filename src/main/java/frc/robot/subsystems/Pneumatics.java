@@ -26,12 +26,13 @@ public class Pneumatics extends Subsystem {
   }
 
   /** Control the iris, open and close */
-  public static void controlIris(Joystick controller, int inButton, int outButton, DoubleSolenoid piston){
-    if(controller.getRawButton(inButton)){
-      piston.set(DoubleSolenoid.Value.kForward);
-    }
-    if(controller.getRawButton(outButton)){
-      piston.set(DoubleSolenoid.Value.kReverse);
+  public static void controlIris(Joystick controller, int button, DoubleSolenoid piston){
+    if(controller.getRawButton(button)){
+      if(piston.get() == DoubleSolenoid.Value.kForward){
+        piston.set(DoubleSolenoid.Value.kReverse);
+      }else{
+        piston.set(DoubleSolenoid.Value.kForward);
+      }
     }
   }
 
