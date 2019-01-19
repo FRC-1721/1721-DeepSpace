@@ -65,7 +65,7 @@ public class Robot extends TimedRobot {
 
   @Override
   public void disabledInit() {
-  }
+  } 
 
   @Override
   public void disabledPeriodic() {
@@ -95,81 +95,81 @@ public class Robot extends TimedRobot {
   if (m_autonomousCommand != null) {
     m_autonomousCommand.cancel();
   }
-  //Inturrupt for Auto
+    //Interrupt for Auto
 
-  RobotMap.starboardMaster.configFactoryDefault(); //Set both motor controlers to default
-  RobotMap.portMaster.configFactoryDefault();
+    RobotMap.starboardMaster.configFactoryDefault(); //Set both motor controlers to default
+    RobotMap.portMaster.configFactoryDefault();
 
-  /* Config the peak and nominal outputs ([-1, 1] represents [-100, 100]%) */
-	RobotMap.starboardMaster.configNominalOutputForward(0, Constants.kTimeoutMs);
-	RobotMap.starboardMaster.configNominalOutputReverse(0, Constants.kTimeoutMs);
-	RobotMap.starboardMaster.configPeakOutputForward(1, Constants.kTimeoutMs);
-  RobotMap.starboardMaster.configPeakOutputReverse(-1, Constants.kTimeoutMs);
+    /* Config the peak and nominal outputs ([-1, 1] represents [-100, 100]%) */
+    RobotMap.starboardMaster.configNominalOutputForward(0, Constants.kTimeoutMs);
+    RobotMap.starboardMaster.configNominalOutputReverse(0, Constants.kTimeoutMs);
+    RobotMap.starboardMaster.configPeakOutputForward(1, Constants.kTimeoutMs);
+    RobotMap.starboardMaster.configPeakOutputReverse(-1, Constants.kTimeoutMs);
 
-  RobotMap.portMaster.configNominalOutputForward(0, Constants.kTimeoutMs);
-	RobotMap.portMaster.configNominalOutputReverse(0, Constants.kTimeoutMs);
-	RobotMap.portMaster.configPeakOutputForward(1, Constants.kTimeoutMs);
-  RobotMap.portMaster.configPeakOutputReverse(-1, Constants.kTimeoutMs);
+    RobotMap.portMaster.configNominalOutputForward(0, Constants.kTimeoutMs);
+    RobotMap.portMaster.configNominalOutputReverse(0, Constants.kTimeoutMs);
+    RobotMap.portMaster.configPeakOutputForward(1, Constants.kTimeoutMs);
+    RobotMap.portMaster.configPeakOutputReverse(-1, Constants.kTimeoutMs);
 
-  /**
-	 * Config the allowable closed-loop error, Closed-Loop output will be
-	 * neutral within this range. See Table here for units to use: 
-   * https://github.com/CrossTheRoadElec/Phoenix-Documentation#what-are-the-units-of-my-sensor
-	 */
-  RobotMap.starboardMaster.configAllowableClosedloopError(0, Constants.kPIDLoopIdx, Constants.kTimeoutMs);
-  RobotMap.portMaster.configAllowableClosedloopError(0, Constants.kPIDLoopIdx, Constants.kTimeoutMs);
+    /**
+     * Config the allowable closed-loop error, Closed-Loop output will be
+     * neutral within this range. See Table here for units to use: 
+     * https://github.com/CrossTheRoadElec/Phoenix-Documentation#what-are-the-units-of-my-sensor
+     */
+    RobotMap.starboardMaster.configAllowableClosedloopError(0, Constants.kPIDLoopIdx, Constants.kTimeoutMs);
+    RobotMap.portMaster.configAllowableClosedloopError(0, Constants.kPIDLoopIdx, Constants.kTimeoutMs);
 
-	/* Config closed loop gains for Primary closed loop (Current) */
-	RobotMap.starboardMaster.config_kP(Constants.kPIDLoopIdx, Constants.kGains.kP, Constants.kTimeoutMs);
-	RobotMap.starboardMaster.config_kI(Constants.kPIDLoopIdx, Constants.kGains.kI, Constants.kTimeoutMs);
-  RobotMap.starboardMaster.config_kD(Constants.kPIDLoopIdx, Constants.kGains.kD, Constants.kTimeoutMs);
-  RobotMap.starboardMaster.config_kF(Constants.kPIDLoopIdx, Constants.kGains.kF, Constants.kTimeoutMs);
+    /* Config closed loop gains for Primary closed loop (Current) */
+    RobotMap.starboardMaster.config_kP(Constants.kPIDLoopIdx, Constants.kGains.kP, Constants.kTimeoutMs);
+    RobotMap.starboardMaster.config_kI(Constants.kPIDLoopIdx, Constants.kGains.kI, Constants.kTimeoutMs);
+    RobotMap.starboardMaster.config_kD(Constants.kPIDLoopIdx, Constants.kGains.kD, Constants.kTimeoutMs);
+    RobotMap.starboardMaster.config_kF(Constants.kPIDLoopIdx, Constants.kGains.kF, Constants.kTimeoutMs);
 
-  RobotMap.portMaster.config_kP(Constants.kPIDLoopIdx, Constants.kGains.kP, Constants.kTimeoutMs);
-	RobotMap.portMaster.config_kI(Constants.kPIDLoopIdx, Constants.kGains.kI, Constants.kTimeoutMs);
-  RobotMap.portMaster.config_kD(Constants.kPIDLoopIdx, Constants.kGains.kD, Constants.kTimeoutMs);
-  RobotMap.portMaster.config_kF(Constants.kPIDLoopIdx, Constants.kGains.kF, Constants.kTimeoutMs);
-  }
+    RobotMap.portMaster.config_kP(Constants.kPIDLoopIdx, Constants.kGains.kP, Constants.kTimeoutMs);
+    RobotMap.portMaster.config_kI(Constants.kPIDLoopIdx, Constants.kGains.kI, Constants.kTimeoutMs);
+    RobotMap.portMaster.config_kD(Constants.kPIDLoopIdx, Constants.kGains.kD, Constants.kTimeoutMs);
+    RobotMap.portMaster.config_kF(Constants.kPIDLoopIdx, Constants.kGains.kF, Constants.kTimeoutMs);
+    }
 
-  @Override
-  public void teleopPeriodic() {
-    Scheduler.getInstance().run();
+    @Override
+    public void teleopPeriodic() {
+      Scheduler.getInstance().run();
+      
+    // Compress when B is held
+    Pneumatics.compress(RobotMap.operatorController, RobotMap.cp, RobotMap.compressorButton);
+
+    // Open/close the intake
+    Pneumatics.controlIris(RobotMap.operatorController, RobotMap.irisButton, RobotMap.irisPiston);
+
+    // Establish link to limelight
+    NetworkTable table = NetworkTableInstance.getDefault().getTable("limelight");
+    NetworkTableEntry tx = table.getEntry("tx");
+    NetworkTableEntry ty = table.getEntry("ty");
+    NetworkTableEntry ta = table.getEntry("ta");
+    NetworkTableEntry tv = table.getEntry("tv");
+
+    // Read values periodically
+    double x = tx.getDouble(0.0); // Horizontal error
+    double y = ty.getDouble(0.0); // Vertical error
+    double area = ta.getDouble(0.0); // % area of vision target
+    double hasTarget = tv.getDouble(0.0); // Whether or not the limelight has a target - 0 for no, 1 for yes
+
+    float xFloat = (float)x;
+    float areaFloat = (float)area;
     
-  // Compress when B is held
-  Pneumatics.compress(RobotMap.operatorController, RobotMap.cp, RobotMap.compressorButton);
+    // Angular correction with limelight when A is held
+    if(RobotMap.operatorController.getRawButton(RobotMap.trackingButton) && hasTarget == 1.0){
+      float distanceTarget = Constants.accelerationP * (Constants.optimalArea - areaFloat); // Create a target value for distance
+      float steeringAdjust = Constants.angularP * xFloat; // Create a target side-to-side adjustment
+      DriveTrain.flyWithWires(RobotMap.starboardMaster, RobotMap.portMaster, steeringAdjust, distanceTarget);
+    }else{
+      DriveTrain.flyByWire(RobotMap.starboardMaster, RobotMap.portMaster, RobotMap.driverStick); // Drive using joystick
+    }
 
-  // Open/close the intake
-  Pneumatics.controlIris(RobotMap.operatorController, RobotMap.irisButton, RobotMap.irisPiston);
-
-  // Establish link to limelight
-  NetworkTable table = NetworkTableInstance.getDefault().getTable("limelight");
-  NetworkTableEntry tx = table.getEntry("tx");
-  NetworkTableEntry ty = table.getEntry("ty");
-  NetworkTableEntry ta = table.getEntry("ta");
-  NetworkTableEntry tv = table.getEntry("tv");
-
-  // Read values periodically
-  double x = tx.getDouble(0.0); // Horizontal error
-  double y = ty.getDouble(0.0); // Vertical error
-  double area = ta.getDouble(0.0); // % area of vision target
-  double hasTarget = tv.getDouble(0.0); // Whether or not the limelight has a target - 0 for no, 1 for yes
-
-  float xFloat = (float)x;
-  float areaFloat = (float)area;
-  
-  // Angular correction with limelight when A is held
-  if(RobotMap.operatorController.getRawButton(RobotMap.trackingButton) && hasTarget == 1.0){
-    float distanceTarget = Constants.accelerationP * (Constants.optimalArea - areaFloat); // Create a target value for distance
-    float steeringAdjust = Constants.angularP * xFloat; // Create a target side-to-side adjustment
-    DriveTrain.flyWithWires(RobotMap.starboardMaster, RobotMap.portMaster, steeringAdjust, distanceTarget);
-  }else{
-    DriveTrain.flyByWire(RobotMap.starboardMaster, RobotMap.portMaster, RobotMap.driverStick); // Drive using joystick
-  }
-
-	// Post to smart dashboard periodically
-	SmartDashboard.putNumber("LimelightX", x);
-	SmartDashboard.putNumber("LimelightY", y);
-  SmartDashboard.putNumber("LimelightArea", area);
+    // Post to smart dashboard periodically
+    SmartDashboard.putNumber("LimelightX", x);
+    SmartDashboard.putNumber("LimelightY", y);
+    SmartDashboard.putNumber("LimelightArea", area);
   }
 
   @Override
