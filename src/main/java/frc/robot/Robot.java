@@ -6,6 +6,7 @@ import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
+import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.Joystick;
@@ -15,7 +16,6 @@ import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-
 import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.Pneumatics;
 
@@ -57,6 +57,9 @@ public class Robot extends TimedRobot {
     // Set lift slaves to follow master lift Talon
     RobotMap.liftVictorPort.follow(RobotMap.liftTalon);
     RobotMap.liftVictorStarboard.follow(RobotMap.liftTalon);
+    // Sensor for reading pressure values
+    RobotMap.pressureSensor = new AnalogInput(0);
+    Pneumatics.initSensor(RobotMap.pressureSensor);
   }
 
   @Override
@@ -156,6 +159,8 @@ public class Robot extends TimedRobot {
 
     float xFloat = (float)x;
     float areaFloat = (float)area;
+
+    double pressure = Pneumatics.calcPressure(RobotMap.pressureSensor, 5);
     
     // Angular correction with limelight when A is held
     if(RobotMap.operatorController.getRawButton(RobotMap.trackingButton) && hasTarget == 1.0){
@@ -170,6 +175,7 @@ public class Robot extends TimedRobot {
     SmartDashboard.putNumber("LimelightX", x);
     SmartDashboard.putNumber("LimelightY", y);
     SmartDashboard.putNumber("LimelightArea", area);
+    SmartDashboard.putNumber("Current pressure", pressure);
   }
 
   @Override

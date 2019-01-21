@@ -7,6 +7,7 @@
 
 package frc.robot.subsystems;
 
+import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.Joystick;
@@ -43,5 +44,16 @@ public class Pneumatics extends Subsystem {
     }else{
       compressor.setClosedLoopControl(false);
     }
+  }
+
+  public static void initSensor(AnalogInput sensor){
+    sensor.setAverageBits(4);
+    AnalogInput.setGlobalSampleRate(62500);
+  }
+
+  public static double calcPressure(AnalogInput sensor, double inputVoltage){
+    double returnVoltage = sensor.getVoltage();
+    double pressure = (250 * (returnVoltage / inputVoltage)) - 25;
+    return pressure;
   }
 }

@@ -3,6 +3,7 @@ package frc.robot;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 
+import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.Joystick;
@@ -23,12 +24,12 @@ public class RobotMap {
   // CAN Addresses - VictorSPX
   public static int starboardSlaveAddress = 0; // Starboard slave VictorSPX address
   public static int portSlaveAddress  = 1; // Port slave VictorSPX address
-  public static int cargoIntakeWheelsAddress = 2; // Intake wheels VictorSPX address
   public static int starboardSlaveMiniAddress = 3; // Starboard slave VictorSPX address (miniCIM)
   public static int portSlaveMiniAddress = 4; // Port slave VictorSPX address (miniCIM)
+  public static int cargoIntakeWheelsAddress = 2; // Intake wheels VictorSPX address
   public static int intakeFolderAddress = 5; // Intake folder VictorSPX address
-  public static int liftVictorStarboardAddress = 6; // Lift slaved VictorSPX address
-  public static int liftVictorPortAddress = 7;
+  public static int liftVictorStarboardAddress = 6; // Slaved lift VictorSPX address
+  public static int liftVictorPortAddress = 7; // Other slaved lift VictorSPX address
 
   // Pneumatics objects
   public static Compressor cp; // Compressor
@@ -65,4 +66,6 @@ public class RobotMap {
   public static int trackingButton = 1; // A to vision track
   public static int compressorButton = 2; // B to compress
   public static int irisButton = 3; // X to open/close the iris
+
+  public static AnalogInput pressureSensor;
 }

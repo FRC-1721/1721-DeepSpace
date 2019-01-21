@@ -26,7 +26,7 @@ public class Constants {
 	 * Gains used in Current Closed Loop, to be adjusted accordingly
      * Gains(kp, ki, kd, kf, izone, peak output);
      */
-    static final Gains kGains = new Gains(0.2, 0.0, 0.0, 0.0, 0, 1.0);
+	static final Gains kGains = new Gains(0.2, 0.0, 0.0, 0.0, 0, 1.0);
 
     /** ---- Flat constants, you should not need to change these ---- */
 	/* We allow either a 0 or 1 when selecting a PID Index, where 0 is primary and 1 is auxiliary */
@@ -37,10 +37,11 @@ public class Constants {
 	public static final float accelerationP = 0.5f; // Distance-based P value
 	public static final float optimalArea = 1.6f; // Target Area for Limlight
 
-	public static float countDistance(double angle){ //take an angle in degrees
-		double angleRad = Math.toRadians(angle + 5); //Convert to rad, and add 5 degrees
-		double quickMaffs = 3.48 / Math.tan(angleRad); //funky math
-		float returnValue = (float)Math.toDegrees(quickMaffs); //convert back to deg
-		return returnValue; //give it to the camera n target
+	/** Takes a vertical error angle in degrees and returns a distance in inches*/
+	public static float countDistance(double angle){
+		double angleRad = Math.toRadians(angle + 5);
+		double calcDistance = 3.48 / Math.tan(angleRad);
+		float returnValue = (float)Math.toDegrees(calcDistance);
+		return returnValue;
 	}
 }
