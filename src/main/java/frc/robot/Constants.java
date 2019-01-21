@@ -34,13 +34,19 @@ public class Constants {
 	public final static int PID_TURN = 1;
 
 	public static final float angularP = 0.05f; //Angular P value
-	public static final float accelerationP = 0.5f; // Distance-based P value
+	public static final float accelerationP = 0.02f; // Distance-based P value
 	public static final float optimalArea = 1.6f; // Target Area for Limlight
 
-	public static float countDistance(double angle){ //take an angle in degrees
-		double angleRad = Math.toRadians(angle + 5); //Convert to rad, and add 5 degrees
-		double quickMaffs = 3.48 / Math.tan(angleRad); //funky math
-		float returnValue = (float)Math.toDegrees(quickMaffs); //convert back to deg
+	public static final double heightOfCamera = 22.5; // Height of limelight camera in inches
+	public static final double heightOfTarget = 28;
+	public static final double heightDifference = heightOfTarget - heightOfCamera;
+
+	public static final double targetDistance = 90;
+
+	public static double countDistance(double angle){ //take an angle in degrees
+		double baseAngleRad = Math.toRadians(angle + 5); //Convert to rad, and add 5 degrees
+		double baseAngleTangent = Math.tan(baseAngleRad);
+		double returnValue = heightDifference / baseAngleTangent;
 		return returnValue; //give it to the camera n target
 	}
 }

@@ -1,6 +1,5 @@
 package frc.robot;
 
-import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 
 import edu.wpi.first.networktables.NetworkTable;
@@ -137,9 +136,10 @@ public class Robot extends TimedRobot {
    // Angular correction with limelight when A is held
    if(RobotMap.operatorController.getRawButton(1) && hasTarget == 1.0){
 
-    float distanceTarget = Constants.accelerationP * (Constants.optimalArea - areaFloat); //Math to create a target value for distance
+    //float distanceAdjust = Constants.accelerationP * (Constants.optimalArea - areaFloat); //Math to create a target value for distance based on area
+    float distanceAdjust = -1 * Constants.accelerationP * (float)(Constants.targetDistance - Constants.countDistance(y));
     float steeringAdjust = Constants.angularP * xFloat; // Math to create a target side-to-side adjustment
-    DriveTrain.flyWithWires(starboardMotor, portMotor, steeringAdjust, distanceTarget); //Pass the two motors, and the steering value, and the distance target (error)
+    DriveTrain.flyWithWires(starboardMotor, portMotor, steeringAdjust, distanceAdjust); //Pass the two motors, and the steering value, and the distance target (error)
   }else{
     DriveTrain.flyByWire(starboardMotor, portMotor, RobotMap.driverStick); // Drive using joystick
   }
@@ -150,6 +150,7 @@ public class Robot extends TimedRobot {
   SmartDashboard.putNumber("LimelightArea", area);
   SmartDashboard.putNumber("Limelight skew", skew);
   SmartDashboard.putNumber("Does the limelight have a target?", hasTarget);
+  SmartDashboard.putNumber("Distance in inches", Constants.countDistance(y));
   
   //Drive - fix this to only work when PID is not running
   }
