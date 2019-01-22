@@ -33,8 +33,8 @@ public class Constants {
 	public final static int PID_PRIMARY = 0;
 	public final static int PID_TURN = 1;
 
-	public static final float angularP = 0.05f; //Angular P value
-	public static final float accelerationP = 0.02f; // Distance-based P value
+	public static final float angularP = 0.0415f; //Angular P value
+	public static final float accelerationP = 0.013f; // Distance-based P value
 	public static final float optimalArea = 1.6f; // Target Area for Limlight
 
 	public static final double heightOfCamera = 22.5; // Height of limelight camera in inches
@@ -42,6 +42,8 @@ public class Constants {
 	public static final double heightDifference = heightOfTarget - heightOfCamera;
 
 	public static final double targetDistance = 90;
+
+	public static final double powerRequirement = 0.2; // The minimum power neccessary to make the robot move
 
 	public static double countDistance(double angle){ //take an angle in degrees
 		double baseAngleRad = Math.toRadians(angle + 5); //Convert to rad, and add 5 degrees

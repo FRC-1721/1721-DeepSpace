@@ -1,5 +1,6 @@
 package frc.robot;
 
+import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 
 import edu.wpi.first.networktables.NetworkTable;
@@ -142,6 +143,11 @@ public class Robot extends TimedRobot {
     DriveTrain.flyWithWires(starboardMotor, portMotor, steeringAdjust, distanceAdjust); //Pass the two motors, and the steering value, and the distance target (error)
   }else{
     DriveTrain.flyByWire(starboardMotor, portMotor, RobotMap.driverStick); // Drive using joystick
+  }
+
+  if(RobotMap.operatorController.getRawButton(2)){
+    starboardMotor.set(ControlMode.PercentOutput, 1 * Constants.powerRequirement);
+    portMotor.set(ControlMode.PercentOutput, -1 * Constants.powerRequirement);
   }
 
 	//post to smart dashboard periodically
