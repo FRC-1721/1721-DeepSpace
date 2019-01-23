@@ -47,16 +47,14 @@ public class Robot extends TimedRobot {
     RobotMap.gearShifter = new Solenoid(RobotMap.gearShiftPort); // Gear shifter piston
     // Define subsystem motor controllers
     RobotMap.liftTalon = new TalonSRX (RobotMap.liftTalonAddress); // Lift master TalonSRX
-    RobotMap.liftVictorPort = new VictorSPX(RobotMap.liftVictorPortAddress); // Lift port slave VictorSPX
-    RobotMap.liftVictorStarboard = new VictorSPX(RobotMap.liftVictorStarboardAddress); // Lift starboard slave VictorSPX
+    RobotMap.liftVictor = new VictorSPX(RobotMap.liftVictorAddress); // Lift slave VictorSPX
     // Set drive slaves to follow master drive Talons
     RobotMap.starboardSlave.follow(RobotMap.starboardMaster);
     RobotMap.starboardSlaveMini.follow(RobotMap.starboardMaster);
     RobotMap.portSlave.follow(RobotMap.portMaster);
     RobotMap.portSlaveMini.follow(RobotMap.portMaster);
     // Set lift slaves to follow master lift Talon
-    RobotMap.liftVictorPort.follow(RobotMap.liftTalon);
-    RobotMap.liftVictorStarboard.follow(RobotMap.liftTalon);
+    RobotMap.liftVictor.follow(RobotMap.liftTalon);
     // Sensor for reading pressure values
     RobotMap.pressureSensor = new AnalogInput(0);
     Pneumatics.initSensor(RobotMap.pressureSensor);

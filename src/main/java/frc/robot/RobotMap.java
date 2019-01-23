@@ -17,19 +17,18 @@ public class RobotMap {
   public static int controllerPort = 1; // USB address of the operator controller
   
   // CAN Addresses - TalonSRX
-  public static int starboardMasterAddress = 1; // Starboard master TalonSRX address
-  public static int portMasterAddress = 0; // Port master TalonSRX address
+  public static int starboardMasterAddress = 0; // Starboard master TalonSRX address
+  public static int portMasterAddress = 1; // Port master TalonSRX address
   public static int liftTalonAddress = 2; // Lift master TalonSRX address
 
   // CAN Addresses - VictorSPX
   public static int starboardSlaveAddress = 0; // Starboard slave VictorSPX address
-  public static int portSlaveAddress  = 1; // Port slave VictorSPX address
+  public static int portSlaveAddress  = 1; // Port slave VictorSPX address 
+  public static int liftVictorAddress = 2; // Slaved lift VictorSPX address
   public static int starboardSlaveMiniAddress = 3; // Starboard slave VictorSPX address (miniCIM)
   public static int portSlaveMiniAddress = 4; // Port slave VictorSPX address (miniCIM)
-  public static int cargoIntakeWheelsAddress = 2; // Intake wheels VictorSPX address
+  public static int cargoIntakeWheelsAddress = 6; // Intake wheels VictorSPX address
   public static int intakeFolderAddress = 5; // Intake folder VictorSPX address
-  public static int liftVictorStarboardAddress = 6; // Slaved lift VictorSPX address
-  public static int liftVictorPortAddress = 7; // Other slaved lift VictorSPX address
 
   // Pneumatics objects
   public static Compressor cp; // Compressor
@@ -46,8 +45,7 @@ public class RobotMap {
 
   // Subsystem motor controllers
   public static TalonSRX liftTalon; // Master TalonSRX for lift
-  public static VictorSPX liftVictorPort; // One slave VictorSPX for lift
-  public static VictorSPX liftVictorStarboard; // The other slave VictorSPX for lift
+  public static VictorSPX liftVictor; // Slave VictorSPX for lift
   public static VictorSPX cargoIntakeWheels; // VictorSPX for running the cargo intake wheels
   public static VictorSPX intakeFolder; // VictorSPX for folding the cargo intake back into the frame
 
