@@ -38,17 +38,20 @@ public class Constants {
 	public static final float optimalArea = 1.6f; // Target Area for Limlight
 
 	public static final double heightOfCamera = 22.5; // Height of limelight camera in inches
-	public static final double heightOfTarget = 28;
-	public static final double heightDifference = heightOfTarget - heightOfCamera;
+	public static final double cameraAngle = 5; // Mounting angle of limelight
+	public static final double heightOfTarget = 28; // Height of the center of the vision target
+	public static final double heightDifference = heightOfTarget - heightOfCamera; // Difference in height between camera and target
 
-	public static final double targetDistance = 90;
+	public static final double targetDistance = 90; // Target distance for auto to navigate to
 
 	public static final double powerRequirement = 0.2; // The minimum power neccessary to make the robot move
-
-	public static double countDistance(double angle){ //take an angle in degrees
-		double baseAngleRad = Math.toRadians(angle + 5); //Convert to rad, and add 5 degrees
-		double baseAngleTangent = Math.tan(baseAngleRad);
-		double returnValue = heightDifference / baseAngleTangent;
-		return returnValue; //give it to the camera n target
+	
+	/* Takes an angle in degrees and calculates a distance in inches
+	@return Distance in inches */
+	public static double countDistance(double angle){
+		double baseAngleRad = Math.toRadians(angle + cameraAngle); // Convert total camera angle to radians
+		double baseAngleTangent = Math.tan(baseAngleRad); // Take the tangent of total angle
+		double returnValue = heightDifference / baseAngleTangent; // Divide to calculate distance
+		return returnValue; // Returns current distance in inches
 	}
 }
