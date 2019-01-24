@@ -155,10 +155,10 @@ public class Robot extends TimedRobot {
     double area = ta.getDouble(0.0); // % area of vision target
     double hasTarget = tv.getDouble(0.0); // Whether or not the limelight has a target - 0 for no, 1 for yes
 
-    float xFloat = (float)x;
-    float areaFloat = (float)area;
+    float xFloat = (float)x; // Float of horizontal error
+    float areaFloat = (float)area; // Float of area
 
-    double pressure = Pneumatics.calcPressure(RobotMap.pressureSensor, 5);
+    double pressure = Pneumatics.calcPressure(RobotMap.pressureSensor, 5); // Current stored pressure in tanks
     
     // Angular correction with limelight when A is held
     if(RobotMap.operatorController.getRawButton(RobotMap.trackingButton) && hasTarget == 1.0){
@@ -170,10 +170,10 @@ public class Robot extends TimedRobot {
     }
 
     // Post to smart dashboard periodically
-    SmartDashboard.putNumber("LimelightX", x);
-    SmartDashboard.putNumber("LimelightY", y);
-    SmartDashboard.putNumber("LimelightArea", area);
-    SmartDashboard.putNumber("Current pressure", pressure);
+    SmartDashboard.putNumber("LimelightX", x); // Horizontal error
+    SmartDashboard.putNumber("LimelightY", y); // Vertical error
+    SmartDashboard.putNumber("LimelightArea", area); // Area of limelight target
+    SmartDashboard.putNumber("Current pressure", pressure); // Stored pressure
   }
 
   @Override
