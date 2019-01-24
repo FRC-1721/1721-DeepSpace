@@ -14,7 +14,7 @@ import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.command.Subsystem;
 
 /**
- * Add your docs here.
+ * Subsystem for controlling the compressor and all solenoids
  */
 public class Pneumatics extends Subsystem {
   // Put methods for controlling this subsystem

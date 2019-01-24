@@ -1,8 +1,8 @@
+package frc.robot;
+
 /**
  * Simple class containing constants used throughout project
  */
-package frc.robot;
-
 public class Constants {
 	/**
 	 * Which PID slot to pull gains from. Starting 2018, you can choose from
@@ -33,15 +33,21 @@ public class Constants {
 	public final static int PID_PRIMARY = 0;
 	public final static int PID_TURN = 1;
 
-	public static final float angularP = 0.05f; //Angular P value
-	public static final float accelerationP = 0.5f; // Distance-based P value
+	public static final float angularP = 0.0415f; //Angular P value
+	public static final float accelerationP = 0.013f; // Distance-based P value
 	public static final float optimalArea = 1.6f; // Target Area for Limlight
 
-	/** Takes a vertical error angle in degrees and returns a distance in inches*/
-	public static float countDistance(double angle){
-		double angleRad = Math.toRadians(angle + 5);
-		double calcDistance = 3.48 / Math.tan(angleRad);
-		float returnValue = (float)Math.toDegrees(calcDistance);
-		return returnValue;
-	}
+	public static final double heightOfCamera = 22.5; // Height of limelight camera in inches
+	public static final double cameraAngle = 5; // Mounting angle of limelight
+	public static final double heightOfTarget = 28; // Height of the center of the vision target
+	public static final double heightDifference = heightOfTarget - heightOfCamera; // Difference in height between camera and target
+
+	public static final double targetDistance = 90; // Target distance for auto to navigate to
+
+	public static final double powerRequirement = 0.2; // The minimum power neccessary to make the robot move
+
+	
+    public static final float minimumAngularCommand = 0.01f; // Maximum acceptable error for angular adjustment
+    public static final float minimumRangeCommand = 0.15f; // Maximum acceptable error for distance adjustment
+	
 }
