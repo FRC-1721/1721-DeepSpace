@@ -46,11 +46,13 @@ public class Pneumatics extends Subsystem {
     }
   }
 
+  /** Initializes analog inputs, should only be used for the pressure sensor */
   public static void initSensor(AnalogInput sensor){
     sensor.setAverageBits(4);
     AnalogInput.setGlobalSampleRate(62500);
   }
 
+  /** Calculates pressure based on sensor values and sensor input voltage (usually 5) */
   public static double calcPressure(AnalogInput sensor, double inputVoltage){
     double returnVoltage = sensor.getVoltage();
     double pressure = (250 * (returnVoltage / inputVoltage)) - 25;
