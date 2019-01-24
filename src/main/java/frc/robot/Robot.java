@@ -134,22 +134,15 @@ public class Robot extends TimedRobot {
   float xFloat = (float)x;
   float areaFloat = (float)area;
   
-   // Angular correction with limelight when A is held
+   // Vision tracking with limelight when A is held
    if(RobotMap.operatorController.getRawButton(1) && hasTarget == 1.0){
 
-    //float distanceAdjust = Constants.accelerationP * (Constants.optimalArea - areaFloat); //Math to create a target value for distance based on area
-    float distanceAdjust = -1 * Constants.accelerationP * (float)(Constants.targetDistance - Constants.countDistance(y));
-    float steeringAdjust = Constants.angularP * xFloat; // Math to create a target side-to-side adjustment
-    DriveTrain.flyWithWires(starboardMotor, portMotor, steeringAdjust, distanceAdjust); //Pass the two motors, and the steering value, and the distance target (error)
+    float distanceAdjust = -1 * Constants.accelerationP * (float)(Constants.targetDistance - Constants.countDistance(y)); // Creates a distance adjustment based on error
+    float steeringAdjust = Constants.angularP * xFloat; // Creates a side-to-side adjustment based on error
+    DriveTrain.flyWithWires(starboardMotor, portMotor, steeringAdjust, distanceAdjust); // Drive using adjustment values
   }else{
-    DriveTrain.flyByWire(starboardMotor, portMotor, RobotMap.driverStick); // Drive using joystick
+    DriveTrain.flyByWire(starboardMotor, portMotor, RobotMap.driverStick); // Drive using joystick when A is not held
   }
-
-  if(RobotMap.operatorController.getRawButton(2)){
-    starboardMotor.set(ControlMode.PercentOutput, 1 * Constants.powerRequirement);
-    portMotor.set(ControlMode.PercentOutput, -1 * Constants.powerRequirement);
-  }
-
 	//post to smart dashboard periodically
 	SmartDashboard.putNumber("LimelightX", x);
 	SmartDashboard.putNumber("LimelightY", y);
