@@ -11,9 +11,7 @@ import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.TimedRobot;
-import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
-import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.Pneumatics;
@@ -21,10 +19,6 @@ import frc.robot.subsystems.Pneumatics;
 public class Robot extends TimedRobot {
 
   public static OI m_oi;
-
-
-  Command m_autonomousCommand; // Personalize me!
-  SendableChooser<Command> m_chooser = new SendableChooser<>();
 
   @Override
   public void robotInit() {
@@ -118,12 +112,6 @@ public class Robot extends TimedRobot {
 
   @Override
   public void autonomousInit() {
-    m_autonomousCommand = m_chooser.getSelected();
-
-    // schedule the autonomous command (example)
-    if (m_autonomousCommand != null) {
-      m_autonomousCommand.start();
-    }
   }
 
   /**
@@ -136,12 +124,6 @@ public class Robot extends TimedRobot {
 
   @Override
   public void teleopInit() {
-
-    //Interrupt for Auto
-    if (m_autonomousCommand != null) {
-      m_autonomousCommand.cancel();
-    }
-
     //Set both motor controlers to default
     RobotMap.starboardMaster.configFactoryDefault();
     RobotMap.portMaster.configFactoryDefault();
