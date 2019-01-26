@@ -21,7 +21,7 @@ public class DriveTrain extends Subsystem {
     double thro = DriverJoystick.getRawAxis(1); //Populate the double thro with the raw axis 1
     double yaw = DriverJoystick.getRawAxis(2); //Populate the double yaw with the raw axis 2
 
-    if(gearShift.get() == DoubleSolenoid.Value.kReverse){
+    if(gearShift.get() == DoubleSolenoid.Value.kReverse){ // If bot is in high gear
       starboard.set(ControlMode.PercentOutput, (Constants.speedDampener * -1 * thro) - yaw); //Subtract the steerage for arcade drive
       port.set(ControlMode.PercentOutput, (Constants.speedDampener * thro) - yaw); //Subtract the steerage for arcade drive, reverse
     }else{

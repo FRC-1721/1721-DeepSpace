@@ -11,9 +11,7 @@ import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.TimedRobot;
-import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
-import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.Pneumatics;
@@ -21,10 +19,6 @@ import frc.robot.subsystems.Pneumatics;
 public class Robot extends TimedRobot {
 
   public static OI m_oi;
-
-
-  Command m_autonomousCommand; // Personalize me!
-  SendableChooser<Command> m_chooser = new SendableChooser<>();
 
   @Override
   public void robotInit() {
@@ -61,82 +55,6 @@ public class Robot extends TimedRobot {
 
   @Override
   public void robotPeriodic() {
-  }
-
-  @Override
-  public void disabledInit() {
-  } 
-
-  @Override
-  public void disabledPeriodic() {
-    Scheduler.getInstance().run();
-  }
-
-  @Override
-  public void autonomousInit() {
-    m_autonomousCommand = m_chooser.getSelected();
-
-    // schedule the autonomous command (example)
-    if (m_autonomousCommand != null) {
-      m_autonomousCommand.start();
-    }
-  }
-
-  /**
-   * This function is called periodically during autonomous.
-   */
-  @Override
-  public void autonomousPeriodic() {
-    Scheduler.getInstance().run();
-  }
-
-  @Override
-  public void teleopInit() {
-
-    //Interrupt for Auto
-    if (m_autonomousCommand != null) {
-      m_autonomousCommand.cancel();
-    }
-
-    //Set both motor controlers to default
-    RobotMap.starboardMaster.configFactoryDefault();
-    RobotMap.portMaster.configFactoryDefault();
-
-    /* Config the peak and nominal outputs ([-1, 1] represents [-100, 100]%) */
-    RobotMap.starboardMaster.configNominalOutputForward(0, Constants.kTimeoutMs);
-    RobotMap.starboardMaster.configNominalOutputReverse(0, Constants.kTimeoutMs);
-    RobotMap.starboardMaster.configPeakOutputForward(1, Constants.kTimeoutMs);
-    RobotMap.starboardMaster.configPeakOutputReverse(-1, Constants.kTimeoutMs);
-
-    RobotMap.portMaster.configNominalOutputForward(0, Constants.kTimeoutMs);
-    RobotMap.portMaster.configNominalOutputReverse(0, Constants.kTimeoutMs);
-    RobotMap.portMaster.configPeakOutputForward(1, Constants.kTimeoutMs);
-    RobotMap.portMaster.configPeakOutputReverse(-1, Constants.kTimeoutMs);
-
-    /**
-     * Config the allowable closed-loop error, Closed-Loop output will be
-     * neutral within this range. See Table here for units to use: 
-     * https://github.com/CrossTheRoadElec/Phoenix-Documentation#what-are-the-units-of-my-sensor
-     */
-    RobotMap.starboardMaster.configAllowableClosedloopError(0, Constants.kPIDLoopIdx, Constants.kTimeoutMs);
-    RobotMap.portMaster.configAllowableClosedloopError(0, Constants.kPIDLoopIdx, Constants.kTimeoutMs);
-
-    /* Config closed loop gains for Primary closed loop (Current) */
-    RobotMap.starboardMaster.config_kP(Constants.kPIDLoopIdx, Constants.kGains.kP, Constants.kTimeoutMs);
-    RobotMap.starboardMaster.config_kI(Constants.kPIDLoopIdx, Constants.kGains.kI, Constants.kTimeoutMs);
-    RobotMap.starboardMaster.config_kD(Constants.kPIDLoopIdx, Constants.kGains.kD, Constants.kTimeoutMs);
-    RobotMap.starboardMaster.config_kF(Constants.kPIDLoopIdx, Constants.kGains.kF, Constants.kTimeoutMs);
-
-    RobotMap.portMaster.config_kP(Constants.kPIDLoopIdx, Constants.kGains.kP, Constants.kTimeoutMs);
-    RobotMap.portMaster.config_kI(Constants.kPIDLoopIdx, Constants.kGains.kI, Constants.kTimeoutMs);
-    RobotMap.portMaster.config_kD(Constants.kPIDLoopIdx, Constants.kGains.kD, Constants.kTimeoutMs);
-    RobotMap.portMaster.config_kF(Constants.kPIDLoopIdx, Constants.kGains.kF, Constants.kTimeoutMs);
-  }
-
-  @Override
-  public void teleopPeriodic() {
-     Scheduler.getInstance().run();
-      
     // Compress when B is held
     Pneumatics.compress(RobotMap.operatorController, RobotMap.cp, RobotMap.compressorButton);
 
@@ -181,6 +99,69 @@ public class Robot extends TimedRobot {
     SmartDashboard.putNumber("LimelightY", y); // Vertical error
     SmartDashboard.putNumber("LimelightArea", area); // Area of limelight target
     SmartDashboard.putNumber("Current pressure", pressure); // Stored pressure
+  }
+
+  @Override
+  public void disabledInit() {
+  } 
+
+  @Override
+  public void disabledPeriodic() {
+    Scheduler.getInstance().run();
+  }
+
+  @Override
+  public void autonomousInit() {
+  }
+
+  /**
+   * This function is called periodically during autonomous.
+   */
+  @Override
+  public void autonomousPeriodic() {
+    Scheduler.getInstance().run();
+  }
+
+  @Override
+  public void teleopInit() {
+    //Set both motor controlers to default
+    RobotMap.starboardMaster.configFactoryDefault();
+    RobotMap.portMaster.configFactoryDefault();
+
+    /* Config the peak and nominal outputs ([-1, 1] represents [-100, 100]%) */
+    RobotMap.starboardMaster.configNominalOutputForward(0, Constants.kTimeoutMs);
+    RobotMap.starboardMaster.configNominalOutputReverse(0, Constants.kTimeoutMs);
+    RobotMap.starboardMaster.configPeakOutputForward(1, Constants.kTimeoutMs);
+    RobotMap.starboardMaster.configPeakOutputReverse(-1, Constants.kTimeoutMs);
+
+    RobotMap.portMaster.configNominalOutputForward(0, Constants.kTimeoutMs);
+    RobotMap.portMaster.configNominalOutputReverse(0, Constants.kTimeoutMs);
+    RobotMap.portMaster.configPeakOutputForward(1, Constants.kTimeoutMs);
+    RobotMap.portMaster.configPeakOutputReverse(-1, Constants.kTimeoutMs);
+
+    /**
+     * Config the allowable closed-loop error, Closed-Loop output will be
+     * neutral within this range. See Table here for units to use: 
+     * https://github.com/CrossTheRoadElec/Phoenix-Documentation#what-are-the-units-of-my-sensor
+     */
+    RobotMap.starboardMaster.configAllowableClosedloopError(0, Constants.kPIDLoopIdx, Constants.kTimeoutMs);
+    RobotMap.portMaster.configAllowableClosedloopError(0, Constants.kPIDLoopIdx, Constants.kTimeoutMs);
+
+    /* Config closed loop gains for Primary closed loop (Current) */
+    RobotMap.starboardMaster.config_kP(Constants.kPIDLoopIdx, Constants.kGains.kP, Constants.kTimeoutMs);
+    RobotMap.starboardMaster.config_kI(Constants.kPIDLoopIdx, Constants.kGains.kI, Constants.kTimeoutMs);
+    RobotMap.starboardMaster.config_kD(Constants.kPIDLoopIdx, Constants.kGains.kD, Constants.kTimeoutMs);
+    RobotMap.starboardMaster.config_kF(Constants.kPIDLoopIdx, Constants.kGains.kF, Constants.kTimeoutMs);
+
+    RobotMap.portMaster.config_kP(Constants.kPIDLoopIdx, Constants.kGains.kP, Constants.kTimeoutMs);
+    RobotMap.portMaster.config_kI(Constants.kPIDLoopIdx, Constants.kGains.kI, Constants.kTimeoutMs);
+    RobotMap.portMaster.config_kD(Constants.kPIDLoopIdx, Constants.kGains.kD, Constants.kTimeoutMs);
+    RobotMap.portMaster.config_kF(Constants.kPIDLoopIdx, Constants.kGains.kF, Constants.kTimeoutMs);
+  }
+
+  @Override
+  public void teleopPeriodic() {
+     Scheduler.getInstance().run();
   }
 
   @Override
