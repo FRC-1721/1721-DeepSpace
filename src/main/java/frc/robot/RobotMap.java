@@ -33,7 +33,7 @@ public class RobotMap {
   // Pneumatics objects
   public static Compressor cp; // Compressor
   public static DoubleSolenoid irisPiston; // Iris open/close piston
-  public static Solenoid gearShifter; // Gear shift
+  public static DoubleSolenoid gearShifter; // Gear shift portside
 
   // Drive motor controllers
   public static TalonSRX starboardMaster; // Starboard master TalonSRX
@@ -58,12 +58,15 @@ public class RobotMap {
   public static int compressorPort = 0; // PCM port for the compressor - should always be zero, why would we have more than one?
   public static int irisForwardPort = 0; // PCM port to open the iris
   public static int irisReversePort = 1; // PCM port to close the iris
-  public static int gearShiftPort = 2; // PCM port to shift gears
+  public static int gearShiftForwardPort = 2; // PCM port to shift gears forward
+  public static int gearShiftReversePort = 3; // PCM port to shift gears reverse
 
   // Button/axis numbers
   public static int trackingButton = 1; // A to vision track
   public static int compressorButton = 2; // B to compress
   public static int irisButton = 3; // X to open/close the iris
+  public static int shiftUpButton = 5; // LB to shift up
+  public static int shiftDownButton = 6; // RB to shift down
 
   public static AnalogInput pressureSensor;
 }

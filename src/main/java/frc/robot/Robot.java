@@ -10,7 +10,6 @@ import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.Joystick;
-import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
@@ -44,7 +43,7 @@ public class Robot extends TimedRobot {
     // Define pneumatics objects
     RobotMap.cp = new Compressor(RobotMap.compressorPort); // Compressor
     RobotMap.irisPiston = new DoubleSolenoid(RobotMap.irisForwardPort, RobotMap.irisReversePort); // Iris piston
-    RobotMap.gearShifter = new Solenoid(RobotMap.gearShiftPort); // Gear shifter piston
+    RobotMap.gearShifter = new DoubleSolenoid(RobotMap.gearShiftForwardPort, RobotMap.gearShiftReversePort); // Gear shifter piston
     // Define subsystem motor controllers
     RobotMap.liftTalon = new TalonSRX (RobotMap.liftTalonAddress); // Lift master TalonSRX
     RobotMap.liftVictor = new VictorSPX(RobotMap.liftVictorAddress); // Lift slave VictorSPX
@@ -93,12 +92,14 @@ public class Robot extends TimedRobot {
 
   @Override
   public void teleopInit() {
-  if (m_autonomousCommand != null) {
-    m_autonomousCommand.cancel();
-  }
-    //Interrupt for Auto
 
-    RobotMap.starboardMaster.configFactoryDefault(); //Set both motor controlers to default
+    //Interrupt for Auto
+    if (m_autonomousCommand != null) {
+      m_autonomousCommand.cancel();
+    }
+
+    //Set both motor controlers to default
+    RobotMap.starboardMaster.configFactoryDefault();
     RobotMap.portMaster.configFactoryDefault();
 
     /* Config the peak and nominal outputs ([-1, 1] represents [-100, 100]%) */
@@ -130,17 +131,23 @@ public class Robot extends TimedRobot {
     RobotMap.portMaster.config_kI(Constants.kPIDLoopIdx, Constants.kGains.kI, Constants.kTimeoutMs);
     RobotMap.portMaster.config_kD(Constants.kPIDLoopIdx, Constants.kGains.kD, Constants.kTimeoutMs);
     RobotMap.portMaster.config_kF(Constants.kPIDLoopIdx, Constants.kGains.kF, Constants.kTimeoutMs);
-    }
+  }
 
-    @Override
-    public void teleopPeriodic() {
-      Scheduler.getInstance().run();
+  @Override
+  public void teleopPeriodic() {
+     Scheduler.getInstance().run();
       
     // Compress when B is held
     Pneumatics.compress(RobotMap.operatorController, RobotMap.cp, RobotMap.compressorButton);
 
-    // Open/close the intake
+    // Open/close the intake with X
     Pneumatics.controlIris(RobotMap.operatorController, RobotMap.irisButton, RobotMap.irisPiston);
+
+    if(RobotMap.operatorController.getRawButton(RobotMap.shiftDownButton)){
+      Pneumatics.shiftUp(RobotMap.gearShifter);
+    }else if(RobotMap.operatorController.getRawButton(RobotMap.shiftUpButton)){
+      Pneumatics.shiftDown(RobotMap.gearShifter);
+    }
 
     // Establish link to limelight
     NetworkTable table = NetworkTableInstance.getDefault().getTable("limelight");
@@ -166,7 +173,7 @@ public class Robot extends TimedRobot {
       float steeringAdjust = Constants.angularP * xFloat; // Creates a side-to-side adjustment based on error
       DriveTrain.flyWithWires(RobotMap.starboardMaster, RobotMap.portMaster, steeringAdjust, distanceAdjust); // Drive using adjustment values
     }else{
-      DriveTrain.flyByWire(RobotMap.starboardMaster, RobotMap.portMaster, RobotMap.driverStick); // Drive using joystick when A is not held
+      DriveTrain.flyByWire(RobotMap.starboardMaster, RobotMap.portMaster, RobotMap.driverStick, RobotMap.gearShifter); // Drive using joystick when A is not held
     }
 
     // Post to smart dashboard periodically

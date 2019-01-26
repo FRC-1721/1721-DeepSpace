@@ -37,6 +37,13 @@ public class Pneumatics extends Subsystem {
     }
   }
 
+  public static void shiftDown(DoubleSolenoid piston){
+    piston.set(DoubleSolenoid.Value.kForward);
+  }
+  public static void shiftUp(DoubleSolenoid piston){
+    piston.set(DoubleSolenoid.Value.kReverse);
+  }
+
   /** Compress on button input */
   public static void compress(Joystick controller, Compressor compressor, int button){
     if(controller.getRawButton(button)){

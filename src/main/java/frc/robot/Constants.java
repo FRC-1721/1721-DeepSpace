@@ -50,4 +50,5 @@ public class Constants {
     public static final float minimumAngularCommand = 0.01f; // Maximum acceptable error for angular adjustment
     public static final float minimumRangeCommand = 0.15f; // Maximum acceptable error for distance adjustment
 	
+	public static final double speedDampener = 1; // Dampener on speed while driving
 }
