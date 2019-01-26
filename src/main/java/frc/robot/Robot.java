@@ -61,6 +61,50 @@ public class Robot extends TimedRobot {
 
   @Override
   public void robotPeriodic() {
+    // Compress when B is held
+    Pneumatics.compress(RobotMap.operatorController, RobotMap.cp, RobotMap.compressorButton);
+
+    // Open/close the intake with X
+    Pneumatics.controlIris(RobotMap.operatorController, RobotMap.irisButton, RobotMap.irisPiston);
+
+    if(RobotMap.operatorController.getRawButton(RobotMap.shiftDownButton)){
+      Pneumatics.shiftUp(RobotMap.gearShifter);
+    }else if(RobotMap.operatorController.getRawButton(RobotMap.shiftUpButton)){
+      Pneumatics.shiftDown(RobotMap.gearShifter);
+    }
+
+    // Establish link to limelight
+    NetworkTable table = NetworkTableInstance.getDefault().getTable("limelight");
+    NetworkTableEntry tx = table.getEntry("tx");
+    NetworkTableEntry ty = table.getEntry("ty");
+    NetworkTableEntry ta = table.getEntry("ta");
+    NetworkTableEntry tv = table.getEntry("tv");
+
+    // Read values periodically
+    double x = tx.getDouble(0.0); // Horizontal error
+    double y = ty.getDouble(0.0); // Vertical error
+    double area = ta.getDouble(0.0); // % area of vision target
+    double hasTarget = tv.getDouble(0.0); // Whether or not the limelight has a target - 0 for no, 1 for yes
+
+    float xFloat = (float)x; // Float of horizontal error
+    float areaFloat = (float)area; // Float of area
+
+    double pressure = Pneumatics.calcPressure(RobotMap.pressureSensor, 5); // Current stored pressure in tanks
+    
+    // Angular correction with limelight when A is held
+    if(RobotMap.operatorController.getRawButton(1) && hasTarget == 1.0){
+      float distanceAdjust = -1 * Constants.accelerationP * (float)(Constants.targetDistance - Mathematics.countDistance(y)); // Creates a distance adjustment based on error
+      float steeringAdjust = Constants.angularP * xFloat; // Creates a side-to-side adjustment based on error
+      DriveTrain.flyWithWires(RobotMap.starboardMaster, RobotMap.portMaster, steeringAdjust, distanceAdjust); // Drive using adjustment values
+    }else{
+      DriveTrain.flyByWire(RobotMap.starboardMaster, RobotMap.portMaster, RobotMap.driverStick, RobotMap.gearShifter); // Drive using joystick when A is not held
+    }
+
+    // Post to smart dashboard periodically
+    SmartDashboard.putNumber("LimelightX", x); // Horizontal error
+    SmartDashboard.putNumber("LimelightY", y); // Vertical error
+    SmartDashboard.putNumber("LimelightArea", area); // Area of limelight target
+    SmartDashboard.putNumber("Current pressure", pressure); // Stored pressure
   }
 
   @Override
@@ -136,51 +180,6 @@ public class Robot extends TimedRobot {
   @Override
   public void teleopPeriodic() {
      Scheduler.getInstance().run();
-      
-    // Compress when B is held
-    Pneumatics.compress(RobotMap.operatorController, RobotMap.cp, RobotMap.compressorButton);
-
-    // Open/close the intake with X
-    Pneumatics.controlIris(RobotMap.operatorController, RobotMap.irisButton, RobotMap.irisPiston);
-
-    if(RobotMap.operatorController.getRawButton(RobotMap.shiftDownButton)){
-      Pneumatics.shiftUp(RobotMap.gearShifter);
-    }else if(RobotMap.operatorController.getRawButton(RobotMap.shiftUpButton)){
-      Pneumatics.shiftDown(RobotMap.gearShifter);
-    }
-
-    // Establish link to limelight
-    NetworkTable table = NetworkTableInstance.getDefault().getTable("limelight");
-    NetworkTableEntry tx = table.getEntry("tx");
-    NetworkTableEntry ty = table.getEntry("ty");
-    NetworkTableEntry ta = table.getEntry("ta");
-    NetworkTableEntry tv = table.getEntry("tv");
-
-    // Read values periodically
-    double x = tx.getDouble(0.0); // Horizontal error
-    double y = ty.getDouble(0.0); // Vertical error
-    double area = ta.getDouble(0.0); // % area of vision target
-    double hasTarget = tv.getDouble(0.0); // Whether or not the limelight has a target - 0 for no, 1 for yes
-
-    float xFloat = (float)x; // Float of horizontal error
-    float areaFloat = (float)area; // Float of area
-
-    double pressure = Pneumatics.calcPressure(RobotMap.pressureSensor, 5); // Current stored pressure in tanks
-    
-    // Angular correction with limelight when A is held
-    if(RobotMap.operatorController.getRawButton(1) && hasTarget == 1.0){
-      float distanceAdjust = -1 * Constants.accelerationP * (float)(Constants.targetDistance - Mathematics.countDistance(y)); // Creates a distance adjustment based on error
-      float steeringAdjust = Constants.angularP * xFloat; // Creates a side-to-side adjustment based on error
-      DriveTrain.flyWithWires(RobotMap.starboardMaster, RobotMap.portMaster, steeringAdjust, distanceAdjust); // Drive using adjustment values
-    }else{
-      DriveTrain.flyByWire(RobotMap.starboardMaster, RobotMap.portMaster, RobotMap.driverStick, RobotMap.gearShifter); // Drive using joystick when A is not held
-    }
-
-    // Post to smart dashboard periodically
-    SmartDashboard.putNumber("LimelightX", x); // Horizontal error
-    SmartDashboard.putNumber("LimelightY", y); // Vertical error
-    SmartDashboard.putNumber("LimelightArea", area); // Area of limelight target
-    SmartDashboard.putNumber("Current pressure", pressure); // Stored pressure
   }
 
   @Override
