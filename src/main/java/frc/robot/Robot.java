@@ -1,6 +1,5 @@
 package frc.robot;
 
-import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.VictorSPX;
@@ -9,7 +8,6 @@ import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.AnalogInput;
-import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.TimedRobot;
@@ -37,7 +35,7 @@ public class Robot extends TimedRobot {
     RobotMap.starboardSlaveMini = new VictorSPX(RobotMap.starboardSlaveMiniAddress); // Starboard slave 2 (mini)
     RobotMap.portSlaveMini = new VictorSPX(RobotMap.portSlaveMiniAddress); // Port slave 2 (mini)
     // Define pneumatics objects
-    RobotMap.cp = new Compressor(RobotMap.compressorPort); // Compressor
+    //RobotMap.cp = new Compressor(RobotMap.compressorPort); // Compressor
     RobotMap.irisPiston = new DoubleSolenoid(RobotMap.irisForwardPort, RobotMap.irisReversePort); // Iris piston
     RobotMap.gearShifter = new DoubleSolenoid(RobotMap.gearShiftForwardPort, RobotMap.gearShiftReversePort); // Gear shifter piston
     // Define subsystem motor controllers
@@ -87,11 +85,20 @@ public class Robot extends TimedRobot {
     RobotMap.portMaster.config_kI(Constants.kPIDLoopIdx, Constants.kGains.kI, Constants.kTimeoutMs);
     RobotMap.portMaster.config_kD(Constants.kPIDLoopIdx, Constants.kGains.kD, Constants.kTimeoutMs);
     RobotMap.portMaster.config_kF(Constants.kPIDLoopIdx, Constants.kGains.kF, Constants.kTimeoutMs);
+    
+    // Initalizes both encoders
+    RobotMap.portMaster.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, Constants.kPIDLoopIdx, Constants.kTimeoutMs);
+    RobotMap.starboardMaster.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, Constants.kPIDLoopIdx, Constants.kTimeoutMs);
 
+    // Ensures motor output and encoder velocity are proportional to each other
+    // If they become inverted, set these to true
     RobotMap.portMaster.setSensorPhase(false);
     RobotMap.starboardMaster.setSensorPhase(false);
 
+    // Zeroes both encoders
     RobotMap.portMaster.setSelectedSensorPosition(0, Constants.kPIDLoopIdx, Constants.kTimeoutMs);
+    RobotMap.starboardMaster.setSelectedSensorPosition(0, Constants.kPIDLoopIdx, Constants.kTimeoutMs);
+
   }
 
   @Override
@@ -110,34 +117,14 @@ public class Robot extends TimedRobot {
 
   @Override
   public void autonomousInit() {
-    RobotMap.portMaster.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, Constants.kPIDLoopIdx, Constants.kTimeoutMs);
-    RobotMap.portMaster.configMotionCruiseVelocity(16000, Constants.kTimeoutMs);
-    RobotMap.portMaster.configMotionAcceleration(16000, Constants.kTimeoutMs);
-    RobotMap.starboardMaster.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, Constants.kPIDLoopIdx, Constants.kTimeoutMs);
-    RobotMap.starboardMaster.configMotionCruiseVelocity(16000, Constants.kTimeoutMs);
-    RobotMap.starboardMaster.configMotionAcceleration(16000, Constants.kTimeoutMs);
-    
   }
 
-  /**
-   * This function is called periodically during autonomous.
-   */
   @Override
   public void autonomousPeriodic() {
     Scheduler.getInstance().run();
+} 
 
-    if (RobotMap.driverStick.getRawButton(1)) {
-      /* Motion Magic */ 
-      double targetPos = Mathematics.calcPulses(Constants.targetDistance);
-      RobotMap.portMaster.set(ControlMode.MotionMagic, -1 * targetPos);
-      RobotMap.starboardMaster.set(ControlMode.MotionMagic, targetPos);
-    }else{
-      RobotMap.portMaster.set(ControlMode.PercentOutput, 0);
-      RobotMap.starboardMaster.set(ControlMode.PercentOutput, 0);
-      RobotMap.portMaster.setSelectedSensorPosition(0, Constants.kPIDLoopIdx, Constants.kTimeoutMs);
-      RobotMap.starboardMaster.setSelectedSensorPosition(0, Constants.kPIDLoopIdx, Constants.kTimeoutMs);
-    }
-  }
+
 
   @Override
   public void teleopInit() {
@@ -147,12 +134,14 @@ public class Robot extends TimedRobot {
   @Override
   public void teleopPeriodic() {
      Scheduler.getInstance().run();
+
      // Compress when B is held
     Pneumatics.compress(RobotMap.operatorController, RobotMap.cp, RobotMap.compressorButton);
 
     // Open/close the intake with X
     Pneumatics.controlIris(RobotMap.operatorController, RobotMap.irisButton, RobotMap.irisPiston);
 
+    // Shift the gearbox high/low using LB and RB
     if(RobotMap.operatorController.getRawButton(RobotMap.shiftDownButton)){
       Pneumatics.shiftUp(RobotMap.gearShifter);
     }else if(RobotMap.operatorController.getRawButton(RobotMap.shiftUpButton)){
@@ -176,11 +165,13 @@ public class Robot extends TimedRobot {
     float areaFloat = (float)area; // Float of area
 
     double pressure = Pneumatics.calcPressure(RobotMap.pressureSensor, 5); // Current stored pressure in tanks
-    
-    // Angular correction with limelight when A is held
-    if(RobotMap.operatorController.getRawButton(1) && hasTarget == 1.0){
-      float distanceAdjust = -1 * Constants.accelerationP * (float)(Constants.targetDistance - Mathematics.countDistance(y)); // Creates a distance adjustment based on error
-      float steeringAdjust = Constants.angularP * xFloat; // Creates a side-to-side adjustment based on error
+
+    // PID navigation to limelight target when A is held
+    if(RobotMap.operatorController.getRawButton(RobotMap.trackingButton)){
+      double currentDistance = Mathematics.countDistance(y); // Distance from target
+      double distanceDifference = Mathematics.calcPulses(Constants.targetDistance) - Mathematics.countDistance(currentDistance); // Difference in distance (error)
+      double distanceAdjust = distanceDifference / Constants.navigationTime; // Calculates a distance adjustment based on error
+      double steeringAdjust = Constants.angularScaleUp * x; // Creates a side-to-side adjustment based on error
       DriveTrain.flyWithWires(RobotMap.starboardMaster, RobotMap.portMaster, steeringAdjust, distanceAdjust); // Drive using adjustment values
     }else{
       DriveTrain.flyByWire(RobotMap.starboardMaster, RobotMap.portMaster, RobotMap.driverStick, RobotMap.gearShifter); // Drive using joystick when A is not held
