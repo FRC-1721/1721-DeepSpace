@@ -26,7 +26,8 @@ public class Constants {
 	 * Gains used in Current Closed Loop, to be adjusted accordingly
      * Gains(kp, ki, kd, kf, izone, peak output);
      */
-	static final Gains kGains = new Gains(0.2, 0.0, 0.0, 0.0, 0, 1.0);
+	static final Gains kGains = new Gains(0.05
+	, 0.0, 0.0, 0.03103, 0, 1.0);
 
     /** ---- Flat constants, you should not need to change these ---- */
 	/* We allow either a 0 or 1 when selecting a PID Index, where 0 is primary and 1 is auxiliary */
@@ -42,13 +43,20 @@ public class Constants {
 	public static final double heightOfTarget = 28; // Height of the center of the vision target
 	public static final double heightDifference = heightOfTarget - heightOfCamera; // Difference in height between camera and target
 
-	public static final double targetDistance = 90; // Target distance for auto to navigate to
+	public static final double targetDistance = 120; // Target distance for auto to navigate to
 
-	public static final double powerRequirement = 0.2; // The minimum power neccessary to make the robot move
+	public static final double powerRequirement = 0.2; // The minimum percent output neccessary to make the robot move
 
-	
     public static final float minimumAngularCommand = 0.01f; // Maximum acceptable error for angular adjustment
     public static final float minimumRangeCommand = 0.15f; // Maximum acceptable error for distance adjustment
 	
 	public static final double speedDampener = 1; // Dampener on speed while driving
+
+	public static final double targetPos = 1000000; // Target position for motion magic
+
+	public static final double maxSpeed = 32960; // Max speed for encoders
+
+	public static final double pulsesPerRev = 18063.3; // Pulses read for every one wheel rotation
+
+	public static final double wheelCircumference = 12.56; // Circumference of drive wheels
 }
