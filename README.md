@@ -3,13 +3,13 @@
 Software Goals
 
 
-Week One: Have test bot vision capable of maintaining a constant distance from a target
+Week One: Have test bot vision capable of maintaining a constant distance from a target - done, easy
 
-Week Two: Have drive train moving if it's complete, work on any subsystems, create base for PID for lift
+Week Two: Have drive train moving if it's complete, work on any subsystems, create base for PID for lift - done
 
-Week Three: Continue working on subsystems, begin rough vision base, motion profiling
+Week Three: Continue working on subsystems, begin rough vision base, motion profiling - done
 
-Week Four: Continue working on subsystems as they finish, continue vision/profiling/lift tuning
+Week Four: Continue working on subsystems as they finish, continue vision/profiling/lift tuning - done, sure wish I had some subsystems
 
 Week Five: Finalize all vision and PID functionality
 
