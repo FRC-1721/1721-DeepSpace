@@ -52,4 +52,9 @@ public class Constants {
 	public static final double wheelCircumference = 12.56; // Circumference of drive wheels
 
 	public static final double navigationTime = 30; // Time allotted to navigate to target, in hundreds of milliseconds
+
+	// Heights and distances of targets on the rocket
+	public static final double hatchTargetHeight = 0; // Height in pulses of the lowest hatch target
+	public static final double cargoTargetHeight = 100; // Height in pulses of the lowest cargo target on the rocket
+	public static final double distanceBetweenTargets = 50; // Distance between the centers of subsequent rocket targets
 }

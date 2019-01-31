@@ -60,12 +60,21 @@ public class RobotMap {
   public static int gearShiftForwardPort = 2; // PCM port to shift gears forward
   public static int gearShiftReversePort = 3; // PCM port to shift gears reverse
 
-  // Button/axis numbers
-  public static int trackingButton = 1; // A to vision track
-  public static int compressorButton = 2; // B to compress
-  public static int irisButton = 3; // X to open/close the iris
+  // Button/axis numbers on controller
+  public static int irisButton = 8; // X to open/close the iris
   public static int shiftUpButton = 5; // LB to shift up
   public static int shiftDownButton = 6; // RB to shift down
+  public static int cargoModeButton = 2; // B to move lift to the height of the first cargo target
+  public static int hatchModeButton = 1; // A to move lift to the height of the first hatch target (zero)
+  public static int upOneButton = 3; // X to move lift up one target
+  public static int upTwoButton = 4; // Y to move lift up two targets
 
-  public static AnalogInput pressureSensor;
+  // Button/axis numbers on drive joystick
+  public static int trackingButton = 1; // A to vision track
+
+  // Sensors
+  public static AnalogInput pressureSensor; // Displays current pressure
+
+  // Subsystem booleans
+  public static boolean hatchMode; // Dictates whether lift is in "hatch mode"
 }

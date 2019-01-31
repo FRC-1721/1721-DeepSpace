@@ -136,13 +136,20 @@ public class Robot extends TimedRobot {
 
     double pressure = Pneumatics.calcPressure(RobotMap.pressureSensor, 5); // Current stored pressure in tanks
 
-    // PID navigation to limelight target when A is held
-    if(RobotMap.operatorController.getRawButton(RobotMap.trackingButton) && hasTarget == 1.0){
+    // PID navigation to limelight target when the trigger is held
+    if(RobotMap.driverStick.getRawButton(RobotMap.trackingButton) && hasTarget == 1.0){
       double currentDistance = Mathematics.countDistance(y); // Distance from target
       double distanceDifference = Mathematics.calcPulses(Constants.targetDistance) - Mathematics.countDistance(currentDistance); // Difference in distance (error)
-      double distanceAdjust = distanceDifference / Constants.navigationTime; // Calculates a distance adjustment based on error
+      double distanceAdjust = distanceDifference / Constants.navigationTime; // Calculates velocity based on error and max speed
       double steeringAdjust = Constants.angularScaleUp * x; // Creates a side-to-side adjustment based on error
-      DriveTrain.flyWithWires(RobotMap.starboardMaster, RobotMap.portMaster, steeringAdjust, distanceAdjust); // Drive using adjustment values
+      double velocityRampDown = 1; // Ramp down on velocity based on current lift height
+      double maximumVelocity = velocityRampDown * Constants.maxSpeed;
+      if (distanceAdjust <= Constants.maxSpeed){ // If speed is less than maximum
+        DriveTrain.flyWithWires(RobotMap.starboardMaster, RobotMap.portMaster, steeringAdjust, distanceAdjust); // Drive using adjustment values
+      }else{
+        DriveTrain.flyWithWires(RobotMap.starboardMaster, RobotMap.portMaster, steeringAdjust, maximumVelocity); // Drive by setting to max speed
+      }
+      
     }else{
       DriveTrain.flyByWire(RobotMap.starboardMaster, RobotMap.portMaster, RobotMap.driverStick, RobotMap.gearShifter); // Drive using joystick when A is not held
     }
