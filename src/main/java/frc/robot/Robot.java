@@ -8,6 +8,7 @@ import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.AnalogInput;
+import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.TimedRobot;
@@ -35,7 +36,7 @@ public class Robot extends TimedRobot {
     RobotMap.starboardSlaveMini = new VictorSPX(RobotMap.starboardSlaveMiniAddress); // Starboard slave 2 (mini)
     RobotMap.portSlaveMini = new VictorSPX(RobotMap.portSlaveMiniAddress); // Port slave 2 (mini)
     // Define pneumatics objects
-    //RobotMap.cp = new Compressor(RobotMap.compressorPort); // Compressor
+    RobotMap.cp = new Compressor(RobotMap.compressorPort); // Compressor
     RobotMap.irisPiston = new DoubleSolenoid(RobotMap.irisForwardPort, RobotMap.irisReversePort); // Iris piston
     RobotMap.gearShifter = new DoubleSolenoid(RobotMap.gearShiftForwardPort, RobotMap.gearShiftReversePort); // Gear shifter piston
     // Define subsystem motor controllers
@@ -86,57 +87,29 @@ public class Robot extends TimedRobot {
     RobotMap.portMaster.config_kD(Constants.kPIDLoopIdx, Constants.kGains.kD, Constants.kTimeoutMs);
     RobotMap.portMaster.config_kF(Constants.kPIDLoopIdx, Constants.kGains.kF, Constants.kTimeoutMs);
     
-    // Initalizes both encoders
+    // Initalizes encoders
     RobotMap.portMaster.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, Constants.kPIDLoopIdx, Constants.kTimeoutMs);
     RobotMap.starboardMaster.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, Constants.kPIDLoopIdx, Constants.kTimeoutMs);
+    RobotMap.liftTalon.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, Constants.kPIDLoopIdx, Constants.kTimeoutMs);
 
     // Ensures motor output and encoder velocity are proportional to each other
     // If they become inverted, set these to true
     RobotMap.portMaster.setSensorPhase(false);
     RobotMap.starboardMaster.setSensorPhase(false);
+    RobotMap.liftTalon.setSensorPhase(false);
 
-    // Zeroes both encoders
+    // Zeroes encoders
     RobotMap.portMaster.setSelectedSensorPosition(0, Constants.kPIDLoopIdx, Constants.kTimeoutMs);
     RobotMap.starboardMaster.setSelectedSensorPosition(0, Constants.kPIDLoopIdx, Constants.kTimeoutMs);
+    RobotMap.liftTalon.setSelectedSensorPosition(0, Constants.kPIDLoopIdx, Constants.kTimeoutMs);
 
   }
 
   @Override
   public void robotPeriodic() {
-    
-  }
 
-  @Override
-  public void disabledInit() {
-  } 
-
-  @Override
-  public void disabledPeriodic() {
-    Scheduler.getInstance().run();
-  }
-
-  @Override
-  public void autonomousInit() {
-  }
-
-  @Override
-  public void autonomousPeriodic() {
-    Scheduler.getInstance().run();
-} 
-
-
-
-  @Override
-  public void teleopInit() {
-    
-  }
-
-  @Override
-  public void teleopPeriodic() {
-     Scheduler.getInstance().run();
-
-     // Compress when B is held
-    Pneumatics.compress(RobotMap.operatorController, RobotMap.cp, RobotMap.compressorButton);
+    // Compress automatically
+    RobotMap.cp.setClosedLoopControl(true);
 
     // Open/close the intake with X
     Pneumatics.controlIris(RobotMap.operatorController, RobotMap.irisButton, RobotMap.irisPiston);
@@ -181,6 +154,35 @@ public class Robot extends TimedRobot {
     SmartDashboard.putNumber("Current pressure", pressure); // Stored pressure
   }
 
+  @Override
+  public void disabledInit() {
+  } 
+
+  @Override
+  public void disabledPeriodic() {
+    Scheduler.getInstance().run();
+  }
+
+  @Override
+  public void autonomousInit() {
+  }
+
+  @Override
+  public void autonomousPeriodic() {
+    Scheduler.getInstance().run();
+} 
+
+
+
+  @Override
+  public void teleopInit() {
+    
+  }
+
+  @Override
+  public void teleopPeriodic() {
+     Scheduler.getInstance().run();
+  }
   @Override
   public void testPeriodic() {
   }
