@@ -10,5 +10,14 @@ public class Mathematics {
 		double baseAngleTangent = Math.tan(baseAngleRad); // Take the tangent of total angle
 		double returnValue = Constants.heightDifference / baseAngleTangent; // Divide to calculate distance
 		return returnValue; // Returns current distance in inches
-    }
+	}
+	
+	/** Takes a distances in inches and calculates a target in encoder pulses 
+	@return Encoder pulses
+	*/
+	public static double calcPulses(double targetDistance){
+		double revs = targetDistance / Constants.wheelCircumference;
+		double pulses = revs * Constants.pulsesPerRev;
+		return pulses;
+	}
 }
