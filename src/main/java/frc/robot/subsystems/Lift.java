@@ -28,19 +28,21 @@ public class Lift extends Subsystem {
     // setDefaultCommand(new MySpecialCommand());
   }
 
+  /** Takes a lift TalonSRX and several controller button inputs and moves lift
+  using PID */
   public static void raiseLift(TalonSRX lift, Joystick controller){
     if (controller.getRawButton(RobotMap.hatchModeButton)){ // If A is held
-      lift.set(ControlMode.Position, 0); // Move to height of lowest hatch target
+      lift.set(ControlMode.Position, Constants.hatchTargetHeight); // Move to height of lowest hatch target
     }else if(controller.getRawButton(RobotMap.cargoModeButton)){ // If B is held
       lift.set(ControlMode.Position, Constants.cargoTargetHeight); // Move to height of lowest cargo target
-    }else if(controller.getRawButton(RobotMap.upOneButton)){
-      double height = lift.getSelectedSensorPosition();
-      double target = height + Constants.distanceBetweenTargets;
-      lift.set(ControlMode.Position, target);
-    }else if(controller.getRawButton(RobotMap.upTwoButton)){
-      double height = lift.getSelectedSensorPosition();
-      double target = height + (2 * Constants.distanceBetweenTargets);
-      lift.set(ControlMode.Position, target);
+    }else if(controller.getRawButton(RobotMap.upOneButton)){ // If X is held
+      double height = lift.getSelectedSensorPosition(); // Current height
+      double target = height + Constants.distanceBetweenTargets; // Creates a target height
+      lift.set(ControlMode.Position, target); // Move to target height
+    }else if(controller.getRawButton(RobotMap.upTwoButton)){ // If Y is held
+      double height = lift.getSelectedSensorPosition(); // Current height
+      double target = height + (2 * Constants.distanceBetweenTargets); // Creates a target height
+      lift.set(ControlMode.Position, target); // Move to target height
     }
   }
 }

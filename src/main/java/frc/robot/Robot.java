@@ -15,6 +15,7 @@ import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.subsystems.DriveTrain;
+import frc.robot.subsystems.Lift;
 import frc.robot.subsystems.Pneumatics;
 
 public class Robot extends TimedRobot {
@@ -53,9 +54,10 @@ public class Robot extends TimedRobot {
     RobotMap.pressureSensor = new AnalogInput(0);
     Pneumatics.initSensor(RobotMap.pressureSensor);
 
-    //Set both motor controlers to default
+    //Set motor controlers to default
     RobotMap.starboardMaster.configFactoryDefault();
     RobotMap.portMaster.configFactoryDefault();
+    RobotMap.liftTalon.configFactoryDefault();
 
     /* Config the peak and nominal outputs ([-1, 1] represents [-100, 100]%) */
     RobotMap.starboardMaster.configNominalOutputForward(0, Constants.kTimeoutMs);
@@ -68,6 +70,11 @@ public class Robot extends TimedRobot {
     RobotMap.portMaster.configPeakOutputForward(1, Constants.kTimeoutMs);
     RobotMap.portMaster.configPeakOutputReverse(-1, Constants.kTimeoutMs);
 
+    RobotMap.liftTalon .configNominalOutputForward(0, Constants.kTimeoutMs);
+    RobotMap.liftTalon.configNominalOutputReverse(0, Constants.kTimeoutMs);
+    RobotMap.liftTalon.configPeakOutputForward(1, Constants.kTimeoutMs);
+    RobotMap.liftTalon.configPeakOutputReverse(-1, Constants.kTimeoutMs);
+
     /**
      * Config the allowable closed-loop error, Closed-Loop output will be
      * neutral within this range. See Table here for units to use: 
@@ -75,17 +82,26 @@ public class Robot extends TimedRobot {
      */
     RobotMap.starboardMaster.configAllowableClosedloopError(0, Constants.kPIDLoopIdx, Constants.kTimeoutMs);
     RobotMap.portMaster.configAllowableClosedloopError(0, Constants.kPIDLoopIdx, Constants.kTimeoutMs);
+    RobotMap.liftTalon.configAllowableClosedloopError(0, Constants.kPIDLoopIdx, Constants.kTimeoutMs);
 
     /* Config closed loop gains for Primary closed loop (Current) */
     RobotMap.starboardMaster.config_kP(Constants.kPIDLoopIdx, Constants.kGains.kP, Constants.kTimeoutMs);
     RobotMap.starboardMaster.config_kI(Constants.kPIDLoopIdx, Constants.kGains.kI, Constants.kTimeoutMs);
     RobotMap.starboardMaster.config_kD(Constants.kPIDLoopIdx, Constants.kGains.kD, Constants.kTimeoutMs);
     RobotMap.starboardMaster.config_kF(Constants.kPIDLoopIdx, Constants.kGains.kF, Constants.kTimeoutMs);
+    RobotMap.starboardMaster.config_IntegralZone(Constants.kPIDLoopIdx, Constants.kGains.kIzone, Constants.kTimeoutMs);
 
     RobotMap.portMaster.config_kP(Constants.kPIDLoopIdx, Constants.kGains.kP, Constants.kTimeoutMs);
     RobotMap.portMaster.config_kI(Constants.kPIDLoopIdx, Constants.kGains.kI, Constants.kTimeoutMs);
     RobotMap.portMaster.config_kD(Constants.kPIDLoopIdx, Constants.kGains.kD, Constants.kTimeoutMs);
     RobotMap.portMaster.config_kF(Constants.kPIDLoopIdx, Constants.kGains.kF, Constants.kTimeoutMs);
+    RobotMap.portMaster.config_IntegralZone(Constants.kPIDLoopIdx, Constants.kGains.kIzone, Constants.kTimeoutMs);
+
+    RobotMap.liftTalon.config_kP(Constants.kPIDLoopIdx, Constants.liftP, Constants.kTimeoutMs);
+    RobotMap.liftTalon.config_kI(Constants.kPIDLoopIdx, Constants.liftI, Constants.kTimeoutMs);
+    RobotMap.liftTalon.config_kD(Constants.kPIDLoopIdx, Constants.liftD, Constants.kTimeoutMs);
+    RobotMap.liftTalon.config_kF(Constants.kPIDLoopIdx, Constants.liftF, Constants.kTimeoutMs);
+    RobotMap.liftTalon.config_IntegralZone(Constants.kPIDLoopIdx, Constants.liftIZone, Constants.kTimeoutMs);
     
     // Initalizes encoders
     RobotMap.portMaster.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, Constants.kPIDLoopIdx, Constants.kTimeoutMs);
@@ -111,7 +127,7 @@ public class Robot extends TimedRobot {
     // Compress automatically
     RobotMap.cp.setClosedLoopControl(true);
 
-    // Open/close the intake with X
+    // Open/close the intake with RT
     Pneumatics.controlIris(RobotMap.operatorController, RobotMap.irisButton, RobotMap.irisPiston);
 
     // Shift the gearbox high/low using LB and RB
@@ -120,6 +136,9 @@ public class Robot extends TimedRobot {
     }else if(RobotMap.operatorController.getRawButton(RobotMap.shiftUpButton)){
       Pneumatics.shiftDown(RobotMap.gearShifter);
     }
+
+    // Raise/lower the lift with A, B, X, and Y
+    Lift.raiseLift(RobotMap.liftTalon, RobotMap.operatorController);
 
     // Establish link to limelight
     NetworkTable table = NetworkTableInstance.getDefault().getTable("limelight");
