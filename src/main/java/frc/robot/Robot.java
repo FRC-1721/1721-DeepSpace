@@ -161,13 +161,10 @@ public class Robot extends TimedRobot {
     double area = ta.getDouble(0.0); // % area of vision target
     double hasTarget = tv.getDouble(0.0); // Whether or not the limelight has a target - 0 for no, 1 for yes
 
-    float xFloat = (float)x; // Float of horizontal error
-    float areaFloat = (float)area; // Float of area
-
     double pressure = Pneumatics.calcPressure(RobotMap.pressureSensor, 5); // Current stored pressure in tanks
 
     // PID navigation to limelight target when A is held
-    if(RobotMap.operatorController.getRawButton(RobotMap.trackingButton)){
+    if(RobotMap.operatorController.getRawButton(RobotMap.trackingButton) && hasTarget == 1.0){
       double currentDistance = Mathematics.countDistance(y); // Distance from target
       double distanceDifference = Mathematics.calcPulses(Constants.targetDistance) - Mathematics.countDistance(currentDistance); // Difference in distance (error)
       double distanceAdjust = distanceDifference / Constants.navigationTime; // Calculates a distance adjustment based on error
