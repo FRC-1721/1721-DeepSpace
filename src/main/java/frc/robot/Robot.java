@@ -168,7 +168,6 @@ public class Robot extends TimedRobot {
       }else{
         DriveTrain.flyWithWires(RobotMap.starboardMaster, RobotMap.portMaster, steeringAdjust, maximumVelocity); // Drive by setting to max speed
       }
-      
     }else{
       DriveTrain.flyByWire(RobotMap.starboardMaster, RobotMap.portMaster, RobotMap.driverStick, RobotMap.gearShifter); // Drive using joystick when A is not held
     }

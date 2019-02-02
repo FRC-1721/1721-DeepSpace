@@ -37,9 +37,11 @@ public class Pneumatics extends Subsystem {
     }
   }
 
+  /** Shifts the gearbox down (into low gear) */
   public static void shiftDown(DoubleSolenoid piston){
     piston.set(DoubleSolenoid.Value.kForward);
   }
+  /** Shifts the gearbox up (into high gear) */
   public static void shiftUp(DoubleSolenoid piston){
     piston.set(DoubleSolenoid.Value.kReverse);
   }
