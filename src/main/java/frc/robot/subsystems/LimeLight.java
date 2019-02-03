@@ -25,8 +25,11 @@ public class LimeLight extends Subsystem {
     // setDefaultCommand(new MySpecialCommand());
   }
 
-  public static void trackTarget(double x, double y, double heightDifference, double hasTarget, double button){
-    if(RobotMap.driverStick.getRawButton(RobotMap.trackingButton) && hasTarget == 1.0){
+  /** Tracks a vision target given x and y offset when a button is held
+   * @param heightDifference Difference between height of limelight and height of currently tracked target
+   */
+  public static void trackTarget(double x, double y, double heightDifference, double hasTarget, int button){
+    if(RobotMap.driverStick.getRawButton(button) && hasTarget == 1.0){
       double currentDistance = Mathematics.countDistance(y, heightDifference); // Distance from target
       double distanceDifference = Mathematics.calcPulses(Constants.targetDistance) - currentDistance; // Difference in distance (error)
       double distanceAdjust = distanceDifference / Constants.navigationTime; // Calculates velocity based on error and max speed
