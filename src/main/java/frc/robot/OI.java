@@ -7,11 +7,29 @@
 
 package frc.robot;
 
+import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.buttons.Button;
+import edu.wpi.first.wpilibj.buttons.JoystickButton;
+import frc.robot.commands.expandIris;
+import frc.robot.commands.extendIris;
+import frc.robot.commands.shiftGears;
+
 /**
  * This class is the glue that binds the controls on the physical operator
  * interface to the commands and command groups that allow control of the robot.
  */
 public class OI {
+  Joystick controller = new Joystick(RobotMap.controllerPort);
+  Joystick shifter = new Joystick(RobotMap.gearShiftStickPort);
+  Button irisExpandButton = new JoystickButton(controller, RobotMap.irisExpandButton);
+  Button irisExtendButton = new JoystickButton(controller, RobotMap.irisExtendButton);
+  Button gearShiftButton = new JoystickButton(shifter, RobotMap.shiftButton);
+
+  public OI(){
+    irisExpandButton.whenPressed(new expandIris());
+    irisExtendButton.whenPressed(new extendIris());
+    gearShiftButton.whenPressed(new shiftGears());
+  }
   //// CREATING BUTTONS
   // One type of button is a joystick button which is any button on a
   //// joystick.

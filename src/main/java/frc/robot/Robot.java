@@ -14,8 +14,8 @@ import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.Lift;
+import frc.robot.subsystems.LimeLight;
 import frc.robot.subsystems.Pneumatics;
 
 public class Robot extends TimedRobot {
@@ -38,7 +38,8 @@ public class Robot extends TimedRobot {
     RobotMap.portSlaveMini = new VictorSPX(RobotMap.portSlaveMiniAddress); // Port slave 2 (mini)
     // Define pneumatics objects
     RobotMap.cp = new Compressor(RobotMap.compressorPort); // Compressor
-    RobotMap.irisPiston = new DoubleSolenoid(RobotMap.irisForwardPort, RobotMap.irisReversePort); // Iris piston
+    RobotMap.irisExpander = new DoubleSolenoid(RobotMap.irisExpandForwardPort, RobotMap.irisExpandReversePort); // Iris open/close piston
+    RobotMap.irisExtender = new DoubleSolenoid(RobotMap.irisExtendForwardPort, RobotMap.irisExtendReversePort); // Iris forward/back piston
     RobotMap.gearShifter = new DoubleSolenoid(RobotMap.gearShiftForwardPort, RobotMap.gearShiftReversePort); // Gear shifter piston
     // Define subsystem motor controllers
     RobotMap.liftTalon = new TalonSRX (RobotMap.liftTalonAddress); // Lift master TalonSRX
@@ -127,17 +128,7 @@ public class Robot extends TimedRobot {
     // Compress automatically
     RobotMap.cp.setClosedLoopControl(true);
 
-    // Open/close the intake with RT
-    Pneumatics.controlIris(RobotMap.operatorController, RobotMap.irisButton, RobotMap.irisPiston);
-
-    // Shift the gearbox high/low using LB and RB
-    if(RobotMap.operatorController.getRawButton(RobotMap.shiftDownButton)){
-      Pneumatics.shiftUp(RobotMap.gearShifter);
-    }else if(RobotMap.operatorController.getRawButton(RobotMap.shiftUpButton)){
-      Pneumatics.shiftDown(RobotMap.gearShifter);
-    }
-
-    // Raise/lower the lift with A, B, X, and Y
+    // Raise/lower the lift with A, B, X, and Y - see RobotMap or button layout diagram
     Lift.raiseLift(RobotMap.liftTalon, RobotMap.operatorController);
 
     // Establish link to limelight
@@ -151,26 +142,15 @@ public class Robot extends TimedRobot {
     double x = tx.getDouble(0.0); // Horizontal error
     double y = ty.getDouble(0.0); // Vertical error
     double area = ta.getDouble(0.0); // % area of vision target
-    double hasTarget = tv.getDouble(0.0); // Whether or not the limelight has a target - 0 for no, 1 for yes
+    double hasTarget = tv.getDouble(0.0); // Whether or not the limelight has a target - 0 for no, 1.0 for yes
 
     double pressure = Pneumatics.calcPressure(RobotMap.pressureSensor, 5); // Current stored pressure in tanks
 
-    // PID navigation to limelight target when the trigger is held
-    if(RobotMap.driverStick.getRawButton(RobotMap.trackingButton) && hasTarget == 1.0){
-      double currentDistance = Mathematics.countDistance(y); // Distance from target
-      double distanceDifference = Mathematics.calcPulses(Constants.targetDistance) - Mathematics.countDistance(currentDistance); // Difference in distance (error)
-      double distanceAdjust = distanceDifference / Constants.navigationTime; // Calculates velocity based on error and max speed
-      double steeringAdjust = Constants.angularScaleUp * x; // Creates a side-to-side adjustment based on error
-      double velocityRampDown = 1; // Ramp down on velocity based on current lift height
-      double maximumVelocity = velocityRampDown * Constants.maxSpeed;
-      if (distanceAdjust <= Constants.maxSpeed){ // If speed is less than maximum
-        DriveTrain.flyWithWires(RobotMap.starboardMaster, RobotMap.portMaster, steeringAdjust, distanceAdjust); // Drive using adjustment values
-      }else{
-        DriveTrain.flyWithWires(RobotMap.starboardMaster, RobotMap.portMaster, steeringAdjust, maximumVelocity); // Drive by setting to max speed
-      }
-    }else{
-      DriveTrain.flyByWire(RobotMap.starboardMaster, RobotMap.portMaster, RobotMap.driverStick, RobotMap.gearShifter); // Drive using joystick when A is not held
-    }
+    // PID navigation to hatch target when LT is held
+    LimeLight.trackTarget(x, y, Constants.lowHeightDifference, hasTarget, RobotMap.trackLowButton);
+
+    // PID navigation to cargo target when RT is held
+    LimeLight.trackTarget(x, y, Constants.highHeightDifference, hasTarget, RobotMap.trackHighButton);
 
     // Post to smart dashboard periodically
     SmartDashboard.putNumber("LimelightX", x); // Horizontal error
