@@ -38,7 +38,7 @@ public class Robot extends TimedRobot {
     RobotMap.portSlaveMini = new VictorSPX(RobotMap.portSlaveMiniAddress); // Port slave 2 (mini)
     // Define pneumatics objects
     RobotMap.cp = new Compressor(RobotMap.compressorPort); // Compressor
-    RobotMap.irisPiston = new DoubleSolenoid(RobotMap.irisForwardPort, RobotMap.irisReversePort); // Iris piston
+    RobotMap.irisExpander = new DoubleSolenoid(RobotMap.irisExpandForwardPort, RobotMap.irisExpandReversePort); // Iris open/close piston
     RobotMap.gearShifter = new DoubleSolenoid(RobotMap.gearShiftForwardPort, RobotMap.gearShiftReversePort); // Gear shifter piston
     // Define subsystem motor controllers
     RobotMap.liftTalon = new TalonSRX (RobotMap.liftTalonAddress); // Lift master TalonSRX
@@ -126,9 +126,6 @@ public class Robot extends TimedRobot {
 
     // Compress automatically
     RobotMap.cp.setClosedLoopControl(true);
-
-    // Open/close the intake with RT
-    Pneumatics.controlIris(RobotMap.operatorController, RobotMap.irisButton, RobotMap.irisPiston);
 
     // Shift the gearbox high/low using LB and RB
     if(RobotMap.operatorController.getRawButton(RobotMap.shiftDownButton)){

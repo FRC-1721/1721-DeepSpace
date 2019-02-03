@@ -11,6 +11,7 @@ import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import frc.robot.commands.expandIris;
+import frc.robot.commands.extendIris;
 
 /**
  * This class is the glue that binds the controls on the physical operator
@@ -18,10 +19,12 @@ import frc.robot.commands.expandIris;
  */
 public class OI {
   Joystick controller = new Joystick(RobotMap.controllerPort);
-  Button irisButton = new JoystickButton(controller, RobotMap.irisButton);
+  Button irisExpandButton = new JoystickButton(controller, RobotMap.irisExpandButton);
+  Button irisExtendButton = new JoystickButton(controller, RobotMap.irisExtendButton);
 
   public OI(){
-    irisButton.whenPressed(new expandIris());
+    irisExpandButton.whenPressed(new expandIris());
+    irisExtendButton.whenPressed(new extendIris());
   }
   //// CREATING BUTTONS
   // One type of button is a joystick button which is any button on a
