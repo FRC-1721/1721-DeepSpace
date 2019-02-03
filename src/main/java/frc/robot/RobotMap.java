@@ -11,9 +11,10 @@ import edu.wpi.first.wpilibj.Joystick;
 public class RobotMap {
  
   // Driver Sticks/Control information
-  public static Joystick driverStick, operatorController;
+  public static Joystick driverStick, operatorController, gearShiftStick;
   public static int driverStickPort = 0; // USB address of the driver joystick
   public static int controllerPort = 1; // USB address of the operator controller
+  public static int gearShiftStickPort = 2; // USB address of gearshift joystick
   
   // CAN Addresses - TalonSRX
   public static int starboardMasterAddress = 0; // Starboard master TalonSRX address
@@ -51,22 +52,28 @@ public class RobotMap {
 
   // PCM Ports
   public static int compressorPort = 0; // PCM port for the compressor - should always be zero, why would we have more than one?
-  public static int irisExtendForwardPort = 0; // PCM port to open the iris
-  public static int irisExtendReversePort = 1; // PCM port to close the iris
+  public static int irisExpandForwardPort = 0; // PCM port to open the iris
+  public static int irisExpandReversePort = 1; // PCM port to close the iris
   public static int gearShiftForwardPort = 2; // PCM port to shift gears forward
   public static int gearShiftReversePort = 3; // PCM port to shift gears reverse
+  public static int irisExtendForwardPort = 4; // PCM port to push iris out
+  public static int irisExtendReversePort = 5; // PCM port to pull iris in
 
   // Button/axis numbers on controller
-  public static int irisButton = 8; // RT to open/close the iris
-  public static int shiftUpButton = 5; // LB to shift up
-  public static int shiftDownButton = 6; // RB to shift down
+  public static int irisExpandButton = 8; // RT to open/close the iris
+  public static int irisExtendButton = 7; // LT to push/pull the iris
   public static int cargoModeButton = 2; // B to move lift to the height of the first cargo target
   public static int hatchModeButton = 1; // A to move lift to the height of the first hatch target (zero)
   public static int upOneButton = 3; // X to move lift up one target
   public static int upTwoButton = 4; // Y to move lift up two targets
+  public static int trackLowButton = 5; // LT to track hatch target
+  public static int trackHighButton = 6; // RT to track cargo target
 
-  // Button/axis numbers on drive joystick
-  public static int trackingButton = 1; // A to vision track
+  public static int shiftUpButton = 5;
+  public static int shiftDownButton = 6;
+
+  // Button/axis numbers on shift switch
+  public static int shiftButton = 1; // Trigger to shift gears
 
   // Sensors
   public static AnalogInput pressureSensor; // Displays current pressure

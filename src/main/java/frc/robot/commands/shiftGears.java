@@ -11,8 +11,8 @@ import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.RobotMap;
 import frc.robot.subsystems.Pneumatics;
 
-public class expandIris extends Command {
-  public expandIris() {
+public class shiftGears extends Command {
+  public shiftGears() {
     // Use requires() here to declare subsystem dependencies
     // eg. requires(chassis);
   }
@@ -25,7 +25,7 @@ public class expandIris extends Command {
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    Pneumatics.switchPiston(RobotMap.operatorController, RobotMap.irisExpander);
+    Pneumatics.switchPiston(RobotMap.gearShiftStick, RobotMap.gearShifter);
   }
 
   // Make this return true when this Command no longer needs to run execute()

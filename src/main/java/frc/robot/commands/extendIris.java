@@ -25,7 +25,7 @@ public class extendIris extends Command {
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    Pneumatics.switchPiston(RobotMap.operatorController, RobotMap.irisExtendButton, RobotMap.irisExtender);
+    Pneumatics.switchPiston(RobotMap.operatorController, RobotMap.irisExtender);
   }
 
   // Make this return true when this Command no longer needs to run execute()
