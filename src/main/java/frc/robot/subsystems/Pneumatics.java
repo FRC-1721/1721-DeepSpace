@@ -26,16 +26,16 @@ public class Pneumatics extends Subsystem {
     // setDefaultCommand(new MySpecialCommand());
   }
 
-  /** Control the iris, open and close */
-  public static void controlIris(Joystick controller, int button, DoubleSolenoid piston){
-    if(controller.getRawButton(button)){
+  /** Switches a piston from whatever position it's in to the opposite position on a button press */
+  public static void switchPiston(Joystick controller, int button, DoubleSolenoid piston){
+    ///if(controller.getRawButton(button)){
       if(piston.get() == DoubleSolenoid.Value.kForward){
         piston.set(DoubleSolenoid.Value.kReverse);
       }else{
         piston.set(DoubleSolenoid.Value.kForward);
       }
     }
-  }
+  //}
 
   /** Shifts the gearbox down (into low gear) */
   public static void shiftDown(DoubleSolenoid piston){
