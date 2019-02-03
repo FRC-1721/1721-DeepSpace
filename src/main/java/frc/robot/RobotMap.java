@@ -48,11 +48,6 @@ public class RobotMap {
   public static VictorSPX cargoIntakeWheels; // VictorSPX for running the cargo intake wheels
   public static VictorSPX intakeFolder; // VictorSPX for folding the cargo intake back into the frame
 
-  // PID tuning values
-  public static float kP;
-  public static float kI;
-  public static float kD;
-
   // PCM Ports
   public static int compressorPort = 0; // PCM port for the compressor - should always be zero, why would we have more than one?
   public static int irisForwardPort = 0; // PCM port to open the iris
@@ -61,7 +56,7 @@ public class RobotMap {
   public static int gearShiftReversePort = 3; // PCM port to shift gears reverse
 
   // Button/axis numbers on controller
-  public static int irisButton = 8; // X to open/close the iris
+  public static int irisButton = 8; // RT to open/close the iris
   public static int shiftUpButton = 5; // LB to shift up
   public static int shiftDownButton = 6; // RB to shift down
   public static int cargoModeButton = 2; // B to move lift to the height of the first cargo target

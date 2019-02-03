@@ -49,6 +49,7 @@ public class Constants {
 	public static final double targetDistance = 60; // Target distance for auto to navigate to
 	
 	public static final double speedDampener = 1; // Dampener on speed while driving
+	public static final double steeringDampener = 1; // Dampener on steering when driving
 
 	public static final double maxSpeed = 32960; // Max speed for encoders, in pulses
 
