@@ -14,8 +14,8 @@ import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.Lift;
-import frc.robot.subsystems.LimeLight;
 import frc.robot.subsystems.Pneumatics;
 
 /** Final resting places for control functions - this is where it all comes together */
@@ -151,11 +151,16 @@ public class Robot extends TimedRobot {
 
     double pressure = Pneumatics.calcPressure(RobotMap.pressureSensor, 5); // Current stored pressure in tanks
 
-    // PID navigation to hatch target when LB is held
-    LimeLight.trackTarget(x, y, Constants.lowHeightDifference, hasTarget, RobotMap.trackLowButton);
-
-    // PID navigation to cargo target when RB is held
-    LimeLight.trackTarget(x, y, Constants.highHeightDifference, hasTarget, RobotMap.trackHighButton);
+    if(RobotMap.operatorController.getRawButton(RobotMap.trackLowButton) && hasTarget == 1.0){
+      double currentDistance = Mathematics.countDistance(y, Constants.heightOfLowTarget); // Distance from target
+      double distanceDifference = Mathematics.calcPulses(Constants.targetDistance) - Mathematics.calcPulses(currentDistance); // Difference in distance (error)
+      double distanceAdjust = distanceDifference / Constants.navigationTime; // Calculates a distance adjustment based on error
+      double steeringAdjust = Constants.angularScaleUp * x; // Creates a side-to-side adjustment based on error
+      SmartDashboard.putNumber("Distance adjust", distanceAdjust);
+      DriveTrain.flyWithWires(RobotMap.starboardMaster, RobotMap.portMaster, steeringAdjust, distanceAdjust); // Drive using adjustment values
+    }else{
+      DriveTrain.flyByWire(RobotMap.starboardMaster, RobotMap.portMaster, RobotMap.driverStick, RobotMap.gearShifter); // Drive using joystick when A is not held
+    }
 
     // Post to smart dashboard periodically
     SmartDashboard.putNumber("LimelightX", x); // Horizontal error
