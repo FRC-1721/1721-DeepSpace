@@ -40,6 +40,7 @@ public class Constants {
 	public static final int liftIZone = 0;
 
 	public static final float angularScaleUp = 200f; // Scale-up for TX error
+	public static final double distanceP = 1.5;
 
 	public static final double heightOfCamera = 3.75; // Height of limelight camera in inches
 	public static final double cameraAngle = 10; // Mounting angle of limelight
