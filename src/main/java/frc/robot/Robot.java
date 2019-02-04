@@ -151,13 +151,14 @@ public class Robot extends TimedRobot {
 
     double pressure = Pneumatics.calcPressure(RobotMap.pressureSensor, 5); // Current stored pressure in tanks
 
-    if(RobotMap.operatorController.getRawButton(RobotMap.trackLowButton) && hasTarget == 1.0){
-      double currentDistance = Mathematics.countDistance(y, Constants.heightOfLowTarget); // Distance from target
+    // PID navigation to limelight target when A is held
+    if(RobotMap.gearShiftStick.getRawButton(RobotMap.shiftButton) && hasTarget == 1.0){
+      double currentDistance = Mathematics.countDistance(y); // Distance from target
       double distanceDifference = Mathematics.calcPulses(Constants.targetDistance) - Mathematics.calcPulses(currentDistance); // Difference in distance (error)
       double distanceAdjust = distanceDifference / Constants.navigationTime; // Calculates a distance adjustment based on error
       double steeringAdjust = Constants.angularScaleUp * x; // Creates a side-to-side adjustment based on error
       SmartDashboard.putNumber("Distance adjust", distanceAdjust);
-      DriveTrain.flyWithWires(RobotMap.starboardMaster, RobotMap.portMaster, steeringAdjust, distanceAdjust); // Drive using adjustment values
+      DriveTrain.flyWithWires(RobotMap.starboardMaster, RobotMap.portMaster, steeringAdjust, distanceAdjust * Constants.distanceP); // Drive using adjustment values
     }else{
       DriveTrain.flyByWire(RobotMap.starboardMaster, RobotMap.portMaster, RobotMap.driverStick, RobotMap.gearShifter); // Drive using joystick when A is not held
     }
