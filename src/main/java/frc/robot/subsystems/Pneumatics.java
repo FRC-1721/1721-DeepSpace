@@ -56,4 +56,14 @@ public class Pneumatics extends Subsystem {
     double pressure = (250 * (returnVoltage / inputVoltage)) - 25;
     return pressure;
   }
+
+  public static void shiftGears(Joystick stick, double threshold, int axis, DoubleSolenoid gearShifter){
+    if(stick.getRawAxis(axis) >= 0.5){
+      gearShifter.set(DoubleSolenoid.Value.kForward);
+    }else if(stick.getRawAxis(axis) <= -0.5){
+      gearShifter.set(DoubleSolenoid.Value.kReverse);
+    }else{
+      
+    }
+  }
 }

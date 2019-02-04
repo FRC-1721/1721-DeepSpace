@@ -66,8 +66,8 @@ public class RobotMap {
   public static int hatchModeButton = 1; // A to move lift to the height of the first hatch target (zero)
   public static int upOneButton = 3; // X to move lift up one target
   public static int upTwoButton = 4; // Y to move lift up two targets
-  public static int trackLowButton = 5; // LT to track hatch target
-  public static int trackHighButton = 6; // RT to track cargo target
+  public static int trackLowButton = 5; // LB to track hatch target
+  public static int trackHighButton = 6; // RB to track cargo target
 
   public static int shiftUpButton = 5;
   public static int shiftDownButton = 6;
