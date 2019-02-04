@@ -34,7 +34,7 @@ public class RobotMap {
   public static Compressor cp; // Compressor
   public static DoubleSolenoid irisExpander; // Iris open/close piston
   public static DoubleSolenoid irisExtender; // Iris forward/back piston
-  public static DoubleSolenoid gearShifter; // Gear shift portside
+  public static DoubleSolenoid gearShifter; // Gear shift piston
 
   // Drive motor controllers
   public static TalonSRX starboardMaster; // Starboard master TalonSRX
@@ -68,9 +68,12 @@ public class RobotMap {
   public static int upTwoButton = 4; // Y to move lift up two targets
   public static int trackLowButton = 5; // LB to track hatch target
   public static int trackHighButton = 6; // RB to track cargo target
+<<<<<<< HEAD
 
   public static int shiftUpButton = 5;
   public static int shiftDownButton = 6;
+=======
+>>>>>>> 891efa1b0ef3ccb0de031840e6973916413b9a8e
 
   // Button/axis numbers on shift switch
   public static int shiftButton = 1; // Trigger to shift gears
