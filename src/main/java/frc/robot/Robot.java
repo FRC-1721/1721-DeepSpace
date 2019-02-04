@@ -28,6 +28,7 @@ public class Robot extends TimedRobot {
     // Define joysticks
     RobotMap.driverStick = new Joystick(RobotMap.driverStickPort); // Drive joystick
     RobotMap.operatorController = new Joystick(RobotMap.controllerPort); // Operator controller
+    RobotMap.gearShiftStick = new Joystick(RobotMap.gearShiftStickPort); // Gear shifter
     // Define master drive (SRX) Talons
     RobotMap.starboardMaster = new TalonSRX(RobotMap.starboardMasterAddress); // Port master
     RobotMap.portMaster = new TalonSRX(RobotMap.portMasterAddress); // Starboard master
@@ -128,6 +129,9 @@ public class Robot extends TimedRobot {
     // Compress automatically
     RobotMap.cp.setClosedLoopControl(true);
 
+    // Shift gears using a third dedicated joystick (small black one)
+    Pneumatics.shiftGears(RobotMap.gearShiftStick, 0.5, 1, RobotMap.gearShifter);
+
     // Raise/lower the lift with A, B, X, and Y - see RobotMap or button layout diagram
     Lift.raiseLift(RobotMap.liftTalon, RobotMap.operatorController);
 
@@ -146,10 +150,10 @@ public class Robot extends TimedRobot {
 
     double pressure = Pneumatics.calcPressure(RobotMap.pressureSensor, 5); // Current stored pressure in tanks
 
-    // PID navigation to hatch target when LT is held
+    // PID navigation to hatch target when LB is held
     LimeLight.trackTarget(x, y, Constants.lowHeightDifference, hasTarget, RobotMap.trackLowButton);
 
-    // PID navigation to cargo target when RT is held
+    // PID navigation to cargo target when RB is held
     LimeLight.trackTarget(x, y, Constants.highHeightDifference, hasTarget, RobotMap.trackHighButton);
 
     // Post to smart dashboard periodically
