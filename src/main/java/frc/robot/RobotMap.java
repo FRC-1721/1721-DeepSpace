@@ -69,9 +69,6 @@ public class RobotMap {
   public static int trackLowButton = 5; // LB to track hatch target
   public static int trackHighButton = 6; // RB to track cargo target
 
-  public static int shiftUpButton = 5;
-  public static int shiftDownButton = 6;
-
   // Button/axis numbers on shift switch
   public static int shiftButton = 1; // Trigger to shift gears
 
