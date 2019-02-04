@@ -41,10 +41,10 @@ public class Constants {
 
 	public static final float angularScaleUp = 200f; // Scale-up for TX error
 
-	public static final double heightOfCamera = 22.5; // Height of limelight camera in inches
-	public static final double cameraAngle = 5; // Mounting angle of limelight
+	public static final double heightOfCamera = 3.75; // Height of limelight camera in inches
+	public static final double cameraAngle = 10; // Mounting angle of limelight
 	public static final double heightOfLowTarget = 28; // Height of the center of the low vision target
-	public static final double heightOfHighTarget = 32; // Height of the center of the high vision target
+	public static final double heightOfHighTarget = 28; // Height of the center of the high vision target
 	public static final double lowHeightDifference = heightOfLowTarget - heightOfCamera; // Difference in height between camera and low target
 	public static final double highHeightDifference = heightOfHighTarget - heightOfCamera; // Difference in height between camera and high target
 
