@@ -8,9 +8,10 @@
 package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj.command.Subsystem;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.robot.Constants;
 import frc.robot.Mathematics;
 import frc.robot.RobotMap;
-import frc.robot.Constants;
 
 /**
  * Class for vision tracking commands from the limelight
@@ -29,18 +30,13 @@ public class LimeLight extends Subsystem {
    * @param heightDifference Difference between height of limelight and height of currently tracked target
    */
   public static void trackTarget(double x, double y, double heightDifference, double hasTarget, int button){
-    if(RobotMap.driverStick.getRawButton(button) && hasTarget == 1.0){
+    if(RobotMap.operatorController.getRawButton(button) && hasTarget == 1.0){
       double currentDistance = Mathematics.countDistance(y, heightDifference); // Distance from target
-      double distanceDifference = Mathematics.calcPulses(Constants.targetDistance) - currentDistance; // Difference in distance (error)
-      double distanceAdjust = distanceDifference / Constants.navigationTime; // Calculates velocity based on error and max speed
+      double distanceDifference = Mathematics.calcPulses(Constants.targetDistance) - Mathematics.calcPulses(currentDistance); // Difference in distance (error)
+      double distanceAdjust = distanceDifference / Constants.navigationTime; // Calculates a distance adjustment based on error
       double steeringAdjust = Constants.angularScaleUp * x; // Creates a side-to-side adjustment based on error
-      double velocityRampDown = 1; // Ramp down on velocity based on current lift height
-      double maximumVelocity = velocityRampDown * Constants.maxSpeed;
-      if (distanceAdjust <= Constants.maxSpeed){ // If speed is less than maximum
-        DriveTrain.flyWithWires(RobotMap.starboardMaster, RobotMap.portMaster, steeringAdjust, distanceAdjust); // Drive using adjustment values
-      }else{
-        DriveTrain.flyWithWires(RobotMap.starboardMaster, RobotMap.portMaster, steeringAdjust, maximumVelocity); // Drive by setting to max speed
-      }
+      SmartDashboard.putNumber("Distance adjust", distanceAdjust);
+      DriveTrain.flyWithWires(RobotMap.starboardMaster, RobotMap.portMaster, steeringAdjust, distanceAdjust); // Drive using adjustment values
     }else{
       DriveTrain.flyByWire(RobotMap.starboardMaster, RobotMap.portMaster, RobotMap.driverStick, RobotMap.gearShifter); // Drive using joystick when A is not held
     }
