@@ -18,6 +18,7 @@ import frc.robot.subsystems.Lift;
 import frc.robot.subsystems.LimeLight;
 import frc.robot.subsystems.Pneumatics;
 
+/** Final resting places for control functions - this is where it all comes together */
 public class Robot extends TimedRobot {
 
   public static OI m_oi;

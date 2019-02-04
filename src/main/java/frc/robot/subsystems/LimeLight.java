@@ -13,7 +13,7 @@ import frc.robot.RobotMap;
 import frc.robot.Constants;
 
 /**
- * Add your docs here.
+ * Class for vision tracking commands from the limelight
  */
 public class LimeLight extends Subsystem {
   // Put methods for controlling this subsystem

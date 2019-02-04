@@ -1,7 +1,7 @@
 package frc.robot;
 
 /**
- * Simple class containing constants used throughout project
+ * Class containing numbers used throughout project - PID values, as well as mathematic constants
  */
 public class Constants {
 	/**

@@ -16,7 +16,7 @@ import frc.robot.Constants;
 import frc.robot.RobotMap;
 
 /**
- * Add your docs here.
+ * Subsystem for PID lift control - in development
  */
 public class Lift extends Subsystem {
   // Put methods for controlling this subsystem

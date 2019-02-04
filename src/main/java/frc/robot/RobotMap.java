@@ -8,6 +8,7 @@ import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.Joystick;
 
+/** Class for defining/mapping objects and port numbers - not to be confused with Constants.java */
 public class RobotMap {
  
   // Driver Sticks/Control information
