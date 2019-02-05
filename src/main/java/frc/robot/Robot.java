@@ -15,6 +15,7 @@ import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.subsystems.DriveTrain;
+import frc.robot.subsystems.LimeLight;
 import frc.robot.subsystems.Pneumatics;
 
 public class Robot extends TimedRobot {
@@ -115,11 +116,11 @@ public class Robot extends TimedRobot {
     Pneumatics.controlIris(RobotMap.operatorController, RobotMap.irisButton, RobotMap.irisPiston);
 
     // Shift the gearbox high/low using LB and RB
-    if(RobotMap.operatorController.getRawButton(RobotMap.shiftDownButton)){
-      Pneumatics.shiftUp(RobotMap.gearShifter);
-    }else if(RobotMap.operatorController.getRawButton(RobotMap.shiftUpButton)){
-      Pneumatics.shiftDown(RobotMap.gearShifter);
-    }
+    //if(RobotMap.operatorController.getRawButton(RobotMap.shiftDownButton)){
+      //Pneumatics.shiftUp(RobotMap.gearShifter);
+    //}else if(RobotMap.operatorController.getRawButton(RobotMap.shiftUpButton)){
+      //Pneumatics.shiftDown(RobotMap.gearShifter);
+    //}
 
     // Establish link to limelight
     NetworkTable table = NetworkTableInstance.getDefault().getTable("limelight");
@@ -137,17 +138,13 @@ public class Robot extends TimedRobot {
     double pressure = Pneumatics.calcPressure(RobotMap.pressureSensor, 5); // Current stored pressure in tanks
 
     // PID navigation to limelight target when A is held
-    if(RobotMap.operatorController.getRawButton(RobotMap.trackingButton) && hasTarget == 1.0){
-      double currentDistance = Mathematics.countDistance(y); // Distance from target
-      double distanceDifference = Mathematics.calcPulses(Constants.targetDistance) - Mathematics.calcPulses(currentDistance); // Difference in distance (error)
-      double distanceAdjust = distanceDifference / Constants.navigationTime; // Calculates a distance adjustment based on error
-      double steeringAdjust = Constants.angularScaleUp * x; // Creates a side-to-side adjustment based on error
-      SmartDashboard.putNumber("Distance adjust", distanceAdjust);
-      DriveTrain.flyWithWires(RobotMap.starboardMaster, RobotMap.portMaster, steeringAdjust, distanceAdjust * Constants.distanceP); // Drive using adjustment values
+    if(RobotMap.operatorController.getRawButton(1) && hasTarget == 1){
+      LimeLight.trackTarget(Constants.heightOfLowTarget, x, y);
+    }else if(RobotMap.operatorController.getRawButton(2) && hasTarget == 1){
+      LimeLight.trackTarget(Constants.heightOfHighTarget, x, y);
     }else{
       DriveTrain.flyByWire(RobotMap.starboardMaster, RobotMap.portMaster, RobotMap.driverStick, RobotMap.gearShifter); // Drive using joystick when A is not held
     }
-
     // Post to smart dashboard periodically
     SmartDashboard.putNumber("LimelightX", x); // Horizontal error
     SmartDashboard.putNumber("LimelightY", y); // Vertical error
