@@ -152,7 +152,7 @@ public class Robot extends TimedRobot {
     double pressure = Pneumatics.calcPressure(RobotMap.pressureSensor, 5); // Current stored pressure in tanks
 
     // PID navigation to limelight target when A is held
-    if(RobotMap.gearShiftStick.getRawButton(RobotMap.shiftButton) && hasTarget == 1.0){
+    if(RobotMap.operatorController.getRawButton(RobotMap.trackLowButton) && hasTarget == 1.0){
       double currentDistance = Mathematics.countDistance(y); // Distance from target
       double distanceDifference = Mathematics.calcPulses(Constants.targetDistance) - Mathematics.calcPulses(currentDistance); // Difference in distance (error)
       double distanceAdjust = distanceDifference / Constants.navigationTime; // Calculates a distance adjustment based on error
