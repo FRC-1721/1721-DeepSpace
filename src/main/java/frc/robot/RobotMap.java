@@ -70,9 +70,6 @@ public class RobotMap {
   public static int trackLowButton = 5; // LB to track hatch target
   public static int trackHighButton = 6; // RB to track cargo target
 
-  // Button/axis numbers on shift switch
-  public static int shiftButton = 1; // Trigger to shift gears
-
   // Sensors
   public static AnalogInput pressureSensor; // Displays current pressure
 

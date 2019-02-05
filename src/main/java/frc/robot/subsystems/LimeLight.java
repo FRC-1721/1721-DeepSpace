@@ -26,19 +26,14 @@ public class LimeLight extends Subsystem {
     // setDefaultCommand(new MySpecialCommand());
   }
 
-  /** Tracks a vision target given x and y offset when a button is held
+  /** Tracks a vision target given x and y offset
    * @param heightDifference Difference between height of limelight and height of currently tracked target
    */
-  public static void trackTarget(double x, double y, double heightDifference, double hasTarget, int button){
-    if(RobotMap.operatorController.getRawButton(button) && hasTarget == 1.0){
-      double currentDistance = Mathematics.countDistance(y); // Distance from target
-      double distanceDifference = Mathematics.calcPulses(Constants.targetDistance) - Mathematics.calcPulses(currentDistance); // Difference in distance (error)
-      double distanceAdjust = distanceDifference / Constants.navigationTime; // Calculates a distance adjustment based on error
-      double steeringAdjust = Constants.angularScaleUp * x; // Creates a side-to-side adjustment based on error
-      SmartDashboard.putNumber("Distance adjust", distanceAdjust);
-      DriveTrain.flyWithWires(RobotMap.starboardMaster, RobotMap.portMaster, steeringAdjust, distanceAdjust); // Drive using adjustment values
-    }else{
-      DriveTrain.flyByWire(RobotMap.starboardMaster, RobotMap.portMaster, RobotMap.driverStick, RobotMap.gearShifter); // Drive using joystick when A is not held
-    }
+  public static void trackTarget(double heightDifference, double x, double y){
+    double currentDistance = Mathematics.countDistance(y, heightDifference); // Distance from target
+    double distanceDifference = Mathematics.calcPulses(Constants.targetDistance) - Mathematics.calcPulses(currentDistance); // Difference in distance (error)
+    double distanceAdjust = distanceDifference / Constants.navigationTime; // Calculates a distance adjustment based on error
+    double steeringAdjust = Constants.angularScaleUp * x; // Creates a side-to-side adjustment based on error
+    DriveTrain.flyWithWires(RobotMap.starboardMaster, RobotMap.portMaster, steeringAdjust, distanceAdjust); // Drive using adjustment values
   }
 }
