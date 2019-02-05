@@ -31,7 +31,7 @@ public class LimeLight extends Subsystem {
   public static void trackTarget(double x, double y, double heightDifference, double hasTarget, int button){
     if(RobotMap.driverStick.getRawButton(button) && hasTarget == 1.0){
       double currentDistance = Mathematics.countDistance(y, heightDifference); // Distance from target
-      double distanceDifference = Mathematics.calcPulses(Constants.targetDistance) - currentDistance; // Difference in distance (error)
+      double distanceDifference = Mathematics.calcPulses(Constants.targetDistance) - Mathematics.calcPulses(currentDistance)  ; // Difference in distance (error)
       double distanceAdjust = distanceDifference / Constants.navigationTime; // Calculates velocity based on error and max speed
       double steeringAdjust = Constants.angularScaleUp * x; // Creates a side-to-side adjustment based on error
       double velocityRampDown = 1; // Ramp down on velocity based on current lift height
