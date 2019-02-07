@@ -45,4 +45,13 @@ public class Lift extends Subsystem {
       lift.set(ControlMode.Position, target); // Move to target height
     }
   }
+
+  /** Overrides the lift PID for manual control with an axis while a button is held - be sure to
+   * return lift to zero when done */
+  public static void manualOverride(Joystick controller, int button, int axis, TalonSRX lift){
+    if(controller.getRawButton(button)){
+      double throttle = controller.getRawAxis(axis);
+      lift.set(ControlMode.PercentOutput, throttle);
+    }
+  }
 }

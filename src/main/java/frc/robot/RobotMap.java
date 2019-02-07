@@ -69,6 +69,13 @@ public class RobotMap {
   public static int upTwoButton = 4; // Y to move lift up two targets
   public static int trackLowButton = 5; // LB to track hatch target
   public static int trackHighButton = 6; // RB to track cargo target
+  public static int liftOverrideButton = 10; // START to enable manual lift override
+  public static int liftOverrideAxis = 1; // LEFT STICK to control manual lift override
+  public static int intakeSpinAxis = 3; // RIGHT STICK to spin the intake
+
+  // POV angles on controller
+  public static int inAngle = 180; // Straight down to fold intake in
+  public static int outAngle = 0; // Straight up to fold intake out
 
   // Sensors
   public static AnalogInput pressureSensor; // Displays current pressure

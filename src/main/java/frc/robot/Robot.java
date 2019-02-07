@@ -15,6 +15,7 @@ import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.subsystems.DriveTrain;
+import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Lift;
 import frc.robot.subsystems.LimeLight;
 import frc.robot.subsystems.Pneumatics;
@@ -47,6 +48,8 @@ public class Robot extends TimedRobot {
     // Define subsystem motor controllers
     RobotMap.liftTalon = new TalonSRX (RobotMap.liftTalonAddress); // Lift master TalonSRX
     RobotMap.liftVictor = new VictorSPX(RobotMap.liftVictorAddress); // Lift slave VictorSPX
+    RobotMap.cargoIntakeWheels = new VictorSPX(RobotMap.cargoIntakeWheelsAddress); // Intake wheels VictorSPX
+    RobotMap.intakeFolder = new VictorSPX(RobotMap.intakeFolderAddress); // Intake folder VictorSPX
     // Set drive slaves to follow master drive Talons
     RobotMap.starboardSlave.follow(RobotMap.starboardMaster);
     RobotMap.starboardSlaveMini.follow(RobotMap.starboardMaster);
@@ -137,6 +140,15 @@ public class Robot extends TimedRobot {
     // Raise/lower the lift with A, B, X, and Y - see RobotMap or button layout diagram
     Lift.raiseLift(RobotMap.liftTalon, RobotMap.operatorController);
 
+    // Manually overrides the lift for control with LEFT STICK when START is held
+    Lift.manualOverride(RobotMap.operatorController, RobotMap.liftOverrideButton, RobotMap.liftOverrideAxis, RobotMap.liftTalon);
+
+    // Spin the intake wheels using RIGHT STICK Y-axis
+    Intake.spin(RobotMap.operatorController, RobotMap.intakeSpinAxis, RobotMap.cargoIntakeWheels);
+
+    // Fold the intake in and out using the controller POV - down for in, up for out
+    Intake.fold(RobotMap.operatorController, RobotMap.inAngle, RobotMap.outAngle, RobotMap.intakeFolder);
+
     // Establish link to limelight
     NetworkTable table = NetworkTableInstance.getDefault().getTable("limelight");
     NetworkTableEntry tx = table.getEntry("tx");
@@ -155,8 +167,10 @@ public class Robot extends TimedRobot {
     // PID navigation to limelight target when LB is held for hatches, or RB for cargo
     if(RobotMap.operatorController.getRawButton(RobotMap.trackLowButton) && hasTarget == 1){
       LimeLight.trackTarget(Constants.heightOfLowTarget, x, y);
+      Lift.raiseLift(RobotMap.liftTalon, RobotMap.operatorController);
     }else if(RobotMap.operatorController.getRawButton(RobotMap.trackHighButton) && hasTarget == 1){
       LimeLight.trackTarget(Constants.heightOfHighTarget, x, y);
+      Lift.raiseLift(RobotMap.liftTalon, RobotMap.operatorController);
     }else{
       DriveTrain.flyByWire(RobotMap.starboardMaster, RobotMap.portMaster, RobotMap.driverStick, RobotMap.gearShifter); // Drive using joystick
     }

@@ -44,8 +44,8 @@ public class Constants {
 
 	public static final double heightOfCamera = 3.75; // Height of limelight camera in inches
 	public static final double cameraAngle = 10; // Mounting angle of limelight
-	public static final double heightOfLowTarget = 28; // Height of the center of the low vision target
-	public static final double heightOfHighTarget = 28; // Height of the center of the high vision target
+	public static final double heightOfLowTarget = 18.3775; // Height of the center of the low vision target
+	public static final double heightOfHighTarget = 35.96; // Height of the center of the high vision target
 
 	public static final double targetDistance = 120; // Target distance for auto to navigate to
 	
