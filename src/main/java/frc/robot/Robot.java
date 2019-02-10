@@ -161,7 +161,6 @@ public class Robot extends TimedRobot {
     double y = ty.getDouble(0.0); // Vertical error
     double area = ta.getDouble(0.0); // % area of vision target
     double hasTarget = tv.getDouble(0.0); // Whether or not the limelight has a target - 0 for no, 1.0 for yes
-
     double pressure = Pneumatics.calcPressure(RobotMap.pressureSensor, 5); // Current stored pressure in tanks
 
     // PID navigation to limelight target when LB is held for hatches, or RB for cargo
@@ -198,7 +197,7 @@ public class Robot extends TimedRobot {
   @Override
   public void autonomousPeriodic() {
     Scheduler.getInstance().run();
-} 
+  } 
 
 
 
