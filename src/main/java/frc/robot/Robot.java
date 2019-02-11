@@ -199,11 +199,8 @@ public class Robot extends TimedRobot {
     Scheduler.getInstance().run();
   } 
 
-
-
   @Override
   public void teleopInit() {
-    
   }
 
   @Override
