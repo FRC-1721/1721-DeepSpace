@@ -8,7 +8,7 @@ public class Mathematics {
 	public static double countDistance(double angle, double heightTarget){
 		double baseAngleRad = Math.toRadians(angle + Constants.cameraAngle); // Convert total camera angle to radians
 		double baseAngleTangent = Math.tan(baseAngleRad); // Take the tangent of total angle
-		double returnValue = (heightTarget - Constants.heightOfCamera) / baseAngleTangent; // Divide to calculate distance
+		double returnValue = (Constants.heightOfCamera - heightTarget) / baseAngleTangent; // Divide to calculate distance
 		return returnValue; // Returns current distance in inches
 	}
 	
