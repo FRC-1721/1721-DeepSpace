@@ -59,9 +59,9 @@ public class Pneumatics extends Subsystem {
 
   /** Shifts gears using a joystick */
   public static void shiftGears(Joystick stick, double threshold, int axis, DoubleSolenoid gearShifter){
-    if(stick.getRawAxis(axis) >= 0.5){
+    if(stick.getRawAxis(axis) <= -0.5){
       gearShifter.set(DoubleSolenoid.Value.kForward);
-    }else if(stick.getRawAxis(axis) <= -0.5){
+    }else if(stick.getRawAxis(axis) >= 0.5){
       gearShifter.set(DoubleSolenoid.Value.kReverse);
     }else{
       

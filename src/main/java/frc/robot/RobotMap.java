@@ -28,7 +28,7 @@ public class RobotMap {
   public static int liftVictorAddress = 2; // Slaved lift VictorSPX address
   public static int starboardSlaveMiniAddress = 3; // Starboard slave VictorSPX address (miniCIM)
   public static int portSlaveMiniAddress = 4; // Port slave VictorSPX address (miniCIM)
-  public static int cargoIntakeWheelsAddress = 6; // Intake wheels VictorSPX address
+  public static int cargoIntakeWheelsAddress = 7; // Intake wheels VictorSPX address
   public static int intakeFolderAddress = 5; // Intake folder VictorSPX address
 
   // Pneumatics objects
@@ -53,25 +53,25 @@ public class RobotMap {
 
   // PCM Ports
   public static int compressorPort = 0; // PCM port for the compressor - should always be zero, why would we have more than one?
-  public static int irisExpandForwardPort = 0; // PCM port to open the iris
-  public static int irisExpandReversePort = 1; // PCM port to close the iris
+  public static int irisExpandForwardPort = 4; // PCM port to open the iris
+  public static int irisExpandReversePort = 5; // PCM port to close the iris
   public static int gearShiftForwardPort = 2; // PCM port to shift gears forward
   public static int gearShiftReversePort = 3; // PCM port to shift gears reverse
-  public static int irisExtendForwardPort = 4; // PCM port to push iris out
-  public static int irisExtendReversePort = 5; // PCM port to pull iris in
+  public static int irisExtendForwardPort = 0; // PCM port to push iris out
+  public static int irisExtendReversePort = 1; // PCM port to pull iris in
 
   // Button/axis numbers on controller
-  public static int irisExpandButton = 8; // RT to open/close the iris
-  public static int irisExtendButton = 7; // LT to push/pull the iris
+  public static int irisExpandButton = 7; // LT to open/close the iris
+  public static int irisExtendButton = 8; // RT to push/pull the iris
   public static int cargoModeButton = 2; // B to move lift to the height of the first cargo target
   public static int hatchModeButton = 1; // A to move lift to the height of the first hatch target (zero)
   public static int upOneButton = 3; // X to move lift up one target
   public static int upTwoButton = 4; // Y to move lift up two targets
   public static int trackLowButton = 5; // LB to track hatch target
   public static int trackHighButton = 6; // RB to track cargo target
-  public static int liftOverrideButton = 10; // START to enable manual lift override
-  public static int liftOverrideAxis = 1; // LEFT STICK to control manual lift override
-  public static int intakeSpinAxis = 3; // RIGHT STICK to spin the intake
+  public static int liftOverrideButton = 12; // RIGHT STICK DOWN to enable manual lift override
+  public static int liftOverrideAxis = 3; // RIGHT STICK to control manual lift override
+  public static int intakeSpinAxis = 1; // LEFT STICK to spin the intake
 
   // POV angles on controller
   public static int inAngle = 180; // Straight down to fold intake in
@@ -79,6 +79,7 @@ public class RobotMap {
 
   // Sensors
   public static AnalogInput pressureSensor; // Displays current pressure
+  public static int sensorPort = 0; // RoboRIO port for pressure sensor
 
   // Subsystem booleans
   public static boolean hatchMode; // Dictates whether lift is in "hatch mode"

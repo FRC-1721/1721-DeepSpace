@@ -10,8 +10,11 @@ package frc.robot.subsystems;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 
+import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.command.Subsystem;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.robot.RobotMap;
 
 /**
  * Add your docs here.
@@ -28,7 +31,11 @@ public class Intake extends Subsystem {
 
   public static void spin(Joystick controller, int axis, VictorSPX intake){
     double throttle = controller.getRawAxis(axis);
-    intake.set(ControlMode.PercentOutput, throttle);
+    if(RobotMap.irisExtender.get() == DoubleSolenoid.Value.kForward){
+      intake.set(ControlMode.PercentOutput, 0);
+    }else{
+      intake.set(ControlMode.PercentOutput, throttle);
+    }
   }
 
   public static void fold(Joystick controller, int inAngle, int outAngle, VictorSPX folder){

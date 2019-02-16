@@ -50,8 +50,10 @@ public class Lift extends Subsystem {
    * return lift to zero when done */
   public static void manualOverride(Joystick controller, int button, int axis, TalonSRX lift){
     if(controller.getRawButton(button)){
-      double throttle = controller.getRawAxis(axis);
+      double throttle = -0.4 * controller.getRawAxis(axis);
       lift.set(ControlMode.PercentOutput, throttle);
+    }else{
+      lift.set(ControlMode.PercentOutput, 0);
     }
   }
 }

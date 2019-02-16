@@ -19,11 +19,11 @@ public class DriveTrain extends Subsystem {
   /** Drive using two talons and a joystick **/
   public static void flyByWire(TalonSRX starboard, TalonSRX port, Joystick DriverJoystick, DoubleSolenoid gearShift){
     double thro = DriverJoystick.getRawAxis(1); //Populate the double thro with the raw axis 1
-    double yaw = Constants.speedDampener * DriverJoystick.getRawAxis(2); //Populate the double yaw with the raw axis 2
+    double yaw = Constants.turnDampener * DriverJoystick.getRawAxis(2); //Populate the double yaw with the raw axis 2
 
     if(gearShift.get() == DoubleSolenoid.Value.kReverse){ // If bot is in high gear
-      starboard.set(ControlMode.PercentOutput, (Constants.speedDampener * -1 * thro) - yaw); // Subtract the steerage for arcade drive
-      port.set(ControlMode.PercentOutput, (Constants.speedDampener * thro) - yaw); // Subtract the steerage for arcade drive, reverse
+      starboard.set(ControlMode.PercentOutput, (-1 * thro) - yaw); // Subtract the steerage for arcade drive
+      port.set(ControlMode.PercentOutput, thro - yaw); // Subtract the steerage for arcade drive, reverse
     }else{ // If bot is in low gear
       starboard.set(ControlMode.PercentOutput, (-1 * thro) - yaw); // Drive normally
       port.set(ControlMode.PercentOutput, thro - yaw); // Drive normally

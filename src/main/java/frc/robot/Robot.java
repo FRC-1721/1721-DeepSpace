@@ -58,7 +58,7 @@ public class Robot extends TimedRobot {
     // Set lift slaves to follow master lift Talon
     RobotMap.liftVictor.follow(RobotMap.liftTalon);
     // Sensor for reading pressure values
-    RobotMap.pressureSensor = new AnalogInput(0);
+    RobotMap.pressureSensor = new AnalogInput(RobotMap.sensorPort);
     Pneumatics.initSensor(RobotMap.pressureSensor);
 
     //Set motor controlers to default
@@ -156,6 +156,9 @@ public class Robot extends TimedRobot {
     NetworkTableEntry ta = table.getEntry("ta");
     NetworkTableEntry tv = table.getEntry("tv");
 
+    // Set limelight to pipeline 1
+    table.getEntry("camMode").setNumber(1);
+
     // Read values periodically
     double x = tx.getDouble(0.0); // Horizontal error
     double y = ty.getDouble(0.0); // Vertical error
@@ -192,6 +195,7 @@ public class Robot extends TimedRobot {
 
   @Override
   public void autonomousInit() {
+
   }
 
   @Override
