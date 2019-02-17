@@ -157,7 +157,7 @@ public class Robot extends TimedRobot {
     NetworkTableEntry tv = table.getEntry("tv");
 
     // Set limelight to pipeline 1
-    table.getEntry("camMode").setNumber(1);
+    table.getEntry("camMode").setNumber(0);
 
     // Read values periodically
     double x = tx.getDouble(0.0); // Horizontal error
