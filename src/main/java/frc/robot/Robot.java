@@ -88,9 +88,9 @@ public class Robot extends TimedRobot {
      * neutral within this range. See Table here for units to use: 
      * https://github.com/CrossTheRoadElec/Phoenix-Documentation#what-are-the-units-of-my-sensor
      */
-    RobotMap.starboardMaster.configAllowableClosedloopError(0, Constants.kPIDLoopIdx, Constants.kTimeoutMs);
-    RobotMap.portMaster.configAllowableClosedloopError(0, Constants.kPIDLoopIdx, Constants.kTimeoutMs);
-    RobotMap.liftTalon.configAllowableClosedloopError(0, Constants.kPIDLoopIdx, Constants.kTimeoutMs);
+    RobotMap.starboardMaster.configAllowableClosedloopError(Constants.kPIDLoopIdx, 0, Constants.kTimeoutMs);
+    RobotMap.portMaster.configAllowableClosedloopError(Constants.kPIDLoopIdx, 0, Constants.kTimeoutMs);
+    RobotMap.liftTalon.configAllowableClosedloopError(Constants.kPIDLoopIdx, 0, Constants.kTimeoutMs);
 
     /* Config closed loop gains for Primary closed loop (Current) */
     RobotMap.starboardMaster.config_kP(Constants.kPIDLoopIdx, Constants.kGains.kP, Constants.kTimeoutMs);
@@ -208,19 +208,25 @@ public class Robot extends TimedRobot {
     if(RobotMap.operatorController.getRawButton(2)){
       NetworkTable table = NetworkTableInstance.getDefault().getTable("limelight");
       NetworkTableEntry ty = table.getEntry("ty");
+      NetworkTableEntry tx = table.getEntry("tx");
       double y = ty.getDouble(0.0); // Vertical error
+      double x = tx.getDouble(0.0);
       double distance = Mathematics.countDistance(y, Constants.heightOfLowTarget);
       SmartDashboard.putNumber("Distance", distance);
       double distanceError = Constants.targetDistance - distance;
       double errorPulses = Mathematics.calcPulses(distanceError);
       SmartDashboard.putNumber("Distance error", errorPulses);
+      double distanceAdjust = errorPulses / Constants.navigationTime;
+      double steeringAdjust = Constants.angularScaleUp * x;
 
       double testPulses = Mathematics.calcPulses(120);
 
-      RobotMap.starboardMaster.set(ControlMode.Position, 1 * errorPulses);
+      DriveTrain.flyWithWires(RobotMap.portMaster, RobotMap.starboardMaster, steeringAdjust, distanceAdjust);
+
+      /*RobotMap.starboardMaster.set(ControlMode.Position, -1 * errorPulses);
       SmartDashboard.putNumber("Starboard position", RobotMap.starboardMaster.getSelectedSensorPosition());
       RobotMap.portMaster.set(ControlMode.Position, 1 * errorPulses);
-      SmartDashboard.putNumber("Port position", RobotMap.portMaster.getSelectedSensorPosition());
+      SmartDashboard.putNumber("Port position", RobotMap.portMaster.getSelectedSensorPosition());*/
 
 
     }else{
