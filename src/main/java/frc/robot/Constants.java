@@ -26,24 +26,25 @@ public class Constants {
 	 * Gains used in Current Closed Loop, to be adjusted accordingly
      * Gains(kp, ki, kd, kf, izone, peak output);
      */
-	static final Gains kGains = new Gains(0.05
-	, 0.0, 0.0, 0.03103, 0, 1.0);
+	static final Gains kGains = new Gains(0.2, 0.0, 0.0, 0.03103, 0, 1.0);
 
     /** ---- Flat constants, you should not need to change these ---- */
 	/* We allow either a 0 or 1 when selecting a PID Index, where 0 is primary and 1 is auxiliary */
 	public final static int PID_PRIMARY = 0;
 	public final static int PID_TURN = 1;
 
-	public static final float angularScaleUp = 500f; // Scale-up for TX error
+	public static final double angularScaleUp = 250f; // Scale-up for TX error
 
 	public static final double heightOfCamera = 3.75; // Height of limelight camera in inches
 	public static final double cameraAngle = 10; // Mounting angle of limelight
-	public static final double heightOfTarget = 28; // Height of the center of the vision target
-	public static final double heightDifference = heightOfTarget - heightOfCamera; // Difference in height between camera and target
+	public static final double heightOfLowTarget = 29; // Height of the center of the vision target
+	public static final double heightOfHighTarget = 33;
+	public static final double lowHeightDifference = heightOfLowTarget - heightOfCamera; // Difference in height between camera and hatch target
+	public static final double highHeightDifference = heightOfHighTarget - heightOfCamera;
 
 	public static final double targetDistance = 60; // Target distance for auto to navigate to
 
-	public static final double distanceP = 1.6;
+	public static final double distanceScaleUp = 6;
 	
 	public static final double speedDampener = 1; // Dampener on speed while driving
 

@@ -32,7 +32,7 @@ public class DriveTrain extends Subsystem {
 
   /** Drive using two TalonSRX and adjustment values for horizontal and distance correction */
   public static void flyWithWires(TalonSRX starboard, TalonSRX port, double heading, double throttle){
-      starboard.set(ControlMode.Velocity, -1 * heading - throttle); // Set the starboard drivetrain motor to the steering power requirement added to the base speed
-      port.set(ControlMode.Velocity, -1 * heading + throttle); // Does the same but on the other side
+      starboard.set(ControlMode.Velocity, -1 * heading + throttle); // Set the starboard drivetrain motor to the steering power requirement added to the base speed
+      port.set(ControlMode.Velocity, -1 * heading - throttle); // Does the same but on the other side
   }
 }
