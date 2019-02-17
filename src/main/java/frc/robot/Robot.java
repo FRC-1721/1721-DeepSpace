@@ -158,7 +158,7 @@ public class Robot extends TimedRobot {
     NetworkTableEntry tv = table.getEntry("tv");
 
     // Set limelight to pipeline 1
-    table.getEntry("camMode").setNumber(1);
+    table.getEntry("camMode").setNumber(0);
 
     // Read values periodically
     double x = tx.getDouble(0.0); // Horizontal error
@@ -206,11 +206,23 @@ public class Robot extends TimedRobot {
   public void autonomousPeriodic() {
     Scheduler.getInstance().run();
     if(RobotMap.operatorController.getRawButton(2)){
-      RobotMap.starboardMaster.set(ControlMode.Position, Mathematics.calcPulses(Constants.targetDistance));
+      NetworkTable table = NetworkTableInstance.getDefault().getTable("limelight");
+      NetworkTableEntry ty = table.getEntry("ty");
+      double y = ty.getDouble(0.0); // Vertical error
+      double distance = Mathematics.countDistance(y, Constants.heightOfLowTarget);
+      SmartDashboard.putNumber("Distance", distance);
+      double distanceError = Constants.targetDistance - distance;
+      double errorPulses = Mathematics.calcPulses(distanceError);
+      SmartDashboard.putNumber("Distance error", errorPulses);
+      RobotMap.starboardMaster.set(ControlMode.Position, errorPulses);
       SmartDashboard.putNumber("Starboard position", RobotMap.starboardMaster.getSelectedSensorPosition());
-      RobotMap.portMaster.set(ControlMode.Position, -1 * Mathematics.calcPulses(Constants.targetDistance));
+      RobotMap.portMaster.set(ControlMode.Position, -1 * errorPulses);
       SmartDashboard.putNumber("Port position", RobotMap.portMaster.getSelectedSensorPosition());
+
+
     }else{
+      RobotMap.portMaster.setSelectedSensorPosition(0, Constants.kPIDLoopIdx, Constants.kTimeoutMs);
+    RobotMap.starboardMaster.setSelectedSensorPosition(0, Constants.kPIDLoopIdx, Constants.kTimeoutMs);
       RobotMap.starboardMaster.set(ControlMode.PercentOutput, 0);
       RobotMap.portMaster.set(ControlMode.PercentOutput, 0);
     }

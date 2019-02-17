@@ -42,12 +42,13 @@ public class Constants {
 	public static final float angularScaleUp = 200f; // Scale-up for TX error
 	public static final double distanceP = 1.5;
 
-	public static final double heightOfCamera = 41.6; // Height of limelight camera in inches
-	public static final double cameraAngle = 5; // Mounting angle of limelight
-	public static final double heightOfLowTarget = 18.3775; // Height of the center of the low vision target
+	public static final double heightOfCamera = 44.7; //41.6; // Height of limelight camera in inches
+	public static final double cameraAngle = 71.33; //71.7; // Mounting angle of limelight
+	public static final double heightOfLowTarget = 29; // Height of the center of the low vision target
 	public static final double heightOfHighTarget = 35.96; // Height of the center of the high vision target
 
-	public static final double targetDistance = 120; // Target distance for auto to navigate to
+	public static final double frameOffset = 10;
+	public static final double targetDistance = 72 + frameOffset; // Target distance for auto to navigate to
 	
 	public static final double turnDampener = 0.8; // Dampener on yaw while driving
 
