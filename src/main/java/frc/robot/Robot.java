@@ -138,7 +138,7 @@ public class Robot extends TimedRobot {
     Pneumatics.shiftGears(RobotMap.gearShiftStick, 0.5, 1, RobotMap.gearShifter);
 
     // Raise/lower the lift with A, B, X, and Y - see RobotMap or button layout diagram
-    Lift.raiseLift(RobotMap.liftTalon, RobotMap.operatorController);
+    // Lift.raiseLift(RobotMap.liftTalon, RobotMap.operatorController);
 
     // Manually overrides the lift for control with LEFT STICK when START is held
     Lift.manualOverride(RobotMap.operatorController, RobotMap.liftOverrideButton, RobotMap.liftOverrideAxis, RobotMap.liftTalon);

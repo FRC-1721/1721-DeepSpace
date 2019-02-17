@@ -49,11 +49,15 @@ public class Lift extends Subsystem {
   /** Overrides the lift PID for manual control with an axis while a button is held - be sure to
    * return lift to position zero when done */
   public static void manualOverride(Joystick controller, int button, int axis, TalonSRX lift){
+    double throttle = -0.75 * controller.getRawAxis(axis);
     if(controller.getRawButton(button)){
-      double throttle = -0.4 * controller.getRawAxis(axis);
-      lift.set(ControlMode.PercentOutput, throttle);
-    }else if(controller.getRawAxis(axis) != 0){
-      lift.set(ControlMode.PercentOutput, 0);
+      if(throttle >= 0.175){
+        lift.set(ControlMode.PercentOutput, throttle);
+      }else{
+        lift.set(ControlMode.PercentOutput, throttle / 2);
+      }
+    }else{// if(lift.getMotorOutputPercent() < 0.175){
+      lift.set(ControlMode.PercentOutput, 0.175);
     }
   }
 }
