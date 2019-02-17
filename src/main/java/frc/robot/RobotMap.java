@@ -70,6 +70,7 @@ public class RobotMap {
   public static int trackLowButton = 5; // LB to track hatch target
   public static int trackHighButton = 6; // RB to track cargo target
   public static int liftOverrideButton = 12; // RIGHT STICK DOWN to enable manual lift override
+
   public static int liftOverrideAxis = 3; // RIGHT STICK to control manual lift override
   public static int intakeSpinAxis = 1; // LEFT STICK to spin the intake
 
@@ -77,7 +78,7 @@ public class RobotMap {
   public static int inAngle = 180; // Straight down to fold intake in
   public static int outAngle = 0; // Straight up to fold intake out
 
-  // Sensors
+  // Sensor information
   public static AnalogInput pressureSensor; // Displays current pressure
   public static int sensorPort = 0; // RoboRIO port for pressure sensor
 
