@@ -142,6 +142,7 @@ public class Robot extends TimedRobot {
       double distanceDifference = Mathematics.calcPulses(Constants.targetDistance) - Mathematics.calcPulses(currentDistance); // Difference in distance (error)
       double distanceAdjust = distanceDifference / Constants.navigationTime; // Calculates a distance adjustment based on error
       double steeringAdjust = Constants.angularScaleUp * x; // Creates a side-to-side adjustment based on error
+      SmartDashboard.putNumber("steering adjust", steeringAdjust);
       SmartDashboard.putNumber("Distance adjust", distanceAdjust);
       DriveTrain.flyWithWires(RobotMap.starboardMaster, RobotMap.portMaster, steeringAdjust, distanceAdjust * Constants.distanceP); // Drive using adjustment values
     }else{
