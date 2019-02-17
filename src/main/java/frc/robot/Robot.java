@@ -1,5 +1,6 @@
 package frc.robot;
 
+import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.VictorSPX;
@@ -132,10 +133,10 @@ public class Robot extends TimedRobot {
   public void robotPeriodic() {
 
     // Compress automatically
-    RobotMap.cp.setClosedLoopControl(true);
+    RobotMap.cp.setClosedLoopControl(false);
 
     // Shift gears using a third dedicated joystick (small black one)
-    Pneumatics.shiftGears(RobotMap.gearShiftStick, 0.5, 1, RobotMap.gearShifter);
+    /**Pneumatics.shiftGears(RobotMap.gearShiftStick, 0.5, 1, RobotMap.gearShifter);
 
     // Raise/lower the lift with A, B, X, and Y - see RobotMap or button layout diagram
     Lift.raiseLift(RobotMap.liftTalon, RobotMap.operatorController);
@@ -182,6 +183,8 @@ public class Robot extends TimedRobot {
     SmartDashboard.putNumber("LimelightY", y); // Vertical error
     SmartDashboard.putNumber("LimelightArea", area); // Area of limelight target
     SmartDashboard.putNumber("Current pressure", pressure); // Stored pressure
+
+    */
   }
 
   @Override
@@ -195,12 +198,22 @@ public class Robot extends TimedRobot {
 
   @Override
   public void autonomousInit() {
-
+    RobotMap.portMaster.setSelectedSensorPosition(0, Constants.kPIDLoopIdx, Constants.kTimeoutMs);
+    RobotMap.starboardMaster.setSelectedSensorPosition(0, Constants.kPIDLoopIdx, Constants.kTimeoutMs);
   }
 
   @Override
   public void autonomousPeriodic() {
     Scheduler.getInstance().run();
+    if(RobotMap.operatorController.getRawButton(2)){
+      RobotMap.starboardMaster.set(ControlMode.Position, Mathematics.calcPulses(Constants.targetDistance));
+      SmartDashboard.putNumber("Starboard position", RobotMap.starboardMaster.getSelectedSensorPosition());
+      RobotMap.portMaster.set(ControlMode.Position, -1 * Mathematics.calcPulses(Constants.targetDistance));
+      SmartDashboard.putNumber("Port position", RobotMap.portMaster.getSelectedSensorPosition());
+    }else{
+      RobotMap.starboardMaster.set(ControlMode.PercentOutput, 0);
+      RobotMap.portMaster.set(ControlMode.PercentOutput, 0);
+    }
   } 
 
   @Override

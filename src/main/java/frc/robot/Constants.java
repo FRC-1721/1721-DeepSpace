@@ -26,7 +26,7 @@ public class Constants {
 	 * Gains used in Current Closed Loop, to be adjusted accordingly
      * Gains(kp, ki, kd, kf, izone, peak output);
      */
-	static final Gains kGains = new Gains(0.05, 0.0, 0.0, 0.03103, 0, 1.0);
+	static final Gains kGains = new Gains(0.025, 0.00001, 0.005, 0.0, 1, 1.0);
 
     /** ---- Flat constants, you should not need to change these ---- */
 	/* We allow either a 0 or 1 when selecting a PID Index, where 0 is primary and 1 is auxiliary */
@@ -58,6 +58,8 @@ public class Constants {
 	public static final double wheelCircumference = 12.56; // Circumference of drive wheels
 
 	public static final double navigationTime = 30; // Time allotted to navigate to target, in hundreds of milliseconds
+
+	public static final double pulsesPerInch = 1450.97;
 
 	// Heights and distances of targets on the rocket
 	public static final double hatchTargetHeight = 0; // Height in pulses of the lowest hatch target
