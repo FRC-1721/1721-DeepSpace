@@ -6,9 +6,10 @@ public class Mathematics {
     /**  Takes an angle in degrees and calculates a distance in inches
 	@return Distance in inches */
 	public static double countDistance(double angle, double heightOfTarget){
-		double baseAngleRad = Math.toRadians(Constants.cameraAngle + angle); // Convert total camera angle to radians
+		double heightDifference = Constants.heightOfCamera - heightOfTarget;
+		double baseAngleRad = calibrate(Constants.calibrationDistance, heightDifference) + Math.toRadians(angle); // Convert total camera angle to radians
 		double baseAngleTangent = Math.tan(baseAngleRad); // Take the tangent of total angle
-		double returnValue = (Constants.heightOfCamera - heightOfTarget) * baseAngleTangent; // Divide to calculate distance
+		double returnValue = heightDifference * baseAngleTangent; // Divide to calculate distance
 		return returnValue; // Returns current distance in inches
 	}
 	
@@ -18,5 +19,10 @@ public class Mathematics {
 	public static double calcPulses(double targetDistance){
 		double pulses = targetDistance * Constants.pulsesPerInch;
 		return pulses;
+	}
+
+	public static double calibrate(double distance, double heightDifference){
+		double inverseTangent = Math.atan(distance / heightDifference);
+		return inverseTangent;
 	}
 }

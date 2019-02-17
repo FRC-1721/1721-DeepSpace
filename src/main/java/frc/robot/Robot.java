@@ -174,9 +174,9 @@ public class Robot extends TimedRobot {
     }else if(RobotMap.operatorController.getRawButton(RobotMap.trackHighButton) && hasTarget == 1){
       LimeLight.trackTarget(Constants.heightOfHighTarget, x, y);
       Lift.raiseLift(RobotMap.liftTalon, RobotMap.operatorController);
-    }else{
+    }else{ */
       DriveTrain.flyByWire(RobotMap.starboardMaster, RobotMap.portMaster, RobotMap.driverStick, RobotMap.gearShifter); // Drive using joystick
-    }
+  /*}
 
     // Post to smart dashboard periodically
     SmartDashboard.putNumber("LimelightX", x); // Horizontal error
@@ -214,15 +214,18 @@ public class Robot extends TimedRobot {
       double distanceError = Constants.targetDistance - distance;
       double errorPulses = Mathematics.calcPulses(distanceError);
       SmartDashboard.putNumber("Distance error", errorPulses);
-      RobotMap.starboardMaster.set(ControlMode.Position, errorPulses);
+
+      double testPulses = Mathematics.calcPulses(120);
+
+      RobotMap.starboardMaster.set(ControlMode.Position, 1 * errorPulses);
       SmartDashboard.putNumber("Starboard position", RobotMap.starboardMaster.getSelectedSensorPosition());
-      RobotMap.portMaster.set(ControlMode.Position, -1 * errorPulses);
+      RobotMap.portMaster.set(ControlMode.Position, 1 * errorPulses);
       SmartDashboard.putNumber("Port position", RobotMap.portMaster.getSelectedSensorPosition());
 
 
     }else{
       RobotMap.portMaster.setSelectedSensorPosition(0, Constants.kPIDLoopIdx, Constants.kTimeoutMs);
-    RobotMap.starboardMaster.setSelectedSensorPosition(0, Constants.kPIDLoopIdx, Constants.kTimeoutMs);
+      RobotMap.starboardMaster.setSelectedSensorPosition(0, Constants.kPIDLoopIdx, Constants.kTimeoutMs);
       RobotMap.starboardMaster.set(ControlMode.PercentOutput, 0);
       RobotMap.portMaster.set(ControlMode.PercentOutput, 0);
     }
