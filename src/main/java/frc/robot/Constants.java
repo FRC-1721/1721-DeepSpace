@@ -27,7 +27,7 @@ public class Constants {
      * Gains(kp, ki, kd, kf, izone, peak output);
      */
 
-	static final Gains kGains = new Gains(0.0226, 0.000001, 0.55, 0.0, 0, 1.0); //0.025, 0.00001, 0.005, 0.0, 1, 1.0
+	static final Gains kGains = new Gains(0.027, 0.000001, 0.82, 0.0, 0, 1.0); //0.025, 0.00001, 0.005, 0.0, 1, 1.0
 
 
     /** ---- Flat constants, you should not need to change these ---- */
@@ -41,7 +41,7 @@ public class Constants {
 	public static final double liftF = 0.0;
 	public static final int liftIZone = 0;
 
-	public static final float angularScaleUp = 350f; // Scale-up for TX error
+	public static final double angularScaleUp = 450; // Scale-up for TX error
 	public static final double distanceP = 1.5;
 
 	public static final double heightOfCamera = 40.5; //41.6; // Height of limelight camera in inches
@@ -51,18 +51,17 @@ public class Constants {
 	public static final double heightOfHighTarget = 35.96; // Height of the center of the high vision target
 
 	public static final double lowHeightDifference = heightOfCamera - heightOfLowTarget;
-
+	public static final double highHeightDifference = heightOfCamera - heightOfHighTarget;
 
 	public static final double distanceScaleUp = 5;
 
 	public static final double frameOffset = 10;
-	public static final double targetDistance = 1 + frameOffset; // Target distance for auto to navigate to
+	public static final double lowTargetDistance = 6 + frameOffset; // Target distance for auto to navigate to
+	public static final double highTargetDistance = 55 + frameOffset;
 	public static final double calibrationDistance = 30;
 
 	
 	public static final double turnDampener = 0.8; // Dampener on yaw while driving
-
-	public static final double distanceScaleUp = 3;
 
 	public static final double maxSpeed = 32960; // Max speed for encoders, in pulses
 

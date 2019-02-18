@@ -17,7 +17,6 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Lift;
-import frc.robot.subsystems.LimeLight;
 import frc.robot.subsystems.Pneumatics;
 
 /** Final resting places for control functions - this is where it all comes together */
@@ -169,7 +168,16 @@ public class Robot extends TimedRobot {
     if(RobotMap.operatorController.getRawButton(1) && hasTarget == 1.0){
       double currentDistance = Mathematics.countDistance(y, Constants.lowHeightDifference); // Distance from target
       SmartDashboard.putNumber("Current distance", currentDistance);
-      double distanceDifference = Mathematics.calcPulses(Constants.targetDistance) - Mathematics.calcPulses(currentDistance); // Difference in distance (error)
+      double distanceDifference = Mathematics.calcPulses(Constants.lowTargetDistance) - Mathematics.calcPulses(currentDistance); // Difference in distance (error)
+      double distanceAdjust = distanceDifference / Constants.navigationTime; // Calculates a distance adjustment based on error
+      double steeringAdjust = Constants.angularScaleUp * x; // Creates a side-to-side adjustment based on error
+      SmartDashboard.putNumber("steering adjust", steeringAdjust);
+      SmartDashboard.putNumber("Distance adjust", distanceAdjust);
+      DriveTrain.flyWithWires(RobotMap.starboardMaster, RobotMap.portMaster, steeringAdjust, distanceAdjust * Constants.distanceScaleUp); // Drive using adjustment values
+    }else if(RobotMap.operatorController.getRawButton(2) && hasTarget == 1.0){
+      double currentDistance = Mathematics.countDistance(y, Constants.lowHeightDifference); // Distance from target
+      SmartDashboard.putNumber("Current distance", currentDistance);
+      double distanceDifference = Mathematics.calcPulses(Constants.highTargetDistance) - Mathematics.calcPulses(currentDistance); // Difference in distance (error)
       double distanceAdjust = distanceDifference / Constants.navigationTime; // Calculates a distance adjustment based on error
       double steeringAdjust = Constants.angularScaleUp * x; // Creates a side-to-side adjustment based on error
       SmartDashboard.putNumber("steering adjust", steeringAdjust);

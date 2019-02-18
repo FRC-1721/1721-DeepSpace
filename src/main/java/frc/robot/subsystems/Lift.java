@@ -56,8 +56,8 @@ public class Lift extends Subsystem {
       }else{
         lift.set(ControlMode.PercentOutput, throttle / 2);
       }
-    }else{// if(lift.getMotorOutputPercent() < 0.175){
-      lift.set(ControlMode.PercentOutput, 0.175);
+    }else{
+      lift.set(ControlMode.PercentOutput, 0);
     }
   }
 }
