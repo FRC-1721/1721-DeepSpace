@@ -47,9 +47,13 @@ public class Constants {
 	public static final double heightOfLowTarget = 33; // Height of the center of the low vision target
 	public static final double heightOfHighTarget = 35.96; // Height of the center of the high vision target
 
+	public static final double lowHeightDifference = heightOfCamera - heightOfLowTarget;
+
 	public static final double targetDistance = 60; // Target distance for auto to navigate to
 	
 	public static final double turnDampener = 0.8; // Dampener on yaw while driving
+
+	public static final double distanceScaleUp = 3;
 
 	public static final double maxSpeed = 32960; // Max speed for encoders, in pulses
 

@@ -167,16 +167,15 @@ public class Robot extends TimedRobot {
     double pressure = Pneumatics.calcPressure(RobotMap.pressureSensor, 5); // Current stored pressure in tanks
 
     // PID navigation to limelight target when LB is held for hatches, or RB for cargo
-    if(RobotMap.operatorController.getRawButton(RobotMap.trackLowButton) && hasTarget == 1){
-      LimeLight.trackTarget(Constants.heightOfLowTarget, x, y);
-      Lift.raiseLift(RobotMap.liftTalon, RobotMap.operatorController);
-    }else if(RobotMap.operatorController.getRawButton(RobotMap.trackHighButton) && hasTarget == 1){
-      LimeLight.trackTarget(Constants.heightOfHighTarget, x, y);
-      Lift.raiseLift(RobotMap.liftTalon, RobotMap.operatorController);
-    }else{
-      DriveTrain.flyByWire(RobotMap.starboardMaster, RobotMap.portMaster, RobotMap.driverStick, RobotMap.gearShifter); // Drive using joystick
+    if(RobotMap.operatorController.getRawButton(RobotMap.trackHighButton) && hasTarget == 1.0){
+      double currentDistance = Mathematics.countDistance(y, Constants.lowHeightDifference); // Distance from target
+      double distanceDifference = Mathematics.calcPulses(Constants.targetDistance) - Mathematics.calcPulses(currentDistance); // Difference in distance (error)
+      double distanceAdjust = distanceDifference / Constants.navigationTime; // Calculates a distance adjustment based on error
+      double steeringAdjust = Constants.angularScaleUp * x; // Creates a side-to-side adjustment based on error
+      SmartDashboard.putNumber("steering adjust", steeringAdjust);
+      SmartDashboard.putNumber("Distance adjust", distanceAdjust);
+      DriveTrain.flyWithWires(RobotMap.starboardMaster, RobotMap.portMaster, steeringAdjust, distanceAdjust * Constants.distanceScaleUp); // Drive using adjustment values
     }
-
     // Post to smart dashboard periodically
     SmartDashboard.putNumber("LimelightX", x); // Horizontal error
     SmartDashboard.putNumber("LimelightY", y); // Vertical error
