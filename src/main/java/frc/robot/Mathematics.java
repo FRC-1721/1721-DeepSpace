@@ -17,7 +17,8 @@ public class Mathematics {
 	@return Encoder pulses
 	*/
 	public static double calcPulses(double targetDistance){
-		double pulses = targetDistance * Constants.pulsesPerInch;
+		double revs = targetDistance / Constants.wheelCircumference;
+		double pulses = revs * Constants.pulsesPerRev;
 		return pulses;
 	}
 

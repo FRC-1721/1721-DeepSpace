@@ -1,6 +1,5 @@
 package frc.robot;
 
-import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.VictorSPX;
@@ -88,9 +87,9 @@ public class Robot extends TimedRobot {
      * neutral within this range. See Table here for units to use: 
      * https://github.com/CrossTheRoadElec/Phoenix-Documentation#what-are-the-units-of-my-sensor
      */
-    RobotMap.starboardMaster.configAllowableClosedloopError(Constants.kPIDLoopIdx, 0, Constants.kTimeoutMs);
-    RobotMap.portMaster.configAllowableClosedloopError(Constants.kPIDLoopIdx, 0, Constants.kTimeoutMs);
-    RobotMap.liftTalon.configAllowableClosedloopError(Constants.kPIDLoopIdx, 0, Constants.kTimeoutMs);
+    RobotMap.starboardMaster.configAllowableClosedloopError(0, Constants.kPIDLoopIdx, Constants.kTimeoutMs);
+    RobotMap.portMaster.configAllowableClosedloopError(0, Constants.kPIDLoopIdx, Constants.kTimeoutMs);
+    RobotMap.liftTalon.configAllowableClosedloopError(0, Constants.kPIDLoopIdx, Constants.kTimeoutMs);
 
     /* Config closed loop gains for Primary closed loop (Current) */
     RobotMap.starboardMaster.config_kP(Constants.kPIDLoopIdx, Constants.kGains.kP, Constants.kTimeoutMs);
@@ -133,13 +132,13 @@ public class Robot extends TimedRobot {
   public void robotPeriodic() {
 
     // Compress automatically
-    RobotMap.cp.setClosedLoopControl(false);
+    RobotMap.cp.setClosedLoopControl(true);
 
     // Shift gears using a third dedicated joystick (small black one)
-    /**Pneumatics.shiftGears(RobotMap.gearShiftStick, 0.5, 1, RobotMap.gearShifter);
+    Pneumatics.shiftGears(RobotMap.gearShiftStick, 0.5, 1, RobotMap.gearShifter);
 
     // Raise/lower the lift with A, B, X, and Y - see RobotMap or button layout diagram
-    Lift.raiseLift(RobotMap.liftTalon, RobotMap.operatorController);
+    // Lift.raiseLift(RobotMap.liftTalon, RobotMap.operatorController);
 
     // Manually overrides the lift for control with LEFT STICK when START is held
     Lift.manualOverride(RobotMap.operatorController, RobotMap.liftOverrideButton, RobotMap.liftOverrideAxis, RobotMap.liftTalon);
@@ -174,17 +173,15 @@ public class Robot extends TimedRobot {
     }else if(RobotMap.operatorController.getRawButton(RobotMap.trackHighButton) && hasTarget == 1){
       LimeLight.trackTarget(Constants.heightOfHighTarget, x, y);
       Lift.raiseLift(RobotMap.liftTalon, RobotMap.operatorController);
-    }else{ */
+    }else{
       DriveTrain.flyByWire(RobotMap.starboardMaster, RobotMap.portMaster, RobotMap.driverStick, RobotMap.gearShifter); // Drive using joystick
-  /*}
+    }
 
     // Post to smart dashboard periodically
     SmartDashboard.putNumber("LimelightX", x); // Horizontal error
     SmartDashboard.putNumber("LimelightY", y); // Vertical error
     SmartDashboard.putNumber("LimelightArea", area); // Area of limelight target
     SmartDashboard.putNumber("Current pressure", pressure); // Stored pressure
-
-    */
   }
 
   @Override
@@ -198,43 +195,12 @@ public class Robot extends TimedRobot {
 
   @Override
   public void autonomousInit() {
-    RobotMap.portMaster.setSelectedSensorPosition(0, Constants.kPIDLoopIdx, Constants.kTimeoutMs);
-    RobotMap.starboardMaster.setSelectedSensorPosition(0, Constants.kPIDLoopIdx, Constants.kTimeoutMs);
+
   }
 
   @Override
   public void autonomousPeriodic() {
     Scheduler.getInstance().run();
-    if(RobotMap.operatorController.getRawButton(2)){
-      NetworkTable table = NetworkTableInstance.getDefault().getTable("limelight");
-      NetworkTableEntry ty = table.getEntry("ty");
-      NetworkTableEntry tx = table.getEntry("tx");
-      double y = ty.getDouble(0.0); // Vertical error
-      double x = tx.getDouble(0.0);
-      double distance = Mathematics.countDistance(y, Constants.heightOfLowTarget);
-      SmartDashboard.putNumber("Distance", distance);
-      double distanceError = Constants.targetDistance - distance;
-      double errorPulses = Mathematics.calcPulses(distanceError);
-      SmartDashboard.putNumber("Distance error", errorPulses);
-      double distanceAdjust = errorPulses / Constants.navigationTime;
-      double steeringAdjust = Constants.angularScaleUp * x;
-
-      double testPulses = Mathematics.calcPulses(120);
-
-      DriveTrain.flyWithWires(RobotMap.portMaster, RobotMap.starboardMaster, steeringAdjust, distanceAdjust);
-
-      /*RobotMap.starboardMaster.set(ControlMode.Position, -1 * errorPulses);
-      SmartDashboard.putNumber("Starboard position", RobotMap.starboardMaster.getSelectedSensorPosition());
-      RobotMap.portMaster.set(ControlMode.Position, 1 * errorPulses);
-      SmartDashboard.putNumber("Port position", RobotMap.portMaster.getSelectedSensorPosition());*/
-
-
-    }else{
-      RobotMap.portMaster.setSelectedSensorPosition(0, Constants.kPIDLoopIdx, Constants.kTimeoutMs);
-      RobotMap.starboardMaster.setSelectedSensorPosition(0, Constants.kPIDLoopIdx, Constants.kTimeoutMs);
-      RobotMap.starboardMaster.set(ControlMode.PercentOutput, 0);
-      RobotMap.portMaster.set(ControlMode.PercentOutput, 0);
-    }
   } 
 
   @Override
