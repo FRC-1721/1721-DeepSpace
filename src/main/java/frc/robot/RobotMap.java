@@ -63,14 +63,13 @@ public class RobotMap {
   // Button/axis numbers on controller
   public static int irisExpandButton = 7; // LT to open/close the iris
   public static int irisExtendButton = 8; // RT to push/pull the iris
-  public static int cargoModeButton = 2; // B to move lift to the height of the first cargo target
-  public static int hatchModeButton = 1; // A to move lift to the height of the first hatch target (zero)
-  public static int upOneButton = 3; // X to move lift up one target
+  public static int cargoModeButton = 3; // B to move lift to the height of the first cargo target
+  public static int hatchModeButton = 2; // A to move lift to the height of the first hatch target (zero)
+  public static int upOneButton = 1; // X to move lift up one target
   public static int upTwoButton = 4; // Y to move lift up two targets
   public static int trackLowButton = 5; // LB to track hatch target
   public static int trackHighButton = 6; // RB to track cargo target
   public static int liftOverrideButton = 12; // RIGHT STICK DOWN to enable manual lift override
-
   public static int liftOverrideAxis = 3; // RIGHT STICK to control manual lift override
   public static int intakeSpinAxis = 1; // LEFT STICK to spin the intake
 
