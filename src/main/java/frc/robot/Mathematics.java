@@ -21,8 +21,12 @@ public class Mathematics {
 		return pulses;
 	}
 
-	public static double calibrate(double distance, double heightDifference){
-		double inverseTangent = Math.atan(distance / heightDifference);
+	/** Uses a calibration distance and the height difference between camera and limelight to calibrate the
+	pseudo-mounting angle
+	@return Effective angle for current distance calculations
+	*/
+	public static double calibrate(double calibrationDistance, double heightDifference){
+		double inverseTangent = Math.atan(calibrationDistance / heightDifference);
 		return inverseTangent;
 	}
 }
