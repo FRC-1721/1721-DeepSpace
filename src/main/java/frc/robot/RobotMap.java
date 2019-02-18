@@ -80,7 +80,7 @@ public class RobotMap {
 
   // Sensor information
   public static AnalogInput pressureSensor; // Displays current pressure
-  public static int sensorPort = 0; // RoboRIO port for pressure sensor
+  public static int sensorPort = 1; // RoboRIO port for pressure sensor
 
   // Subsystem booleans
   public static boolean hatchMode; // Dictates whether lift is in "hatch mode"

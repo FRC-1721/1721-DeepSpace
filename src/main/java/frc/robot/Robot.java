@@ -178,7 +178,6 @@ public class Robot extends TimedRobot {
     }else{
       DriveTrain.flyByWire(RobotMap.starboardMaster, RobotMap.portMaster, RobotMap.driverStick, RobotMap.gearShifter); // Drive using joystick when A is not held
     }
-
     // Post to smart dashboard periodically
     SmartDashboard.putNumber("LimelightX", x); // Horizontal error
     SmartDashboard.putNumber("LimelightY", y); // Vertical error

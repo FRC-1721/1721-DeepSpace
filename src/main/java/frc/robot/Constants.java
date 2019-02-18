@@ -26,7 +26,9 @@ public class Constants {
 	 * Gains used in Current Closed Loop, to be adjusted accordingly
      * Gains(kp, ki, kd, kf, izone, peak output);
      */
+
 	static final Gains kGains = new Gains(0.0226, 0.000001, 0.55, 0.0, 0, 1.0); //0.025, 0.00001, 0.005, 0.0, 1, 1.0
+
 
     /** ---- Flat constants, you should not need to change these ---- */
 	/* We allow either a 0 or 1 when selecting a PID Index, where 0 is primary and 1 is auxiliary */
@@ -45,17 +47,22 @@ public class Constants {
 	public static final double heightOfCamera = 40.5; //41.6; // Height of limelight camera in inches
 	public static final double cameraAngle = 71.33; //71.7; // Mounting angle of limelight
 	public static final double heightOfLowTarget = 28.574; // Height of the center of the low vision target
+
 	public static final double heightOfHighTarget = 35.96; // Height of the center of the high vision target
 
 	public static final double lowHeightDifference = heightOfCamera - heightOfLowTarget;
+
 
 	public static final double distanceScaleUp = 5;
 
 	public static final double frameOffset = 10;
 	public static final double targetDistance = 1 + frameOffset; // Target distance for auto to navigate to
 	public static final double calibrationDistance = 30;
+
 	
 	public static final double turnDampener = 0.8; // Dampener on yaw while driving
+
+	public static final double distanceScaleUp = 3;
 
 	public static final double maxSpeed = 32960; // Max speed for encoders, in pulses
 
