@@ -9,6 +9,7 @@ import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.Compressor;
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.TimedRobot;
@@ -21,6 +22,7 @@ import frc.robot.subsystems.Pneumatics;
 
 /** Final resting places for control functions - this is where it all comes together */
 public class Robot extends TimedRobot {
+ 
 
   public static OI m_oi;
 
@@ -59,6 +61,7 @@ public class Robot extends TimedRobot {
     // Sensor for reading pressure values
     RobotMap.pressureSensor = new AnalogInput(RobotMap.sensorPort);
     Pneumatics.initSensor(RobotMap.pressureSensor);
+    RobotMap.minExtension = new DigitalInput(RobotMap.limitSwitchPort);
 
     //Set motor controlers to default
     RobotMap.starboardMaster.configFactoryDefault();
@@ -136,12 +139,12 @@ public class Robot extends TimedRobot {
     // Shift gears using a third dedicated joystick (small black one)
     Pneumatics.shiftGears(RobotMap.gearShiftStick, 0.5, 1, RobotMap.gearShifter);
 
-    // Raise/lower the lift with A, B, X, and Y - see RobotMap or button layout diagram
-    // Lift.raiseLift(RobotMap.liftTalon, RobotMap.operatorController);
+    // Zero the lift with the limit switch
+    Lift.zeroLift(RobotMap.liftTalon, RobotMap.minExtension);
 
     // Manually overrides the lift for control with LEFT STICK when START is held
     Lift.manualOverride(RobotMap.operatorController, RobotMap.liftOverrideButton, RobotMap.liftOverrideAxis, RobotMap.liftTalon);
-
+    
     // Spin the intake wheels using RIGHT STICK Y-axis
     Intake.spin(RobotMap.operatorController, RobotMap.intakeSpinAxis, RobotMap.cargoIntakeWheels);
 
@@ -155,7 +158,7 @@ public class Robot extends TimedRobot {
     NetworkTableEntry ta = table.getEntry("ta");
     NetworkTableEntry tv = table.getEntry("tv");
 
-    // Set limelight to pipeline 1
+    // Set limelight to pipeline 0
     table.getEntry("camMode").setNumber(0);
 
     // Read values periodically
@@ -165,8 +168,9 @@ public class Robot extends TimedRobot {
     double hasTarget = tv.getDouble(0.0); // Whether or not the limelight has a target - 0 for no, 1.0 for yes
     double pressure = Pneumatics.calcPressure(RobotMap.pressureSensor, 5); // Current stored pressure in tanks
 
-    if(RobotMap.operatorController.getRawButton(1) && hasTarget == 1.0){
-      double currentDistance = Mathematics.countDistance(y, Constants.lowHeightDifference); // Distance from target
+    // Vision tracking with 7 and 8 on the drive stick
+    if(RobotMap.driverStick.getRawButton(RobotMap.trackLowButton) && hasTarget == 1.0){
+      double currentDistance = Mathematics.countDistance(y, Constants.heightDifference); // Distance from target
       SmartDashboard.putNumber("Current distance", currentDistance);
       double distanceDifference = Mathematics.calcPulses(Constants.lowTargetDistance) - Mathematics.calcPulses(currentDistance); // Difference in distance (error)
       double distanceAdjust = distanceDifference / Constants.navigationTime; // Calculates a distance adjustment based on error
@@ -174,8 +178,8 @@ public class Robot extends TimedRobot {
       SmartDashboard.putNumber("steering adjust", steeringAdjust);
       SmartDashboard.putNumber("Distance adjust", distanceAdjust);
       DriveTrain.flyWithWires(RobotMap.starboardMaster, RobotMap.portMaster, steeringAdjust, distanceAdjust * Constants.distanceScaleUp); // Drive using adjustment values
-    }else if(RobotMap.operatorController.getRawButton(2) && hasTarget == 1.0){
-      double currentDistance = Mathematics.countDistance(y, Constants.lowHeightDifference); // Distance from target
+    }else if(RobotMap.driverStick.getRawButton(RobotMap.trackHighButton) && hasTarget == 1.0){
+      double currentDistance = Mathematics.countDistance(y, Constants.heightDifference); // Distance from target
       SmartDashboard.putNumber("Current distance", currentDistance);
       double distanceDifference = Mathematics.calcPulses(Constants.highTargetDistance) - Mathematics.calcPulses(currentDistance); // Difference in distance (error)
       double distanceAdjust = distanceDifference / Constants.navigationTime; // Calculates a distance adjustment based on error
@@ -204,12 +208,20 @@ public class Robot extends TimedRobot {
 
   @Override
   public void autonomousInit() {
-
+    
   }
 
   @Override
   public void autonomousPeriodic() {
     Scheduler.getInstance().run();
+    /*double targetPos = 48 * Constants.pulsesPerLiftInch;
+    if(RobotMap.operatorController.getRawButton(2)){
+      RobotMap.liftTalon.set(ControlMode.Position, targetPos);
+    }else if(RobotMap.operatorController.getRawButton(1)){
+      RobotMap.liftTalon.setSelectedSensorPosition(0);
+    }else{
+      RobotMap.liftTalon.set(ControlMode.PercentOutput, 0);
+    }*/
   } 
 
   @Override

@@ -27,7 +27,7 @@ public class Constants {
      * Gains(kp, ki, kd, kf, izone, peak output);
      */
 
-	static final Gains kGains = new Gains(0.027, 0.000001, 0.82, 0.0, 0, 1.0); //0.025, 0.00001, 0.005, 0.0, 1, 1.0
+	static final Gains kGains = new Gains(0.027, 0.000001, 0.82, 0.0, 0, 1.0);
 
 
     /** ---- Flat constants, you should not need to change these ---- */
@@ -35,31 +35,26 @@ public class Constants {
 	public final static int PID_PRIMARY = 0;
 	public final static int PID_TURN = 1;
 
-	public static final double liftP = 0.0;
-	public static final double liftI = 0.0;
+	public static final double liftP = 0.01;
+	public static final double liftI = 0.000001;
 	public static final double liftD = 0.0;
 	public static final double liftF = 0.0;
 	public static final int liftIZone = 0;
 
-	public static final double angularScaleUp = 450; // Scale-up for TX error
-	public static final double distanceP = 1.5;
+	public static final double angularScaleUp = 475; // Scale-up for TX error
+	public static final double distanceScaleUp = 5; // Scale-up for TY error
 
-	public static final double heightOfCamera = 40.5; //41.6; // Height of limelight camera in inches
-	public static final double cameraAngle = 71.33; //71.7; // Mounting angle of limelight
-	public static final double heightOfLowTarget = 28.574; // Height of the center of the low vision target
+	public static final double heightOfCamera = 40.5;// Height  of limelight camera in inches
+	public static final double heightOfCalibrationTarget = 28.574; // Height of the center of the low vision target
 
 	public static final double heightOfHighTarget = 35.96; // Height of the center of the high vision target
 
-	public static final double lowHeightDifference = heightOfCamera - heightOfLowTarget;
-	public static final double highHeightDifference = heightOfCamera - heightOfHighTarget;
+	public static final double heightDifference = heightOfCamera - heightOfCalibrationTarget; // Difference in heights
 
-	public static final double distanceScaleUp = 5;
-
-	public static final double frameOffset = 10;
-	public static final double lowTargetDistance = 6 + frameOffset; // Target distance for auto to navigate to
-	public static final double highTargetDistance = 55 + frameOffset;
-	public static final double calibrationDistance = 30;
-
+	public static final double frameOffset = 10; // Distance between front of frame and limelight
+	public static final double lowTargetDistance = 6 + frameOffset; // Low target distance for auto to navigate to, in ghanas
+	public static final double highTargetDistance = 55 + frameOffset; // High target distance for auto to navigate to, in ghanas
+	public static final double calibrationDistance = 30; // Calibration distance, in ghanas
 	
 	public static final double turnDampener = 0.8; // Dampener on yaw while driving
 
@@ -71,12 +66,12 @@ public class Constants {
 
 	public static final double navigationTime = 30; // Time allotted to navigate to target, in hundreds of milliseconds
 
-	public static final double pulsesPerInch = 1450.97;
+	public static final double pulsesPerInch = 1450.97; // Pulses per inch of navigational tavel
 
-	public static final double pulsesPerLiftInch = 42590.71;
+	public static final double pulsesPerLiftInch = 14412; // Pulses per inch of lift travel
 
 	// Heights and distances of targets on the rocket
-	public static final double hatchTargetHeight = 0; // Height in pulses of the lowest hatch target
-	public static final double cargoTargetHeight = 100; // Height in pulses of the lowest cargo target on the rocket
-	public static final double distanceBetweenTargets = 24000; // Distance between the centers of subsequent rocket targets
+	public static final double hatchTargetHeight = 0; // Height in inches of the lowest hatch target
+	public static final double cargoTargetHeight = 7.5; // Height in inches of the lowest cargo target on the rocket
+	public static final double distanceBetweenTargets = 28; // Distance between the centers of subsequent rocket targets
 }

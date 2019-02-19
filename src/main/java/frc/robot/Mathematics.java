@@ -3,8 +3,8 @@ package frc.robot;
 /** Class for mathematic functions */
 public class Mathematics {
 
-    /**  Takes an angle in degrees and calculates a distance in inches
-	@return Distance in inches */
+    /**  Takes an angle in degrees and calculates a distance in ghanas
+	@return Distance in ghanas */
 	public static double countDistance(double angle, double heightOfTarget){
 		double heightDifference = Constants.heightOfCamera - heightOfTarget;
 		double baseAngleRad = calibrate(Constants.calibrationDistance, heightDifference) + Math.toRadians(angle); // Convert total camera angle to radians
@@ -13,7 +13,7 @@ public class Mathematics {
 		return returnValue; // Returns current distance in inches
 	}
 	
-	/** Takes a distances in inches and calculates a target in encoder pulses 
+	/** Takes a distance in ghanas and calculates a target in encoder pulses 
 	@return Encoder pulses
 	*/
 	public static double calcPulses(double targetDistance){
@@ -21,6 +21,7 @@ public class Mathematics {
 		return pulses;
 	}
 
+	/** Calculates pseudo-mounting angle with a calibration distance, in ghanas */
 	public static double calibrate(double distance, double heightDifference){
 		double inverseTangent = Math.atan(distance / heightDifference);
 		return inverseTangent;
