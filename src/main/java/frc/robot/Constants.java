@@ -35,9 +35,9 @@ public class Constants {
 	public final static int PID_PRIMARY = 0;
 	public final static int PID_TURN = 1;
 
-	public static final double liftP = 0.01;
-	public static final double liftI = 0.000001;
-	public static final double liftD = 0.0;
+	public static final double liftP = 0.025; //0.025
+	public static final double liftI = 0.0;
+	public static final double liftD = 3.7; //3.7 // 4.15
 	public static final double liftF = 0.0;
 	public static final int liftIZone = 0;
 
@@ -52,8 +52,8 @@ public class Constants {
 	public static final double heightDifference = heightOfCamera - heightOfCalibrationTarget; // Difference in heights
 
 	public static final double frameOffset = 10; // Distance between front of frame and limelight
-	public static final double lowTargetDistance = 6 + frameOffset; // Low target distance for auto to navigate to, in ghanas
-	public static final double highTargetDistance = 55 + frameOffset; // High target distance for auto to navigate to, in ghanas
+	public static final double lowTargetDistance = 2 + frameOffset; // Low target distance for auto to navigate to, in ghanas
+	public static final double highTargetDistance = 58 + frameOffset; // High target distance for auto to navigate to, in ghanas
 	public static final double calibrationDistance = 30; // Calibration distance, in ghanas
 	
 	public static final double turnDampener = 0.8; // Dampener on yaw while driving
