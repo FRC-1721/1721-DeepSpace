@@ -5,6 +5,7 @@ import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 
 import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.Compressor;
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.Joystick;
 
@@ -60,18 +61,22 @@ public class RobotMap {
   public static int irisExtendForwardPort = 0; // PCM port to push iris out
   public static int irisExtendReversePort = 1; // PCM port to pull iris in
 
+  // Button/axis numbers on drive stick
+  public static int trackLowButton = 8; // 8 to track hatch target
+  public static int trackHighButton = 7; // 7 to track cargo target
+
   // Button/axis numbers on controller
   public static int irisExpandButton = 7; // LT to open/close the iris
   public static int irisExtendButton = 8; // RT to push/pull the iris
-  public static int cargoModeButton = 3; // B to move lift to the height of the first cargo target
+
+  public static int cargoModeButton = 1; // X to move lift to the height of the first cargo target
   public static int hatchModeButton = 2; // A to move lift to the height of the first hatch target (zero)
-  public static int upOneButton = 1; // X to move lift up one target
+  public static int upOneButton = 3; // B to move lift up one target
   public static int upTwoButton = 4; // Y to move lift up two targets
-  public static int trackLowButton = 5; // LB to track hatch target
-  public static int trackHighButton = 6; // RB to track cargo target
-  public static int liftOverrideButton = 12; // RIGHT STICK DOWN to enable manual lift override
-  public static int liftOverrideAxis = 3; // RIGHT STICK to control manual lift override
-  public static int intakeSpinAxis = 1; // LEFT STICK to spin the intake
+  public static int liftOverrideButton = 5; //Unused joystick button (left button) will activiate manual mode while held
+
+  public static int liftOverrideAxis = 1; // LEFT STICK to control manual lift override
+  public static int intakeSpinAxis = 3; // RIGHT STICK to spin the intake
 
   // POV angles on controller
   public static int inAngle = 180; // Straight down to fold intake in
@@ -80,6 +85,8 @@ public class RobotMap {
   // Sensor information
   public static AnalogInput pressureSensor; // Displays current pressure
   public static int sensorPort = 1; // RoboRIO port for pressure sensor
+  public static DigitalInput minExtension; // Lift limit switch
+  public static int limitSwitchPort = 0; // RoboRIO port fo limit switch
 
   // Subsystem booleans
   public static boolean hatchMode; // Dictates whether lift is in "hatch mode"

@@ -10,10 +10,10 @@ package frc.robot.subsystems;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.command.Subsystem;
-import frc.robot.Constants;
-import frc.robot.RobotMap;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
  * Subsystem for PID lift control - in development
@@ -28,21 +28,12 @@ public class Lift extends Subsystem {
     // setDefaultCommand(new MySpecialCommand());
   }
 
-  /** Takes a lift TalonSRX and several controller button inputs and moves lift
-  using PID */
-  public static void raiseLift(TalonSRX lift, Joystick controller){
-    if (controller.getRawButton(RobotMap.hatchModeButton)){ // If A is held
-      lift.set(ControlMode.Position, Constants.hatchTargetHeight); // Move to height of lowest hatch target
-    }else if(controller.getRawButton(RobotMap.cargoModeButton)){ // If B is held
-      lift.set(ControlMode.Position, Constants.cargoTargetHeight); // Move to height of lowest cargo target
-    }else if(controller.getRawButton(RobotMap.upOneButton)){ // If X is held
-      double height = lift.getSelectedSensorPosition(); // Current height
-      double target = height + Constants.distanceBetweenTargets; // Creates a target height
-      lift.set(ControlMode.Position, target); // Move to target height
-    }else if(controller.getRawButton(RobotMap.upTwoButton)){ // If Y is held
-      double height = lift.getSelectedSensorPosition(); // Current height
-      double target = height + (2 * Constants.distanceBetweenTargets); // Creates a target height
-      lift.set(ControlMode.Position, target); // Move to target height
+  /** Zeroes the lift when a limit switch is pressed down*/
+  public static void zeroLift(TalonSRX lift, DigitalInput minExtension){
+    boolean isZero = minExtension.get();
+    SmartDashboard.putBoolean("Is zero", isZero);
+    if(isZero){
+      lift.setSelectedSensorPosition(0);
     }
   }
 
@@ -56,8 +47,6 @@ public class Lift extends Subsystem {
       }else{
         lift.set(ControlMode.PercentOutput, throttle / 2);
       }
-    }else{// if(lift.getMotorOutputPercent() < 0.175){
-      lift.set(ControlMode.PercentOutput, 0.175);
     }
   }
 }
