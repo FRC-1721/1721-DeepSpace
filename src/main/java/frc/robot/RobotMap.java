@@ -68,6 +68,7 @@ public class RobotMap {
   // Button/axis numbers on controller
   public static int irisExpandButton = 7; // LT to open/close the iris
   public static int irisExtendButton = 8; // RT to push/pull the iris
+
   public static int cargoModeButton = 1; // X to move lift to the height of the first cargo target
   public static int hatchModeButton = 2; // A to move lift to the height of the first hatch target (zero)
   public static int upOneButton = 3; // B to move lift up one target
@@ -89,5 +90,4 @@ public class RobotMap {
 
   // Subsystem booleans
   public static boolean hatchMode; // Dictates whether lift is in "hatch mode"
-
 }

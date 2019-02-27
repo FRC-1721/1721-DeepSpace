@@ -132,6 +132,9 @@ public class Robot extends TimedRobot {
 
   @Override
   public void robotPeriodic() {
+    
+    // Set limelight to pipeline 0
+    table.getEntry("camMode").setNumber(0);
 
     // Compress automatically
     RobotMap.cp.setClosedLoopControl(true);
@@ -160,7 +163,7 @@ public class Robot extends TimedRobot {
 
     // Set limelight to pipeline 0
     table.getEntry("camMode").setNumber(0);
-
+    
     // Read values periodically
     double x = tx.getDouble(0.0); // Horizontal error
     double y = ty.getDouble(0.0); // Vertical error
@@ -184,12 +187,11 @@ public class Robot extends TimedRobot {
       double distanceDifference = Mathematics.calcPulses(Constants.highTargetDistance) - Mathematics.calcPulses(currentDistance); // Difference in distance (error)
       double distanceAdjust = distanceDifference / Constants.navigationTime; // Calculates a distance adjustment based on error
       double steeringAdjust = Constants.angularScaleUp * x; // Creates a side-to-side adjustment based on error
-      SmartDashboard.putNumber("steering adjust", steeringAdjust);
-      SmartDashboard.putNumber("Distance adjust", distanceAdjust);
       DriveTrain.flyWithWires(RobotMap.starboardMaster, RobotMap.portMaster, steeringAdjust, distanceAdjust * Constants.distanceScaleUp); // Drive using adjustment values
     }else{
       DriveTrain.flyByWire(RobotMap.starboardMaster, RobotMap.portMaster, RobotMap.driverStick, RobotMap.gearShifter); // Drive using joystick when A is not held
     }
+    
     // Post to smart dashboard periodically
     SmartDashboard.putNumber("LimelightX", x); // Horizontal error
     SmartDashboard.putNumber("LimelightY", y); // Vertical error

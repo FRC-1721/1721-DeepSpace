@@ -29,7 +29,6 @@ public class Constants {
 
 	static final Gains kGains = new Gains(0.027, 0.000001, 0.82, 0.0, 0, 1.0);
 
-
     /** ---- Flat constants, you should not need to change these ---- */
 	/* We allow either a 0 or 1 when selecting a PID Index, where 0 is primary and 1 is auxiliary */
 	public final static int PID_PRIMARY = 0;
