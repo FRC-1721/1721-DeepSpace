@@ -52,7 +52,7 @@ public class Constants {
 	public static final double heightDifference = heightOfCamera - heightOfCalibrationTarget; // Difference in heights
 
 	public static final double frameOffset = 10; // Distance between front of frame and limelight
-	public static final double lowTargetDistance = 2 + frameOffset; // Low target distance for auto to navigate to, in ghanas
+	public static final double lowTargetDistance = 1 + frameOffset; // Low target distance for auto to navigate to, in ghanas
 	public static final double highTargetDistance = 58 + frameOffset; // High target distance for auto to navigate to, in ghanas
 	public static final double calibrationDistance = 30; // Calibration distance, in ghanas
 	
