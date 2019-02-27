@@ -132,9 +132,6 @@ public class Robot extends TimedRobot {
 
   @Override
   public void robotPeriodic() {
-    
-    // Set limelight to pipeline 0
-    table.getEntry("camMode").setNumber(0);
 
     // Compress automatically
     RobotMap.cp.setClosedLoopControl(true);
@@ -174,16 +171,12 @@ public class Robot extends TimedRobot {
     // Vision tracking with 7 and 8 on the drive stick
     if(RobotMap.driverStick.getRawButton(RobotMap.trackLowButton) && hasTarget == 1.0){
       double currentDistance = Mathematics.countDistance(y, Constants.heightDifference); // Distance from target
-      SmartDashboard.putNumber("Current distance", currentDistance);
       double distanceDifference = Mathematics.calcPulses(Constants.lowTargetDistance) - Mathematics.calcPulses(currentDistance); // Difference in distance (error)
       double distanceAdjust = distanceDifference / Constants.navigationTime; // Calculates a distance adjustment based on error
       double steeringAdjust = Constants.angularScaleUp * x; // Creates a side-to-side adjustment based on error
-      SmartDashboard.putNumber("steering adjust", steeringAdjust);
-      SmartDashboard.putNumber("Distance adjust", distanceAdjust);
       DriveTrain.flyWithWires(RobotMap.starboardMaster, RobotMap.portMaster, steeringAdjust, distanceAdjust * Constants.distanceScaleUp); // Drive using adjustment values
     }else if(RobotMap.driverStick.getRawButton(RobotMap.trackHighButton) && hasTarget == 1.0){
       double currentDistance = Mathematics.countDistance(y, Constants.heightDifference); // Distance from target
-      SmartDashboard.putNumber("Current distance", currentDistance);
       double distanceDifference = Mathematics.calcPulses(Constants.highTargetDistance) - Mathematics.calcPulses(currentDistance); // Difference in distance (error)
       double distanceAdjust = distanceDifference / Constants.navigationTime; // Calculates a distance adjustment based on error
       double steeringAdjust = Constants.angularScaleUp * x; // Creates a side-to-side adjustment based on error

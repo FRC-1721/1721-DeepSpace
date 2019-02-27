@@ -23,7 +23,7 @@ public class Constants {
     public static final int kTimeoutMs = 30;
     
     /**
-	 * Gains used in Current Closed Loop, to be adjusted accordingly
+	 * Gains used in distance Current Closed Loop, to be adjusted accordingly
      * Gains(kp, ki, kd, kf, izone, peak output);
      */
 
@@ -34,9 +34,10 @@ public class Constants {
 	public final static int PID_PRIMARY = 0;
 	public final static int PID_TURN = 1;
 
-	public static final double liftP = 0.025; //0.025
+	// Gains for lift current closed loop
+	public static final double liftP = 0.025;
 	public static final double liftI = 0.0;
-	public static final double liftD = 3.7; //3.7 // 4.15
+	public static final double liftD = 3.7;
 	public static final double liftF = 0.0;
 	public static final int liftIZone = 0;
 
