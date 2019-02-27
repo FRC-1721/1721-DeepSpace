@@ -10,6 +10,7 @@ public class Mathematics {
 		double baseAngleRad = calibrate(Constants.calibrationDistance, heightDifference) + Math.toRadians(angle); // Convert total camera angle to radians
 		double baseAngleTangent = Math.tan(baseAngleRad); // Take the tangent of total angle
 		double returnValue = heightDifference * baseAngleTangent; // Divide to calculate distance
+
 		return returnValue; // Returns current distance in inches
 	}
 	
