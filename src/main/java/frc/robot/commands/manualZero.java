@@ -7,14 +7,11 @@
 
 package frc.robot.commands;
 
-import com.ctre.phoenix.motorcontrol.ControlMode;
-
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.RobotMap;
-import frc.robot.Constants;
 
-public class middleHeight extends Command {
-  public middleHeight() {
+public class manualZero extends Command {
+  public manualZero() {
     // Use requires() here to declare subsystem dependencies
     // eg. requires(chassis);
   }
@@ -22,7 +19,7 @@ public class middleHeight extends Command {
   // Called just before this Command runs the first time
   @Override
   protected void initialize() {
-    RobotMap.liftTalon.set(ControlMode.Position, 28 * Constants.pulsesPerLiftInch);
+    RobotMap.liftTalon.setSelectedSensorPosition(0);
   }
 
   // Called repeatedly when this Command is scheduled to run

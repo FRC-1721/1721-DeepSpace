@@ -36,12 +36,12 @@ public class Constants {
 
 	// Gains for lift current closed loop
 	public static final double liftP = 0.025;
-	public static final double liftI = 0.0;
+	public static final double liftI = 0.000001;
 	public static final double liftD = 3.7;
 	public static final double liftF = 0.0;
 	public static final int liftIZone = 0;
 
-	public static final double angularScaleUp = 475; // Scale-up for TX error
+	public static final double angularScaleUp = 410; // Scale-up for TX error
 	public static final double distanceScaleUp = 5; // Scale-up for TY error
 
 	public static final double heightOfCamera = 40.5;// Height  of limelight camera in inches
@@ -52,11 +52,11 @@ public class Constants {
 	public static final double heightDifference = heightOfCamera - heightOfCalibrationTarget; // Difference in heights
 
 	public static final double frameOffset = 10; // Distance between front of frame and limelight
-	public static final double lowTargetDistance = 1 + frameOffset; // Low target distance for auto to navigate to, in ghanas
-	public static final double highTargetDistance = 58 + frameOffset; // High target distance for auto to navigate to, in ghanas
+	public static final double lowTargetDistance = 0 + frameOffset; // Low target distance for auto to navigate to, in ghanas
+	public static final double highTargetDistance = 50 + frameOffset; // High target distance for auto to navigate to, in ghanas
 	public static final double calibrationDistance = 30; // Calibration distance, in ghanas
 	
-	public static final double turnDampener = 0.8; // Dampener on yaw while driving
+	public static final double turnDampener = 0.6; // Dampener on yaw while driving
 
 	public static final double maxSpeed = 32960; // Max speed for encoders, in pulses
 

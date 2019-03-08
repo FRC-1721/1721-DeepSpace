@@ -28,6 +28,7 @@ public class Intake extends Subsystem {
     // setDefaultCommand(new MySpecialCommand());
   }
 
+  /** Spins the intake wheels */
   public static void spin(Joystick controller, int axis, VictorSPX intake){
     double throttle = controller.getRawAxis(axis);
     if(RobotMap.irisExtender.get() == DoubleSolenoid.Value.kForward){
@@ -37,12 +38,13 @@ public class Intake extends Subsystem {
     }
   }
 
+  /** Folds up the intake */
   public static void fold(Joystick controller, int inAngle, int outAngle, VictorSPX folder){
     double povAngle = controller.getPOV(0);
     if(povAngle == inAngle){
-      folder.set(ControlMode.PercentOutput, 0.8);
+      folder.set(ControlMode.PercentOutput, 1);
     }else if (povAngle == outAngle){
-      folder.set(ControlMode.PercentOutput, -0.8);
+      folder.set(ControlMode.PercentOutput, -1);
     }else{
       folder.set(ControlMode.PercentOutput, 0);
     }

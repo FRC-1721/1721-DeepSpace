@@ -158,7 +158,7 @@ public class Robot extends TimedRobot {
     NetworkTableEntry ta = table.getEntry("ta");
     NetworkTableEntry tv = table.getEntry("tv");
 
-    // Set limelight to pipeline 0
+    // Set limelight to pipeline 3
     table.getEntry("camMode").setNumber(0);
     
     // Read values periodically
@@ -169,21 +169,32 @@ public class Robot extends TimedRobot {
     double pressure = Pneumatics.calcPressure(RobotMap.pressureSensor, 5); // Current stored pressure in tanks
 
     // Vision tracking with 7 and 8 on the drive stick
-    if(RobotMap.driverStick.getRawButton(RobotMap.trackLowButton) && hasTarget == 1.0){
-      double currentDistance = Mathematics.countDistance(y, Constants.heightDifference); // Distance from target
-      double distanceDifference = Mathematics.calcPulses(Constants.lowTargetDistance) - Mathematics.calcPulses(currentDistance); // Difference in distance (error)
-      double distanceAdjust = distanceDifference / Constants.navigationTime; // Calculates a distance adjustment based on error
-      double steeringAdjust = Constants.angularScaleUp * x; // Creates a side-to-side adjustment based on error
-      DriveTrain.flyWithWires(RobotMap.starboardMaster, RobotMap.portMaster, steeringAdjust, distanceAdjust * Constants.distanceScaleUp); // Drive using adjustment values
-    }else if(RobotMap.driverStick.getRawButton(RobotMap.trackHighButton) && hasTarget == 1.0){
-      double currentDistance = Mathematics.countDistance(y, Constants.heightDifference); // Distance from target
-      double distanceDifference = Mathematics.calcPulses(Constants.highTargetDistance) - Mathematics.calcPulses(currentDistance); // Difference in distance (error)
-      double distanceAdjust = distanceDifference / Constants.navigationTime; // Calculates a distance adjustment based on error
-      double steeringAdjust = Constants.angularScaleUp * x; // Creates a side-to-side adjustment based on error
-      DriveTrain.flyWithWires(RobotMap.starboardMaster, RobotMap.portMaster, steeringAdjust, distanceAdjust * Constants.distanceScaleUp); // Drive using adjustment values
+    if(RobotMap.driverStick.getRawButton(RobotMap.trackLowButton)){
+      table.getEntry("ledMode").setNumber(3);
+      table.getEntry("pipeline").setNumber(3);
+      if(hasTarget == 1.0){
+        double currentDistance = Mathematics.countDistance(y, Constants.heightDifference); // Distance from target
+        double distanceDifference = Mathematics.calcPulses(Constants.lowTargetDistance) - Mathematics.calcPulses(currentDistance); // Difference in distance (error)
+        double distanceAdjust = distanceDifference / Constants.navigationTime; // Calculates a distance adjustment based on error
+        double steeringAdjust = Constants.angularScaleUp * x; // Creates a side-to-side adjustment based on error
+        DriveTrain.flyWithWires(RobotMap.starboardMaster, RobotMap.portMaster, steeringAdjust, distanceAdjust * Constants.distanceScaleUp); // Drive using adjustment values
+      }
+    }else if(RobotMap.driverStick.getRawButton(RobotMap.trackHighButton)){
+      table.getEntry("ledMode").setNumber(3);
+      table.getEntry("pipeline").setNumber(3);
+      if(hasTarget == 1.0){
+        double currentDistance = Mathematics.countDistance(y, Constants.heightDifference); // Distance from target
+        double distanceDifference = Mathematics.calcPulses(Constants.highTargetDistance) - Mathematics.calcPulses(currentDistance); // Difference in distance (error)
+        double distanceAdjust = distanceDifference / Constants.navigationTime; // Calculates a distance adjustment based on error
+        double steeringAdjust = Constants.angularScaleUp * x; // Creates a side-to-side adjustment based on error
+        DriveTrain.flyWithWires(RobotMap.starboardMaster, RobotMap.portMaster, steeringAdjust, distanceAdjust * Constants.distanceScaleUp); // Drive using adjustment values
+      }
     }else{
+      table.getEntry("ledMode").setNumber(1);
+      table.getEntry("pipeline").setNumber(4);
       DriveTrain.flyByWire(RobotMap.starboardMaster, RobotMap.portMaster, RobotMap.driverStick, RobotMap.gearShifter); // Drive using joystick when A is not held
     }
+
 
     // Post to smart dashboard periodically
     SmartDashboard.putNumber("LimelightX", x); // Horizontal error
@@ -209,14 +220,6 @@ public class Robot extends TimedRobot {
   @Override
   public void autonomousPeriodic() {
     Scheduler.getInstance().run();
-    /*double targetPos = 48 * Constants.pulsesPerLiftInch;
-    if(RobotMap.operatorController.getRawButton(2)){
-      RobotMap.liftTalon.set(ControlMode.Position, targetPos);
-    }else if(RobotMap.operatorController.getRawButton(1)){
-      RobotMap.liftTalon.setSelectedSensorPosition(0);
-    }else{
-      RobotMap.liftTalon.set(ControlMode.PercentOutput, 0);
-    }*/
   } 
 
   @Override

@@ -13,7 +13,7 @@ import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import frc.robot.commands.cargoMode;
 import frc.robot.commands.expandIris;
 import frc.robot.commands.extendIris;
-import frc.robot.commands.middleHeight;
+import frc.robot.commands.manualZero;
 import frc.robot.commands.upOne;
 import frc.robot.commands.upTwo;
 import frc.robot.commands.zeroLift;
@@ -30,7 +30,7 @@ public class OI {
   Button cargoButton = new JoystickButton(controller, RobotMap.cargoModeButton);
   Button upOneButton = new JoystickButton(controller, RobotMap.upOneButton);
   Button upTwoButton = new JoystickButton(controller, RobotMap.upTwoButton);
-  Button centerButton = new JoystickButton(controller, 6); // Test to 28 inches
+  Button manualZeroButton = new JoystickButton(controller, RobotMap.manualZeroButton);
 
   public OI(){
     irisExpandButton.whenPressed(new expandIris());
@@ -39,7 +39,7 @@ public class OI {
     cargoButton.whenPressed(new cargoMode());
     upOneButton.whenPressed(new upOne());
     upTwoButton.whenPressed(new upTwo());
-    centerButton.whenPressed(new middleHeight());
+    manualZeroButton.whenPressed(new manualZero());
   }
   //// CREATING BUTTONS
   // One type of button is a joystick button which is any button on a
