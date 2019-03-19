@@ -154,7 +154,7 @@ public class Robot extends TimedRobot {
     // Zero the lift with the limit switch
     Lift.zeroLift(RobotMap.liftTalon, RobotMap.minExtension);
 
-    // Manually overrides the lift for control with LEFT STICK when START is held
+    // Override the lift for manual control with LEFT STICK when START is held
     Lift.manualOverride(RobotMap.operatorController, RobotMap.liftOverrideButton, RobotMap.liftOverrideAxis, RobotMap.liftTalon);
     
     // Spin the intake wheels using RIGHT STICK Y-axis

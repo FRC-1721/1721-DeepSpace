@@ -1,21 +1,14 @@
 # 1721-DeepSpace
 
-Software Goals
+FRC Team 1721's 2019 Code Repository
 
+Features:
+Drivetrain PID control
+Elevator PID control
+Limelight-centric vision tracking
+Gyroscopic autocorrect
 
-Week One: Have test bot vision capable of maintaining a constant distance from a target - done, easy
-
-Week Two: Have drive train moving if it's complete, work on any subsystems, create base for PID for lift - done
-
-Week Three: Continue working on subsystems, begin rough vision base, motion profiling - done
-
-Week Four: Continue working on subsystems as they finish, continue vision/profiling/lift tuning - done, sure wish I had some subsystems
-
-Week Five: Finalize all vision and PID functionality
-
-Week Six: Finish tuning
-
-
+Feel free to peruse this repository for examples of functional FRC programming
 
 Have you ever met a girl that you tried to date, 
 But a year to make love, she wanted you to wait? 
