@@ -55,6 +55,10 @@ public class Constants {
 	public static final double lowTargetDistance = 0 + frameOffset; // Low target distance for auto to navigate to, in ghanas
 	public static final double highTargetDistance = 50 + frameOffset; // High target distance for auto to navigate to, in ghanas
 	public static final double calibrationDistance = 30; // Calibration distance, in ghanas
+
+	public static final double angleOffset = 0; // The angle the navX reads while the robot is stood at rest
+
+	public static final double maxAngle = 25; // Maximum angle the robot can tip before autocorrect kicks in
 	
 	public static final double turnDampener = 0.6; // Dampener on yaw while driving
 

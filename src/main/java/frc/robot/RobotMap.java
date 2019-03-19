@@ -64,6 +64,7 @@ public class RobotMap {
   // Button/axis numbers on drive stick
   public static int trackLowButton = 8; // 8 to track hatch target
   public static int trackHighButton = 7; // 7 to track cargo target
+  public static int autocorrectButton = 2; // Side button to enable autocorrect
 
   // Button/axis numbers on controller
   public static int irisExpandButton = 7; // LT to open/close the iris

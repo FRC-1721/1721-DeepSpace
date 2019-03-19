@@ -3,6 +3,7 @@ package frc.robot;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.VictorSPX;
+import com.kauailabs.navx.frc.AHRS;
 
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
@@ -12,9 +13,11 @@ import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.robot.subsystems.Autocorrect;
 import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Lift;
@@ -25,6 +28,7 @@ public class Robot extends TimedRobot {
  
 
   public static OI m_oi;
+  AHRS ahrs;
 
   @Override
   public void robotInit() {
@@ -128,10 +132,18 @@ public class Robot extends TimedRobot {
     RobotMap.starboardMaster.setSelectedSensorPosition(0, Constants.kPIDLoopIdx, Constants.kTimeoutMs);
     RobotMap.liftTalon.setSelectedSensorPosition(0, Constants.kPIDLoopIdx, Constants.kTimeoutMs);
 
+    ahrs = new AHRS(SPI.Port.kMXP);
   }
 
   @Override
   public void robotPeriodic() {
+
+    // Calculate and post the current tipping angle of the robot
+    double angleDegrees = ahrs.getRoll() - Constants.angleOffset;
+    if(RobotMap.driverStick.getRawButton(RobotMap.autocorrectButton)){
+      Autocorrect.adjustCG(angleDegrees, RobotMap.liftTalon, Constants.maxAngle);
+    }
+    SmartDashboard.putNumber("angle", angleDegrees);
 
     // Compress automatically
     RobotMap.cp.setClosedLoopControl(true);
