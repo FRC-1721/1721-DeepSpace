@@ -2,37 +2,49 @@ void rainmode()
 {
   while(newData != true) //when a new command has not been issued
   {
+    Serial.println("In Rain Mode");
     serialEvent();
     int ledLocation = random(0, NUM_LEDS);
-    int rainVolume = 8;
+    int rainVolume = 40;
       
     if(teamColor == 2)
     {
-      delay(20);
+      delay(10);
       for (int i = 0; i < rainVolume; i++) 
       {
-        leds[ledLocation] = CRGB::Purple;
+        fill_solid( leds, NUM_LEDS, CRGB::Blue);
         FastLED.show();
       }
       leds[ledLocation] = CRGB::Black;
+      FastLED.show();
     }
 
     if(teamColor == 1)
     {
-      delay(20);
-      leds[ledLocation] = CRGB::Purple;
+      delay(10);
+      fill_solid( leds, NUM_LEDS, CRGB::Red);
       FastLED.show();
-      leds[ledLocation] = CRGB::Black;
+      for (int i = 0; i < rainVolume; i++) 
+      {
+        leds[ledLocation] = CRGB::Black;
+        FastLED.show();
+      }
     }
 
     if(teamColor == 0)
     {      
-      delay(20);
-      leds[ledLocation] = CRGB::Purple;
+      delay(10);
+      fill_solid( leds, NUM_LEDS, CRGB::Purple);
       FastLED.show();
-      leds[ledLocation] = CRGB::Black;
+      for (int i = 0; i < rainVolume; i++) 
+      {
+        leds[ledLocation] = CRGB::Black;
+        FastLED.show();
+      }
     }
-    delay(50);
+    delay(1);
+    Serial.print("RainColor ");
+    Serial.println(teamColor);
   }
 }
 
@@ -43,12 +55,52 @@ void flashmode()
     serialEvent();
     if(teamColor == 2)
     {
-      delay(100);
+      delay(flashSpeed);
       fill_solid( leds, NUM_LEDS, CRGB::Blue);
       FastLED.show(); //Do the roar
 
-      delay(100);
+      delay(flashSpeed);
       fill_solid( leds, NUM_LEDS, CRGB::Black);
+      FastLED.show(); //Do the roar
+    }
+
+    if(teamColor == 1)
+    {
+      delay(flashSpeed);
+      fill_solid( leds, NUM_LEDS, CRGB::Red);
+      FastLED.show(); //Do the roar
+
+      delay(flashSpeed);
+      fill_solid( leds, NUM_LEDS, CRGB::Black);
+      FastLED.show(); //Do the roar
+    }
+
+    if(teamColor == 0)
+    {
+      delay(flashSpeed);
+      fill_solid( leds, NUM_LEDS, CRGB::Purple);
+      FastLED.show(); //Do the roar
+
+      delay(flashSpeed);
+      fill_solid( leds, NUM_LEDS, CRGB::Black);
+      FastLED.show(); //Do the roar
+    }
+    Serial.print("I set the color to ");
+    Serial.print(teamColor);
+    Serial.println("!");
+    delay(10);
+  }
+}
+
+void solidmode()
+{
+  while(newData != true) //when a new command has not been issued
+  {
+    serialEvent();
+    if(teamColor == 2)
+    {
+      delay(100);
+      fill_solid( leds, NUM_LEDS, CRGB::Blue);
       FastLED.show(); //Do the roar
     }
 
@@ -57,10 +109,6 @@ void flashmode()
       delay(100);
       fill_solid( leds, NUM_LEDS, CRGB::Red);
       FastLED.show(); //Do the roar
-
-      delay(100);
-      fill_solid( leds, NUM_LEDS, CRGB::Black);
-      FastLED.show(); //Do the roar
     }
 
     if(teamColor == 0)
@@ -68,14 +116,10 @@ void flashmode()
       delay(100);
       fill_solid( leds, NUM_LEDS, CRGB::Purple);
       FastLED.show(); //Do the roar
-
-      delay(100);
-      fill_solid( leds, NUM_LEDS, CRGB::Black);
-      FastLED.show(); //Do the roar
     }
     Serial.print("I set the color to ");
     Serial.print(teamColor);
     Serial.println("!");
-    delay(50);
+    delay(10);
   }
 }

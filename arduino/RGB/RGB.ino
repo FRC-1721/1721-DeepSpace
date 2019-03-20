@@ -8,6 +8,8 @@ boolean newData = false; //Becomes true only as long as there is unindexed infor
 int teamColor = 0; //0 no team purple, 1 red team red, 2 blue team blue
 String input = ""; //Populated with the current command not yet run
 int lineLength = 2;
+int fillSpeed = 60;
+int flashSpeed = 50;
 
 /*
    To use:
@@ -19,7 +21,7 @@ int lineLength = 2;
 void setup()
 {
   randomSeed(analogRead(0));
-  Serial.begin(57600); //Start the Serial
+  Serial.begin(9600); //Start the Serial
   delay(10);
   // reserve 200 bytes for the imput
   input.reserve(200);
@@ -33,6 +35,16 @@ void setup()
   {
       fill_solid( leds, NUM_LEDS, CRGB::Purple);
       FastLED.show();
+      delay(100);
+      for (int i = 0; i < NUM_LEDS; i++) 
+      {
+        leds[i] = CRGB::Blue;
+        FastLED.show();
+
+        leds[NUM_LEDS - i] = CRGB::Red;
+        FastLED.show();
+        delay(fillSpeed);
+      }
   }
   input = ""; //Imput empty
   delay(10);
@@ -44,6 +56,7 @@ void loop()
 
   if (newData == true)
   {
+    newData = false;
     toDo();
   }
   delay(1);
