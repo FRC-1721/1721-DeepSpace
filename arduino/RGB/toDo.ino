@@ -38,20 +38,12 @@ void toDo()
   }
 
   //Modes
-  if(input.indexOf("rain") > 0) //If input contains "fire"
+  if(input.indexOf("rainbow") > 0) //If input contains "flash"
   {
     input = "";
-    Serial.print("Understood Rain with color ");
+    Serial.print("Understood Rainbow with color ");
     Serial.println(teamColor);
-    rainmode();
-  }
-
-  if(input.indexOf("flash") > 0) //If input contains "flash"
-  {
-    input = "";
-    Serial.print("Understood Flash with color ");
-    Serial.println(teamColor);
-    flashmode();
+    rainbowmode();
   }
 
   if(input.indexOf("solid") > 0) //If input contains "solid"
