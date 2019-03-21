@@ -1,26 +1,40 @@
 void toDo()
 {
-  Serial.println("Indexing");
+  Serial.println("Indexing"); //For debug
   newData = false; //No longer new data
-  delay(100);
+  delay(100); //Pause
 
   //Team color
   if(input.indexOf("blue") > 0) //If input contains "blue"
   {
-    teamColor = 2; //Set color  
-    Serial.println("Blue");
+    rValue = 0; //Set color  
+    gValue = 0;
+    bValue = 255;
+    Serial.println("Blue"); //For debug
   }
 
   if(input.indexOf("red") > 0) //If input contains "red"
   {
-    teamColor = 1; //Set color  
-    Serial.println("Red");
+    rValue = 255; //Set color  
+    gValue = 0;
+    bValue = 0;
+    Serial.println("Red"); //For debug
+  }
+
+  if(input.indexOf("yellow") > 0) //If input contains "red"
+  {
+    rValue = 255; //Set color  
+    gValue = 255;
+    bValue = 0;
+    Serial.println("Yellow"); //For debug
   }
 
   if(input.indexOf("purple") > 0) //If input contains "purple"
   {
-    teamColor = 0; //Set color  
-    Serial.println("Purple");
+    rValue = 255; //Set color  
+    gValue = 0;
+    bValue = 255;
+    Serial.println("Purple"); //For debug
   }
 
   //Modes

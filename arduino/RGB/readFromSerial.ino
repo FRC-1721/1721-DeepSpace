@@ -9,4 +9,8 @@ void serialEvent()
     newData = true; //Set newdata flag to true
     Serial.println("Scanning");
   }
+
+  Serial.print(rValue);
+  Serial.print(gValue);
+  Serial.println(bValue);
 }
