@@ -3,9 +3,13 @@
 FRC Team 1721's 2019 Code Repository
 
 Features:
+
 Drivetrain PID control
+
 Elevator PID control
+
 Limelight-centric vision tracking
+
 Gyroscopic autocorrect
 
 Feel free to peruse this repository for examples of functional FRC programming
