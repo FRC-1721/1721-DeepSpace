@@ -8,6 +8,7 @@ import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.SerialPort;
 
 /** Class for defining/mapping objects and port numbers - not to be confused with Constants.java */
 public class RobotMap {
@@ -91,4 +92,6 @@ public class RobotMap {
 
   // Subsystem booleans
   public static boolean hatchMode; // Dictates whether lift is in "hatch mode"
+
+  public static SerialPort ledPort; // Serial port for the LEDs
 }

@@ -14,12 +14,14 @@ import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.SPI;
+import edu.wpi.first.wpilibj.SerialPort;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.subsystems.Autocorrect;
 import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.Intake;
+import frc.robot.subsystems.LEDs;
 import frc.robot.subsystems.Lift;
 import frc.robot.subsystems.Pneumatics;
 
@@ -66,6 +68,8 @@ public class Robot extends TimedRobot {
     RobotMap.pressureSensor = new AnalogInput(RobotMap.sensorPort);
     Pneumatics.initSensor(RobotMap.pressureSensor);
     RobotMap.minExtension = new DigitalInput(RobotMap.limitSwitchPort);
+    // LED serial port object
+    // RobotMap.ledPort = new SerialPort(9600, SerialPort.Port.kOnboard);
 
     //Set motor controlers to default
     RobotMap.starboardMaster.configFactoryDefault();
@@ -132,14 +136,18 @@ public class Robot extends TimedRobot {
     RobotMap.starboardMaster.setSelectedSensorPosition(0, Constants.kPIDLoopIdx, Constants.kTimeoutMs);
     RobotMap.liftTalon.setSelectedSensorPosition(0, Constants.kPIDLoopIdx, Constants.kTimeoutMs);
 
+    // Gyroscope object
     ahrs = new AHRS(SPI.Port.kMXP);
+
+    // Sets the LEDs to our alliance color solid
+    // LEDs.setLightColor(RobotMap.ledPort);
   }
 
   @Override
   public void robotPeriodic() {
 
     // Calculate and post the current tipping angle of the robot
-    double angleDegrees = ahrs.getRoll() - Constants.angleOffset;
+    double angleDegrees = ahrs.getPitch() - Constants.angleOffset;
     if(RobotMap.driverStick.getRawButton(RobotMap.autocorrectButton)){
       Autocorrect.adjustCG(angleDegrees, RobotMap.liftTalon, Constants.maxAngle);
     }
@@ -169,9 +177,6 @@ public class Robot extends TimedRobot {
     NetworkTableEntry ty = table.getEntry("ty");
     NetworkTableEntry ta = table.getEntry("ta");
     NetworkTableEntry tv = table.getEntry("tv");
-
-    // Set limelight to pipeline 3
-    table.getEntry("camMode").setNumber(0);
     
     // Read values periodically
     double x = tx.getDouble(0.0); // Horizontal error
@@ -182,8 +187,9 @@ public class Robot extends TimedRobot {
 
     // Vision tracking with 7 and 8 on the drive stick
     if(RobotMap.driverStick.getRawButton(RobotMap.trackLowButton)){
-      table.getEntry("ledMode").setNumber(3);
-      table.getEntry("pipeline").setNumber(3);
+      table.getEntry("camMode").setNumber(0); // Tracking mode
+      table.getEntry("ledMode").setNumber(3); // LEDs on
+      table.getEntry("pipeline").setNumber(3); // Pipeline 3
       if(hasTarget == 1.0){
         double currentDistance = Mathematics.countDistance(y, Constants.heightDifference); // Distance from target
         double distanceDifference = Mathematics.calcPulses(Constants.lowTargetDistance) - Mathematics.calcPulses(currentDistance); // Difference in distance (error)
@@ -192,8 +198,9 @@ public class Robot extends TimedRobot {
         DriveTrain.flyWithWires(RobotMap.starboardMaster, RobotMap.portMaster, steeringAdjust, distanceAdjust * Constants.distanceScaleUp); // Drive using adjustment values
       }
     }else if(RobotMap.driverStick.getRawButton(RobotMap.trackHighButton)){
-      table.getEntry("ledMode").setNumber(3);
-      table.getEntry("pipeline").setNumber(3);
+      table.getEntry("camMode").setNumber(0); // Tracking mode
+      table.getEntry("ledMode").setNumber(3); // LEDs on
+      table.getEntry("pipeline").setNumber(3); // Pipeline 3
       if(hasTarget == 1.0){
         double currentDistance = Mathematics.countDistance(y, Constants.heightDifference); // Distance from target
         double distanceDifference = Mathematics.calcPulses(Constants.highTargetDistance) - Mathematics.calcPulses(currentDistance); // Difference in distance (error)
@@ -201,9 +208,15 @@ public class Robot extends TimedRobot {
         double steeringAdjust = Constants.angularScaleUp * x; // Creates a side-to-side adjustment based on error
         DriveTrain.flyWithWires(RobotMap.starboardMaster, RobotMap.portMaster, steeringAdjust, distanceAdjust * Constants.distanceScaleUp); // Drive using adjustment values
       }
+    }else if(RobotMap.driverStick.getRawButton(11)){
+      table.getEntry("camMode").setNumber(0); // Tracking mode
+      table.getEntry("ledMode").setNumber(3); // LEDs on
+      table.getEntry("pipeline").setNumber(3); // Pipeline 3
+      DriveTrain.flyByWire(RobotMap.starboardMaster, RobotMap.portMaster, RobotMap.driverStick, RobotMap.gearShifter);
     }else{
-      table.getEntry("ledMode").setNumber(1);
-      table.getEntry("pipeline").setNumber(4);
+      table.getEntry("camMode").setNumber(1); // Camera mode
+      table.getEntry("ledMode").setNumber(1); // LEDs off
+      table.getEntry("pipeline").setNumber(4); //Pipeline 4
       DriveTrain.flyByWire(RobotMap.starboardMaster, RobotMap.portMaster, RobotMap.driverStick, RobotMap.gearShifter); // Drive using joystick when A is not held
     }
 
