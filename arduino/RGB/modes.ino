@@ -15,9 +15,9 @@ void solidmode()
     fill_solid( leds, NUM_LEDS, CRGB( rValue, gValue, bValue));
       //leds[i].setRGB( rValue, gValue, bValue);
     FastLED.show();
-    Serial.print("I set the color to ");
-    Serial.print(teamColor);
-    Serial.println("!");
+    //Serial.print("I set the color to ");
+    //Serial.print(teamColor);
+    //Serial.println("!");
     delay(10);
   }
 }

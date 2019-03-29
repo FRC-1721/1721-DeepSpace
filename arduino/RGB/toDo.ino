@@ -1,6 +1,6 @@
 void toDo()
 {
-  Serial.println("Indexing"); //For debug
+  //Serial.println("Indexing"); //For debug
   newData = false; //No longer new data
   delay(100); //Pause
 
@@ -10,7 +10,7 @@ void toDo()
     rValue = 0; //Set color  
     gValue = 0;
     bValue = 255;
-    Serial.println("Blue"); //For debug
+    //Serial.println("Blue"); //For debug
   }
 
   if(input.indexOf("red") > 0) //If input contains "red"
@@ -18,7 +18,7 @@ void toDo()
     rValue = 255; //Set color  
     gValue = 0;
     bValue = 0;
-    Serial.println("Red"); //For debug
+    //Serial.println("Red"); //For debug
   }
 
   if(input.indexOf("yellow") > 0) //If input contains "red"
@@ -26,7 +26,7 @@ void toDo()
     rValue = 255; //Set color  
     gValue = 255;
     bValue = 0;
-    Serial.println("Yellow"); //For debug
+    //Serial.println("Yellow"); //For debug
   }
 
   if(input.indexOf("purple") > 0) //If input contains "purple"
@@ -34,30 +34,30 @@ void toDo()
     rValue = 255; //Set color  
     gValue = 0;
     bValue = 255;
-    Serial.println("Purple"); //For debug
+    //Serial.println("Purple"); //For debug
   }
 
   //Modes
   if(input.indexOf("rainbow") > 0) //If input contains "flash"
   {
     input = "";
-    Serial.print("Understood Rainbow with color ");
-    Serial.println(teamColor);
+    //Serial.print("Understood Rainbow with color ");
+    //Serial.println(teamColor);
     rainbowmode();
   }
 
   if(input.indexOf("solid") > 0) //If input contains "solid"
   {
     input = "";
-    Serial.print("Understood Solid with color ");
-    Serial.println(teamColor);
+    //Serial.print("Understood Solid with color ");
+    //Serial.println(teamColor);
     solidmode();
   }
 
   if(input.indexOf("stop") > 0) //If input contains "stop"
   {
     input = "";
-    Serial.print("Halting");
+    //Serial.print("Halting");
     while(newData != true) //when a new command has not been issued
     {
       serialEvent();

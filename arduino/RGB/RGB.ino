@@ -68,5 +68,5 @@ void loop()
     toDo(); //Index
   }
   delay(1); //Pause
-  Serial.println(input); //Print the input for debugging
+  //Serial.println(input); //Print the input for debugging
 }
