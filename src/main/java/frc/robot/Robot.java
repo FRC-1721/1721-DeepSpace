@@ -186,15 +186,13 @@ public class Robot extends TimedRobot {
     double hasTarget = tv.getDouble(0.0); // Whether or not the limelight has a target - 0 for no, 1.0 for yes
     double pressure = Pneumatics.calcPressure(RobotMap.pressureSensor, 5); // Current stored pressure in tanks
 
-    if (RobotMap.filterValue == 1000) // only runs when we're not inilitized
-    {
-      RobotMap.filterValue = y; // store the filter value
-    }
-    else{
+    if (RobotMap.filterValue == 1000){ // Runs when not initialized
+      RobotMap.filterValue = y; // Stores the filter value
+    }else{
       RobotMap.filterValue = y * RobotMap.filterCoef + ((1 - RobotMap.filterCoef) * RobotMap.filterValue); //Combine the last reading, and the new reading with a ratio of filter coef
     }
 
-    y = RobotMap.filterValue; //Put the y back
+    y = RobotMap.filterValue; // Reset Y
 
     // Vision tracking with 7 and 8 on the drive stick
     if(RobotMap.driverStick.getRawButton(RobotMap.trackLowButton)){
@@ -230,7 +228,7 @@ public class Robot extends TimedRobot {
       table.getEntry("ledMode").setNumber(1); // LEDs off
       table.getEntry("pipeline").setNumber(4); //Pipeline 4
       DriveTrain.flyByWire(RobotMap.starboardMaster, RobotMap.portMaster, RobotMap.driverStick, RobotMap.gearShifter); // Drive using joystick when A is not held
-      RobotMap.filterValue = 1000; //Reset filter value
+      RobotMap.filterValue = 1000; // Reset filter value
     }
 
 

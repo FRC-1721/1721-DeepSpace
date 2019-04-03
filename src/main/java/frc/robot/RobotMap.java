@@ -24,8 +24,8 @@ public class RobotMap {
   public static int portMasterAddress = 1; // Port master TalonSRX address
   public static int liftTalonAddress = 2; // Lift master TalonSRX address
 
-  //Filter Variables
-  public static double filterCoef = 0.9; // The percentege of percistance the previous filter value has over the current
+  // Filtering Variables
+  public static double filterCoef = 0.9; // The percentage of persistence the previous filter value has over the current
   public static double filterValue = 1000;
 
   // CAN Addresses - VictorSPX
