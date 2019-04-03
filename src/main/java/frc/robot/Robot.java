@@ -14,18 +14,19 @@ import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.SPI;
-import edu.wpi.first.wpilibj.SerialPort;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.subsystems.Autocorrect;
 import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.Intake;
-import frc.robot.subsystems.LEDs;
 import frc.robot.subsystems.Lift;
 import frc.robot.subsystems.Pneumatics;
 
-/** Final resting places for control functions - this is where it all comes together */
+/**
+ * Final resting places for control functions - this is where it all comes
+ * together
+ */
 public class Robot extends TimedRobot {
  
 
@@ -185,6 +186,16 @@ public class Robot extends TimedRobot {
     double hasTarget = tv.getDouble(0.0); // Whether or not the limelight has a target - 0 for no, 1.0 for yes
     double pressure = Pneumatics.calcPressure(RobotMap.pressureSensor, 5); // Current stored pressure in tanks
 
+    if (RobotMap.filterValue == 1000) // only runs when we're not inilitized
+    {
+      RobotMap.filterValue = y; // store the filter value
+    }
+    else{
+      RobotMap.filterValue = y * RobotMap.filterCoef + ((1 - RobotMap.filterCoef) * RobotMap.filterValue); //Combine the last reading, and the new reading with a ratio of filter coef
+    }
+
+    y = RobotMap.filterValue; //Put the y back
+
     // Vision tracking with 7 and 8 on the drive stick
     if(RobotMap.driverStick.getRawButton(RobotMap.trackLowButton)){
       table.getEntry("camMode").setNumber(0); // Tracking mode
@@ -198,6 +209,7 @@ public class Robot extends TimedRobot {
         DriveTrain.flyWithWires(RobotMap.starboardMaster, RobotMap.portMaster, steeringAdjust, distanceAdjust * Constants.distanceScaleUp); // Drive using adjustment values
       }
     }else if(RobotMap.driverStick.getRawButton(RobotMap.trackHighButton)){
+
       table.getEntry("camMode").setNumber(0); // Tracking mode
       table.getEntry("ledMode").setNumber(3); // LEDs on
       table.getEntry("pipeline").setNumber(3); // Pipeline 3
@@ -218,6 +230,7 @@ public class Robot extends TimedRobot {
       table.getEntry("ledMode").setNumber(1); // LEDs off
       table.getEntry("pipeline").setNumber(4); //Pipeline 4
       DriveTrain.flyByWire(RobotMap.starboardMaster, RobotMap.portMaster, RobotMap.driverStick, RobotMap.gearShifter); // Drive using joystick when A is not held
+      RobotMap.filterValue = 1000; //Reset filter value
     }
 
 
