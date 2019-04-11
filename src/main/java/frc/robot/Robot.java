@@ -193,6 +193,7 @@ public class Robot extends TimedRobot {
     }
 
     y = RobotMap.filterValue; // Reset Y
+    SmartDashboard.putNumber("filtered angle", y);
 
     // Vision tracking with 7 and 8 on the drive stick
     if(RobotMap.driverStick.getRawButton(RobotMap.trackLowButton)){
