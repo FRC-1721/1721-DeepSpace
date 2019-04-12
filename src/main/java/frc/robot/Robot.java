@@ -220,6 +220,8 @@ public class Robot extends TimedRobot {
       DriveTrain.flyByWire(RobotMap.starboardMaster, RobotMap.portMaster, RobotMap.driverStick, RobotMap.gearShifter); // Drive using joystick when A is not held
     }
 
+    double liftLocation = RobotMap.liftTalon.getSelectedSensorPosition();
+    SmartDashboard.putNumber("Liftlocation", liftLocation);
 
     // Post to smart dashboard periodically
     SmartDashboard.putNumber("LimelightX", x); // Horizontal error
