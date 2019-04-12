@@ -33,7 +33,7 @@ public class Lift extends Subsystem {
     boolean isZero = minExtension.get();
     SmartDashboard.putBoolean("Is zero", isZero);
     if(isZero){
-      lift.setSelectedSensorPosition(0);
+      //lift.setSelectedSensorPosition(0);
     }
   }
 
