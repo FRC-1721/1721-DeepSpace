@@ -27,7 +27,7 @@ public class Constants {
      * Gains(kp, ki, kd, kf, izone, peak output);
      */
 
-	static final Gains kGains = new Gains(0.027, 0.000001, 0.82, 0.0, 0, 1.0); // P - 0.027
+	static final Gains kGains = new Gains(0.027, 0.0001, 0.82, 0.0, 0, 1.0); // P - 0.027
 
     /** ---- Flat constants, you should not need to change these ---- */
 	/* We allow either a 0 or 1 when selecting a PID Index, where 0 is primary and 1 is auxiliary */
@@ -36,7 +36,7 @@ public class Constants {
 
 	// Gains for lift current closed loop
 	public static final double liftP = 0.025;
-	public static final double liftI = 0.000001;
+	public static final double liftI = 0.0001;
 	public static final double liftD = 3.7;
 	public static final double liftF = 0.0;
 	public static final int liftIZone = 0;
@@ -76,10 +76,10 @@ public class Constants {
 
 	// Heights and distances of targets on the rocket
 	public static final double hatchTargetHeight = 0; // Height in inches of the lowest hatch target
-	public static final double cargoTargetHeight = 7.5; // Height in inches of the lowest cargo target on the rocket
+	public static final double cargoTargetHeight = 7.5 + 5; // Height in inches of the lowest cargo target on the rocket
 	public static final double distanceBetweenTargets = 28; // Distance between the centers of subsequent rocket targets
 
 	//Max physical movements
-	public static final double maxPhyiscalLiftMovement = (Constants.distanceBetweenTargets * 2) * Constants.pulsesPerLiftInch;; //The max we can ever rise to in pusles
-	public static final double saftyMargin = 10000;  //the safty margin from max height 
+	public static final double maxPhyiscalLiftMovement = 910000; //The max we can ever rise to in pusles
+	public static final double saftyMargin = 0;  //the safty margin from max height 
 }

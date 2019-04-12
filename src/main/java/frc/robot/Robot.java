@@ -186,6 +186,9 @@ public class Robot extends TimedRobot {
     double hasTarget = tv.getDouble(0.0); // Whether or not the limelight has a target - 0 for no, 1.0 for yes
     double pressure = Pneumatics.calcPressure(RobotMap.pressureSensor, 5); // Current stored pressure in tanks
 
+    double liftLocation = RobotMap.liftTalon.getSelectedSensorPosition();
+    SmartDashboard.putNumber("Liftlocation", liftLocation);
+
     if (RobotMap.filterValue == 1000){ // Runs when not initialized
       RobotMap.filterValue = y; // Stores the filter value
     }else{
