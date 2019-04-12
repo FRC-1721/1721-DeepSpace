@@ -27,7 +27,7 @@ public class Constants {
      * Gains(kp, ki, kd, kf, izone, peak output);
      */
 
-	static final Gains kGains = new Gains(0.027, 0.000001, 0.82, 0.0, 0, 1.0); // P - 0.027
+	static final Gains kGains = new Gains(0.077, 0.01, 0.22, 0.0, 0, 1.0); // P - 0.027
 
     /** ---- Flat constants, you should not need to change these ---- */
 	/* We allow either a 0 or 1 when selecting a PID Index, where 0 is primary and 1 is auxiliary */
@@ -36,7 +36,7 @@ public class Constants {
 
 	// Gains for lift current closed loop
 	public static final double liftP = 0.025;
-	public static final double liftI = 0.000001;
+	public static final double liftI = 0.0001;
 	public static final double liftD = 3.7;
 	public static final double liftF = 0.0;
 	public static final int liftIZone = 0;
