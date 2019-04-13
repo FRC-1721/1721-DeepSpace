@@ -76,7 +76,7 @@ public class Constants {
 
 	// Heights and distances of targets on the rocket
 	public static final double hatchTargetHeight = 0; // Height in inches of the lowest hatch target
-	public static final double cargoTargetHeight = 7.5; // Height in inches of the lowest cargo target on the rocket
+	public static final double cargoTargetHeight = 7.5 + 5; // Height in inches of the lowest cargo target on the rocket
 	public static final double distanceBetweenTargets = 28; // Distance between the centers of subsequent rocket targets
 
 	//Max physical movements

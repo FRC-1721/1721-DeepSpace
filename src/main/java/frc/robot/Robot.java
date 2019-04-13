@@ -140,6 +140,7 @@ public class Robot extends TimedRobot {
     // Gyroscope object
     ahrs = new AHRS(SPI.Port.kMXP);
 
+
     // Sets the LEDs to our alliance color solid
     // LEDs.setLightColor(RobotMap.ledPort);
   }
@@ -238,6 +239,15 @@ public class Robot extends TimedRobot {
     SmartDashboard.putNumber("LimelightY", y); // Vertical error
     SmartDashboard.putNumber("LimelightArea", area); // Area of limelight target
     SmartDashboard.putNumber("Current pressure", pressure); // Stored pressure
+
+    double liftLocation = RobotMap.liftTalon.getSelectedSensorPosition();
+    SmartDashboard.putNumber("Liftlocation", (liftLocation / Constants.pulsesPerInch) / 12);
+    
+    if (RobotMap.liftMax < liftLocation)
+    {
+      RobotMap.liftMax = liftLocation;
+    }
+    SmartDashboard.putNumber("LiftMax", RobotMap.liftMax);
   }
 
   @Override

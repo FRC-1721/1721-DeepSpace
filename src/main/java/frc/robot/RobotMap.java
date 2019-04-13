@@ -98,4 +98,8 @@ public class RobotMap {
   public static boolean hatchMode; // Dictates whether lift is in "hatch mode"
 
   public static SerialPort ledPort; // Serial port for the LEDs
+
+  
+  public static double liftMax = 0; //A placeholder for the largest quadrature rev
+  public static int physicalMovementMax = 855402; //the max measured movement location of the lift
 }
