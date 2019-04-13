@@ -24,6 +24,10 @@ public class RobotMap {
   public static int portMasterAddress = 1; // Port master TalonSRX address
   public static int liftTalonAddress = 2; // Lift master TalonSRX address
 
+  // Filtering Variables
+  public static double filterCoef = 0.5; // The percentage of persistence the previous filter value has over the current
+  public static double filterValue = 1000;
+
   // CAN Addresses - VictorSPX
   public static int starboardSlaveAddress = 0; // Starboard slave VictorSPX address
   public static int portSlaveAddress  = 1; // Port slave VictorSPX address 
@@ -94,4 +98,8 @@ public class RobotMap {
   public static boolean hatchMode; // Dictates whether lift is in "hatch mode"
 
   public static SerialPort ledPort; // Serial port for the LEDs
+
+  
+  public static double liftMax = 0; //A placeholder for the largest quadrature rev
+  public static int physicalMovementMax = 855402; //the max measured movement location of the lift
 }

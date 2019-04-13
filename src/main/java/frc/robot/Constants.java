@@ -42,7 +42,7 @@ public class Constants {
 	public static final int liftIZone = 0;
 
 	public static final double angularScaleUp = 410; // Scale-up for TX error
-	public static final double distanceScaleUp = 3.5; // Scale-up for TY error
+	public static final double distanceScaleUp = 5; // Scale-up for TY error
 
 	public static final double heightOfCamera = 40.5;// Height  of limelight camera in inches
 	public static final double heightOfCalibrationTarget = 28.574; // Height of the center of the low vision target
@@ -53,7 +53,7 @@ public class Constants {
 
 	public static final double frameOffset = 10; // Distance between front of frame and limelight
 	public static final double lowTargetDistance = 0 + frameOffset; // Low target distance for auto to navigate to, in ghanas
-	public static final double highTargetDistance = 140 + frameOffset; // High target distance for auto to navigate to, in ghanas
+	public static final double highTargetDistance = 115 + frameOffset; // High target distance for auto to navigate to, in ghanas
 	public static final double calibrationDistance = 30; // Calibration distance, in ghanas
 
 	public static final double angleOffset = 0; // The angle the navX reads while the robot is stood at rest
@@ -76,6 +76,10 @@ public class Constants {
 
 	// Heights and distances of targets on the rocket
 	public static final double hatchTargetHeight = 0; // Height in inches of the lowest hatch target
-	public static final double cargoTargetHeight = 7.5; // Height in inches of the lowest cargo target on the rocket
+	public static final double cargoTargetHeight = 7.5 + 5; // Height in inches of the lowest cargo target on the rocket
 	public static final double distanceBetweenTargets = 28; // Distance between the centers of subsequent rocket targets
+
+	//Max physical movements
+	public static final double maxPhyiscalLiftMovement = (Constants.distanceBetweenTargets * 2) * Constants.pulsesPerLiftInch;; //The max we can ever rise to in pusles
+	public static final double saftyMargin = 10000;  //the safty margin from max height 
 }

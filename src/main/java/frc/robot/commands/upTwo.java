@@ -23,7 +23,16 @@ public class upTwo extends Command {
   @Override
   protected void initialize() {
     double currentPos = RobotMap.liftTalon.getSelectedSensorPosition();
-    RobotMap.liftTalon.set(ControlMode.Position, currentPos + (2 * Constants.distanceBetweenTargets * Constants.pulsesPerLiftInch));
+
+    //the target before safty
+    double proposedTarget = currentPos + (2 * Constants.distanceBetweenTargets * Constants.pulsesPerLiftInch); //Set our proposed target
+
+    if (proposedTarget > Constants.maxPhyiscalLiftMovement) //if the proposed target is bigger than we can move
+    {
+      proposedTarget = Constants.maxPhyiscalLiftMovement - Constants.saftyMargin; //dont do it
+    }
+
+    RobotMap.liftTalon.set(ControlMode.Position, proposedTarget); //idk
   }
 
   // Called repeatedly when this Command is scheduled to run

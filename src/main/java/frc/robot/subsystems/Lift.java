@@ -31,6 +31,16 @@ public class Lift extends Subsystem {
   /** Zeroes the lift when a limit switch is pressed down*/
   public static void zeroLift(TalonSRX lift, DigitalInput minExtension){
     boolean isZero = minExtension.get();
+    
+    if(isZero == true) //If we're reading ON
+    {
+      isZero = false; //We're reading false now
+    }
+    else
+    {
+      isZero = true; //If we were already OFF we're ON now
+    }
+
     SmartDashboard.putBoolean("Is zero", isZero);
     if(isZero){
       //lift.setSelectedSensorPosition(0);
