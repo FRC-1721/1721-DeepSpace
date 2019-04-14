@@ -7,6 +7,7 @@ import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import frc.robot.Constants;
+import frc.robot.RobotMap;
 
 /**
  * This thing aint on an auto-pilot, except when it is
@@ -16,6 +17,20 @@ public class DriveTrain extends Subsystem {
   public void initDefaultCommand() {
     // setDefaultCommand(new MySpecialCommand());
   }
+
+  public static void autoDrift(Joystick DriverJoystick, DoubleSolenoid gearShift)
+  {
+    if(Math.abs(DriverJoystick.getRawAxis(1)) < RobotMap.lowerLimit) //If you're driving slower than the lower limit
+    {
+      gearShift.set(DoubleSolenoid.Value.kForward);
+    }
+    
+    if(Math.abs(DriverJoystick.getRawAxis(1)) > RobotMap.upperLimit) //If you're driving faster than the upper limit
+    {
+      gearShift.set(DoubleSolenoid.Value.kReverse);
+    }
+  }
+
   /** Drive using two talons and a joystick **/
   public static void flyByWire(TalonSRX starboard, TalonSRX port, Joystick DriverJoystick, DoubleSolenoid gearShift){
     double thro = DriverJoystick.getRawAxis(1); //Populate the double thro with the raw axis 1

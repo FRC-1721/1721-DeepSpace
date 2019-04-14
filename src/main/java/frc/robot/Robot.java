@@ -140,7 +140,6 @@ public class Robot extends TimedRobot {
     // Gyroscope object
     ahrs = new AHRS(SPI.Port.kMXP);
 
-
     // Sets the LEDs to our alliance color solid
     // LEDs.setLightColor(RobotMap.ledPort);
   }
@@ -186,6 +185,9 @@ public class Robot extends TimedRobot {
     double area = ta.getDouble(0.0); // % area of vision target
     double hasTarget = tv.getDouble(0.0); // Whether or not the limelight has a target - 0 for no, 1.0 for yes
     double pressure = Pneumatics.calcPressure(RobotMap.pressureSensor, 5); // Current stored pressure in tanks
+
+    double liftLocation = RobotMap.liftTalon.getSelectedSensorPosition(); //Get the location of the lift from the talon
+    SmartDashboard.putNumber("Liftlocation", liftLocation); //Write that location to smart dashboard  
 
     if (RobotMap.filterValue == 1000){ // Runs when not initialized
       RobotMap.filterValue = y; // Stores the filter value
@@ -233,23 +235,18 @@ public class Robot extends TimedRobot {
       RobotMap.filterValue = 1000; // Reset filter value
     }
 
-    double liftLocation = RobotMap.liftTalon.getSelectedSensorPosition();
-    SmartDashboard.putNumber("Liftlocation", liftLocation);
+    //Auto Gear Shifting
+    if(RobotMap.automaticShifterEnable == true)
+    {
+      DriveTrain.autoDrift(RobotMap.driverStick, RobotMap.gearShifter);
+    }
+
 
     // Post to smart dashboard periodically
     SmartDashboard.putNumber("LimelightX", x); // Horizontal error
     SmartDashboard.putNumber("LimelightY", y); // Vertical error
     SmartDashboard.putNumber("LimelightArea", area); // Area of limelight target
     SmartDashboard.putNumber("Current pressure", pressure); // Stored pressure
-
-    double liftLocation = RobotMap.liftTalon.getSelectedSensorPosition();
-    SmartDashboard.putNumber("Liftlocation", (liftLocation / Constants.pulsesPerInch) / 12);
-    
-    if (RobotMap.liftMax < liftLocation)
-    {
-      RobotMap.liftMax = liftLocation;
-    }
-    SmartDashboard.putNumber("LiftMax", RobotMap.liftMax);
   }
 
   @Override
