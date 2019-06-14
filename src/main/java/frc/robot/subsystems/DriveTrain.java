@@ -6,6 +6,7 @@ import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.command.Subsystem;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Constants;
 import frc.robot.RobotMap;
 
@@ -20,15 +21,20 @@ public class DriveTrain extends Subsystem {
 
   public static void autoDrift(Joystick DriverJoystick, DoubleSolenoid gearShift)
   {
+    int gear = 1;
     if(Math.abs(DriverJoystick.getRawAxis(1)) < RobotMap.lowerLimit) //If you're driving slower than the lower limit
     {
-      gearShift.set(DoubleSolenoid.Value.kForward);
+      gearShift.set(DoubleSolenoid.Value.kReverse);
+      gear = 2;
     }
     
     if(Math.abs(DriverJoystick.getRawAxis(1)) > RobotMap.upperLimit) //If you're driving faster than the upper limit
     {
-      gearShift.set(DoubleSolenoid.Value.kReverse);
+      gearShift.set(DoubleSolenoid.Value.kForward);
+      gear = 0;
     }
+
+    SmartDashboard.putNumber("Gear", gear);
   }
 
   /** Drive using two talons and a joystick **/

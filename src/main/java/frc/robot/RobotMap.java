@@ -104,6 +104,6 @@ public class RobotMap {
 
   //Automatic shift
   public static boolean automaticShifterEnable = false;
-  public static double upperLimit = 0.8;
-  public static double lowerLimit = 0.4;
+  public static double upperLimit = 0.85;
+  public static double lowerLimit = 0.2;
 }
