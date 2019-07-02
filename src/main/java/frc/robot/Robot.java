@@ -189,6 +189,11 @@ public class Robot extends TimedRobot {
     double liftLocation = RobotMap.liftTalon.getSelectedSensorPosition(); //Get the location of the lift from the talon
     SmartDashboard.putNumber("Liftlocation", liftLocation); //Write that location to smart dashboard  
 
+    double portEncoder = RobotMap.portMaster.getSelectedSensorPosition();
+    double startboardEncoder = RobotMap.starboardMaster.getSelectedSensorPosition();
+    SmartDashboard.putNumber("Port", portEncoder);
+    SmartDashboard.putNumber("Starboard", startboardEncoder);
+
     if (RobotMap.filterValue == 1000){ // Runs when not initialized
       RobotMap.filterValue = y; // Stores the filter value
     }else{
