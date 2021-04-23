@@ -9,22 +9,12 @@ package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.SerialPort;
-import edu.wpi.first.wpilibj.DriverStation.Alliance;
-import edu.wpi.first.wpilibj.command.Subsystem;
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 /**
  * Subsystem for controlling LEDs
  */
-public class LEDs extends Subsystem {
-  // Put methods for controlling this subsystem
-  // here. Call these from Commands.
-
-  @Override
-  public void initDefaultCommand() {
-    // Set the default command for a subsystem here.
-    // setDefaultCommand(new MySpecialCommand());
-  }
-
+public class LEDs extends SubsystemBase {
   public static void setLightColor(SerialPort port){
     DriverStation.Alliance alliance = DriverStation.getInstance().getAlliance();
     if(alliance == DriverStation.Alliance.Red){

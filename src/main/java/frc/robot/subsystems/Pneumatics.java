@@ -11,21 +11,12 @@ import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.Joystick;
-import edu.wpi.first.wpilibj.command.Subsystem;
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 /**
  * Subsystem for controlling the compressor and all solenoids
  */
-public class Pneumatics extends Subsystem {
-  // Put methods for controlling this subsystem
-  // here. Call these from Commands.
-
-  @Override
-  public void initDefaultCommand() {
-    // Set the default command for a subsystem here.
-    // setDefaultCommand(new MySpecialCommand());
-  }
-
+public class Pneumatics extends SubsystemBase {
   /** Switches a piston from whatever position it's in to the opposite position on a button press */
   public static void switchPiston(Joystick controller, DoubleSolenoid piston){
     if(piston.get() == DoubleSolenoid.Value.kForward){

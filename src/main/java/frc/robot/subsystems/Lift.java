@@ -12,22 +12,13 @@ import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Joystick;
-import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 /**
  * Subsystem for PID lift control - in development
  */
-public class Lift extends Subsystem {
-  // Put methods for controlling this subsystem
-  // here. Call these from Commands.
-
-  @Override
-  public void initDefaultCommand() {
-    // Set the default command for a subsystem here.
-    // setDefaultCommand(new MySpecialCommand());
-  }
-
+public class Lift extends SubsystemBase {
   /** Zeroes the lift when a limit switch is pressed down*/
   public static void zeroLift(TalonSRX lift, DigitalInput minExtension){
     boolean isZero = minExtension.get();

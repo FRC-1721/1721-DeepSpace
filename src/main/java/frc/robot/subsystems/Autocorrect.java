@@ -10,24 +10,15 @@ package frc.robot.subsystems;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 
-import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import frc.robot.RobotMap;
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
+import frc.robot.RobotMap;
 
 /**
  * Subsystem for functions to automatically adjust the robot in unfavorable conditions
  */
-public class Autocorrect extends Subsystem {
-  // Put methods for controlling this subsystem
-  // here. Call these from Commands.
-
-  @Override
-  public void initDefaultCommand() {
-    // Set the default command for a subsystem here.
-    // setDefaultCommand(new MySpecialCommand());
-  }
-
+public class Autocorrect extends SubsystemBase {
   /** Lowers the lift to cargo height if the angle becomes too drastic */
   public static void adjustCG(double angle, TalonSRX lift, double maxAngle){
     boolean isTooLow = angle < 0 && angle <= -1 * maxAngle;

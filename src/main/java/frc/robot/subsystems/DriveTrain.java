@@ -5,20 +5,15 @@ import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.Joystick;
-import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.RobotMap;
 
 /**
  * This thing aint on an auto-pilot, except when it is
  */
-public class DriveTrain extends Subsystem {
-  @Override
-  public void initDefaultCommand() {
-    // setDefaultCommand(new MySpecialCommand());
-  }
-
+public class DriveTrain extends SubsystemBase {
   public static void autoDrift(Joystick DriverJoystick, DoubleSolenoid gearShift)
   {
     int gear = 1;
