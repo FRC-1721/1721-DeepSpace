@@ -27,12 +27,6 @@ public class manualZero extends CommandBase {
   public void execute() {
   }
 
-  // Make this return true when this Command no longer needs to run execute()
-  @Override
-  public boolean isFinished() {
-    return true;
-  }
-
   // Called once after isFinished returns true
   @Override
   public void end(boolean interrupted) {
